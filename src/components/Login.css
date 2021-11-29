@@ -1,0 +1,78 @@
+.App-login {
+  font-family: Roboto;
+  text-align: center;
+  align-items: center;
+}
+  
+.App-header {
+  height: 60px;
+  background-color: #84C7AE
+}
+  
+.App-main {
+  height: fit-content;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  color: #000000;
+}
+  
+.center-block {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.App-InputForm {
+  margin-left: 250%;
+  margin-top: 50%;
+  background-color: #C1E3D666;
+  height: 309px;
+  width: 345px;
+  border-radius: 49.09px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+  
+.App-Input {
+  margin-top: 10px;
+  padding-left: 15px;
+  width: 284.34px;
+  font-size: 14px;
+  height: 37.35px;
+  border-radius: 15.34px;
+  border-color: rgba(0, 0, 0, 0.1);
+}
+  
+.App-ButtonLogin {
+  font-size: 16px;
+  margin-top: 15px;
+  width: 183.35px;
+  height: 40.07px;
+  border-radius: 23.01px;
+  border: none;
+  background-color: #84C7AE;
+  color: #ffffff;
+  box-shadow: #ffffff;
+}
+  
+.Title {
+  margin-top: 30px;
+}
+  
+.Link-Password {
+  margin-top: 15px;
+  font-size: 14px;
+  color: #000000
+}
+
+@font-face {
+  font-family: Roboto; 
+  src: url("../static/fonts/Roboto-Light.ttf") format("truetype"); 
+  font-style: normal; 
+  font-weight: normal; 
+}
