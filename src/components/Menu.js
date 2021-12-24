@@ -2,7 +2,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { React, Component } from 'react';
 import { ListGroup, ListGroupItem } from "reactstrap";
 import CustomNavbar from './Navbar';
-import new_block from '../static/icons/new_block.svg';
+import screen from '../static/icons/screen.svg';
 import tasks from '../static/icons/tasks.svg';
 import profile from '../static/icons/profile.svg';
 import analytics from '../static/icons/analytics.svg';
@@ -41,14 +41,6 @@ export default class Menu extends Component {
                             Меню</ListGroupItem>
                         <ListGroupItem
                             action
-                            href="/new_block"
-                            tag="a"
-                            style={MenuItems}
-                        >
-                            <img src={new_block} alt="" />Новый блок
-                        </ListGroupItem>
-                        <ListGroupItem
-                            action
                             href="/cabinet"
                             tag="a"
                             style={MenuItems}
@@ -57,11 +49,19 @@ export default class Menu extends Component {
                         </ListGroupItem>
                         <ListGroupItem
                             action
-                            href="/profile"
+                            href=""
                             tag="a"
                             style={MenuItems}
                         >
-                            <img src={profile} alt="" />Личные данные
+                            <img src={screen} alt="" />Банк экранов
+                        </ListGroupItem>
+                        <ListGroupItem
+                            action
+                            href="/editing"
+                            tag="a"
+                            style={MenuItems}
+                        >
+                            <img src={edit} alt="" />Редактирование
                         </ListGroupItem>
                         <ListGroupItem
                             action
@@ -73,20 +73,22 @@ export default class Menu extends Component {
                         </ListGroupItem>
                         <ListGroupItem
                             action
+                            href="/profile"
+                            tag="a"
+                            style={MenuItems}
+                        >
+                            <img src={profile} alt="" />Личные данные
+                        </ListGroupItem>
+
+                        <ListGroupItem
+                            action
                             href="/history"
                             tag="a"
                             style={MenuItems}
                         >
                             <img src={history} alt="" />История изменений
                         </ListGroupItem>
-                        <ListGroupItem
-                            action
-                            href="/editing"
-                            tag="a"
-                            style={MenuItems}
-                        >
-                            <img src={edit} alt="" />Редактирование
-                        </ListGroupItem>
+
                         <ListGroupItem
                             action
                             href="/new_admin"

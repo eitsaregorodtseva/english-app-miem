@@ -1,87 +1,253 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './Cabinet.css'
-import { useState } from 'react';
-import Menu from './Menu.js'
-import { useHistory } from "react-router-dom";
-import logout from '../static/icons/logout.svg'
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import { React, Component } from 'react';
+import { FormGroup, Breadcrumb, BreadcrumbItem, Button, Badge, Col, List, Label } from "reactstrap";
+import CustomNavbar from './Navbar';
+import '../style.css';
 
-export default function Cabinet() {
-  const [newLessonVisible, setNewLessonVisibility] = useState(false);
-  let history = useHistory();
+const BadgePills = {
+  padding: "1% 5% 1% 5%"
+}
+const GreyBox = {
+    width: "94%",
+    padding: "1% 7% 1% 7%",
+    backgroundColor: "#C4C4C4",
+    color: "#000000",
+    border: "none"
+}
+const EditLesson = {
+  backgroundColor: "rgba(235, 87, 87, 0.5)",
+  color: "#000000",
+  border: "none",
+  padding: "1% 5% 1% 5%"
+}
+const ViewLesson = {
+  marginLeft: "10%",
+  backgroundColor: "rgba(45, 156, 219, 0.48)",
+  color: "#000000",
+  border: "none",
+  padding: "1% 5% 1% 5%"
+}
+const LessonDiv = {
+  marginLeft: "3%",
+  marginTop: "3%",
+  marginBottom: "5%"
+}
 
-  function handleClick() {
-    localStorage.removeItem('token');
-    history.push("/");
-  }
+export default class Cabinet extends Component {
 
-  return (
-    <div className="App">
-      <header className="App-header">
-        <div className="App-admin">
-          <button onClick={handleClick} className="Admin-button"><img src={logout} alt="" height="32px" width="32px" style={{ paddingRight: '10px' }}/>Выйти  </button>
+  render() {
+    return (
+      <div class="Container">
+        <header><CustomNavbar /></header>
+        <div style={{ marginTop: "10%" }}>
+          <Breadcrumb listTag="div">
+            <BreadcrumbItem
+              href="/menu"
+              tag="a">
+              Меню
+            </BreadcrumbItem>
+            <BreadcrumbItem
+              active
+              tag="span">
+              Уроки
+            </BreadcrumbItem>
+          </Breadcrumb>
         </div>
-      </header>
-      
-      <main className="App-main">
-      <div>
-        <Menu />
-      </div>
-        <div className="App-NewLesson">
-          <div>
-          <button className="Button-NewLesson" /*onClick={setNewLessonVisibility(true)}*/>
-            {/*<img src={} alt="" height="24px" width="24px" />*/}  Добавить новый урок</button>
-            </div>
-          <div className={newLessonVisible === true ? "NewLesson" : "NewLessonHidden"}>
-            <form className="NewLessonInput">
-              <label>
-                <input className="Input"
-                  type="text"
-                  name="number"
-                  placeholder="Номер" />
-              </label>
-              <label>
-                <input className="Input"
-                  type="text"
-                  name="theme"
-                  placeholder="Тема" />
-              </label>
-              <label>
-                <input className="Input"
-                  type="text"
-                  name="video"
-                  placeholder="Видео" />
-              </label>
-              <label>
-                <textarea className="Input"
-                  type="text"
-                  name="description"
-                  placeholder="Пояснение"
-                  rows="3" />
-              </label>
-              <label>
-                <textarea className="Input"
-                  type="text"
-                  name="task"
-                  placeholder="Задание"
-                  rows="3" />
-              </label>
-              <label>
-                <input className="Input"
-                  type="text"
-                  name="answer"
-                  placeholder="Ответ" />
-              </label>
-              <div className="Buttons">
-                <button className="App-Button">
-                  {/*<img src={} alt="" height="24px" width="24px" />*/}  Сохранить</button>
-                <button className="App-Button">
-                  {/*<img src={} alt="" height="24px" width="24px" />*/}  Отменить</button>
+        <div class="accordion" id="accordion" style={{ marginTop: "5%" }}>
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingOne">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                Блок 1
+              </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                <div style={LessonDiv}>
+                  <Button disabled style={GreyBox}>Урок 1</Button>
+                  <div style={{ marginTop: "5%" }}>
+                    <Button style={EditLesson}>Редактировать урок</Button>
+                    <Button style={ViewLesson}>Предпросмотр</Button>
+                  </div>
+                  <div style={{ marginTop: "5%" }}>
+                    <List>
+                      <FormGroup row>
+                        <Label sm={3}>Видео</Label>
+                        <Col sm={9}>
+                          <Badge pill color="warning" style={BadgePills}>В процессе</Badge>
+                        </Col>
+                      </FormGroup>
+                      <FormGroup row>
+                        <Label sm={3}>Буквы-слова</Label>
+                        <Col sm={9}>
+                          <Badge pill color="danger" style={BadgePills}>Пусто</Badge>
+                        </Col>
+                      </FormGroup>
+                      <FormGroup row>
+                        <Label sm={3}>Фразы</Label>
+                        <Col sm={9}>
+                          <Badge pill color="danger" style={BadgePills}>Пусто</Badge>
+                        </Col>
+                      </FormGroup>
+                      <FormGroup row>
+                        <Label sm={3}>Диалог</Label>
+                        <Col sm={9}>
+                          <Badge pill color="danger" style={BadgePills}>Пусто</Badge>
+                        </Col>
+                      </FormGroup>
+                      <FormGroup row>
+                        <Label sm={3}>Правила</Label>
+                        <Col sm={9}>
+                          <Badge pill color="danger" style={BadgePills}>Пусто</Badge>
+                        </Col>
+                      </FormGroup>
+                    </List>
+                  </div>
+                </div>
+                <div style={LessonDiv}>
+                  <Button disabled style={GreyBox}>Урок 2</Button>
+                  <div style={{ marginTop: "5%" }}>
+                    <Button style={EditLesson}>Редактировать урок</Button>
+                    <Button style={ViewLesson}>Предпросмотр</Button>
+                  </div>
+                  <div style={{ marginTop: "5%" }}>
+                    <List>
+                      <FormGroup row>
+                        <Label sm={3}>Видео</Label>
+                        <Col sm={9}>
+                          <Badge pill color="warning" style={BadgePills}>В процессе</Badge>
+                        </Col>
+                      </FormGroup>
+                      <FormGroup row>
+                        <Label sm={3}>Буквы-слова</Label>
+                        <Col sm={9}>
+                          <Badge pill color="danger" style={BadgePills}>Пусто</Badge>
+                        </Col>
+                      </FormGroup>
+                      <FormGroup row>
+                        <Label sm={3}>Фразы</Label>
+                        <Col sm={9}>
+                          <Badge pill color="danger" style={BadgePills}>Пусто</Badge>
+                        </Col>
+                      </FormGroup>
+                      <FormGroup row>
+                        <Label sm={3}>Диалог</Label>
+                        <Col sm={9}>
+                          <Badge pill color="danger" style={BadgePills}>Пусто</Badge>
+                        </Col>
+                      </FormGroup>
+                      <FormGroup row>
+                        <Label sm={3}>Правила</Label>
+                        <Col sm={9}>
+                          <Badge pill color="danger" style={BadgePills}>Пусто</Badge>
+                        </Col>
+                      </FormGroup>
+                    </List>
+                  </div>
+                </div>
               </div>
-            </form>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingTwo">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                Блок 2
+              </button>
+            </h2>
+            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                <div style={LessonDiv}>
+                  <Button disabled style={GreyBox}>Урок 1</Button>
+                  <div style={{ marginTop: "5%" }}>
+                    <Button style={EditLesson}>Редактировать урок</Button>
+                    <Button style={ViewLesson}>Предпросмотр</Button>
+                  </div>
+                  <div style={{ marginTop: "5%" }}>
+                    <List>
+                      <FormGroup row>
+                        <Label sm={3}>Видео</Label>
+                        <Col sm={9}>
+                          <Badge pill color="warning" style={BadgePills}>В процессе</Badge>
+                        </Col>
+                      </FormGroup>
+                      <FormGroup row>
+                        <Label sm={3}>Буквы-слова</Label>
+                        <Col sm={9}>
+                          <Badge pill color="danger" style={BadgePills}>Пусто</Badge>
+                        </Col>
+                      </FormGroup>
+                      <FormGroup row>
+                        <Label sm={3}>Фразы</Label>
+                        <Col sm={9}>
+                          <Badge pill color="danger" style={BadgePills}>Пусто</Badge>
+                        </Col>
+                      </FormGroup>
+                      <FormGroup row>
+                        <Label sm={3}>Диалог</Label>
+                        <Col sm={9}>
+                          <Badge pill color="danger" style={BadgePills}>Пусто</Badge>
+                        </Col>
+                      </FormGroup>
+                      <FormGroup row>
+                        <Label sm={3}>Правила</Label>
+                        <Col sm={9}>
+                          <Badge pill color="danger" style={BadgePills}>Пусто</Badge>
+                        </Col>
+                      </FormGroup>
+                    </List>
+                  </div>
+                </div>
+                <div style={LessonDiv}>
+                  <Button disabled style={GreyBox}>Урок 2</Button>
+                  <div style={{ marginTop: "5%" }}>
+                    <Button style={EditLesson}>Редактировать урок</Button>
+                    <Button style={ViewLesson}>Предпросмотр</Button>
+                  </div>
+                  <div style={{ marginTop: "5%" }}>
+                    <List>
+                      <FormGroup row>
+                        <Label sm={3}>Видео</Label>
+                        <Col sm={9}>
+                          <Badge pill color="warning" style={BadgePills}>В процессе</Badge>
+                        </Col>
+                      </FormGroup>
+                      <FormGroup row>
+                        <Label sm={3}>Буквы-слова</Label>
+                        <Col sm={9}>
+                          <Badge pill color="danger" style={BadgePills}>Пусто</Badge>
+                        </Col>
+                      </FormGroup>
+                      <FormGroup row>
+                        <Label sm={3}>Фразы</Label>
+                        <Col sm={9}>
+                          <Badge pill color="danger" style={BadgePills}>Пусто</Badge>
+                        </Col>
+                      </FormGroup>
+                      <FormGroup row>
+                        <Label sm={3}>Диалог</Label>
+                        <Col sm={9}>
+                          <Badge pill color="danger" style={BadgePills}>Пусто</Badge>
+                        </Col>
+                      </FormGroup>
+                      <FormGroup row>
+                        <Label sm={3}>Правила</Label>
+                        <Col sm={9}>
+                          <Badge pill color="danger" style={BadgePills}>Пусто</Badge>
+                        </Col>
+                      </FormGroup>
+                    </List>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </main>
-      <footer></footer>
-    </div>
-  )
+        <div style={{ marginTop: "7%", marginLeft: "37%" }}>
+          <Button href="/new_block" style={{ padding: "2% 9% 2% 9%", backgroundColor: "#C4C4C4", color: "#000000", border: "none" }}>
+            Добавить новый блок
+          </Button>
+        </div>
+      </div>
+    )
+  }
 }

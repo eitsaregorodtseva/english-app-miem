@@ -12,23 +12,21 @@ const Container = {
     display: 'block'
 }
 
-export default class Profile extends Component {
+export default class Statisctics extends Component {
     render() {
         return (
             <div style={Container}>
                 <header><CustomNavbar /></header>
-                <div style={{ marginTop: "100px" }}>
+                <div style={{ marginTop: "10%" }}>
                     <Breadcrumb listTag="div">
                         <BreadcrumbItem
                             href="/menu"
-                            tag="a"
-                        >
+                            tag="a">
                             Меню
                         </BreadcrumbItem>
                         <BreadcrumbItem
                             active
-                            tag="span"
-                        >
+                            tag="span">
                             Статистика
                         </BreadcrumbItem>
                     </Breadcrumb>

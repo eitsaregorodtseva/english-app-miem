@@ -18,18 +18,16 @@ export default class Profile extends Component {
         return (
             <div style={Container}>
                 <header><CustomNavbar /></header>
-                <div style={{ marginTop: "100px" }}>
+                <div style={{ marginTop: "10%" }}>
                     <Breadcrumb listTag="div">
                         <BreadcrumbItem
                             href="/menu"
-                            tag="a"
-                        >
+                            tag="a">
                             Меню
                         </BreadcrumbItem>
                         <BreadcrumbItem
                             active
-                            tag="span"
-                        >
+                            tag="span">
                             Личные данные
                         </BreadcrumbItem>
                     </Breadcrumb>
@@ -80,6 +78,7 @@ export default class Profile extends Component {
                                     id="email"
                                     name="email"
                                     type="email"
+                                    value={localStorage.email}
                                     disabled
                                 />
                             </Col>

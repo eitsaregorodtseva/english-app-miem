@@ -1,16 +1,35 @@
-import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useState } from 'react';
+import axios from 'axios';
+import { React, useState } from 'react';
 import { useHistory } from "react-router-dom";
-import './Login.css';
+import { Button, Col, Form, FormGroup, Input } from "reactstrap";
+import NavbarLogin from './NavbarLogin';
 
 const authError = "Неверный логин или пароль!";
 const baseAPIUrl = "https://tractor-factory-interface.herokuapp.com/api";
 
+const Container = {
+  justifyContent: 'center',
+  alignItems: 'center',
+  display: 'flex',
+  flexDirection: 'column',
+  marginTop: '11%',
+  textAlign: 'center'
+}
+
+const ButtonStyle = {
+  border: "none",
+  borderRadius: "20px",
+  backgroundColor: "#84C7AE",
+  marginTop: "10%",
+  color: "#ffffff",
+  padding: "3% 20% 3% 20%"
+}
+
 export default function LoginForm() {
   const history = useHistory();
 
-  const [login, setLogin] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -18,10 +37,12 @@ export default function LoginForm() {
     event.preventDefault();
 
     const user = {
-      email: login,
+      email: email,
       password: password
     };
 
+    console.log(email);
+    console.log(password);
     axios.defaults.xsrfCookieName = 'csrftoken';
     axios.defaults.xsrfHeaderName = 'X-CSRFToken';
     axios.defaults.withCredentials = true;
@@ -31,58 +52,66 @@ export default function LoginForm() {
         'Content-Type': 'application/json'
       },
     })
-    .then(res => {
-      const token = res.data.user.token;
-      const group = res.data.user.group;
-      localStorage.setItem('token', token);
-      localStorage.setItem('group', group);
-      history.push("/cabinet");
-      //console.log(res);
-      //console.log(res.user.token);
-      //console.log(res.user.group);
+      .then(res => {
+        const token = res.data.user.token;
+        const email = res.data.user.email;
+        const group = res.data.user.group;
+        localStorage.setItem('token', token);
+        localStorage.setItem('email', email);
+        localStorage.setItem('group', group);
+        history.push("/menu");
+        //console.log(res);
+        //console.log(res.user.token);
+        //console.log(res.user.group);
 
-    })
-    .catch((error) => {
-      console.log(error.response.data.errors.error[0]);
-      setErrorMessage(authError);
-      //
-    })
-}
-    
-    return (
-      <div className="App-login">
-        <header className="App-header">
-          </header>
-          <main className="App-main">
-            <div className="App-InputForm">
-              <p className="Title">Панель администратора</p>
-              <h5 style={{ textAlign: 'center', color: 'red' }}>{ errorMessage }</h5>
-            <form onSubmit={handleSubmit}>
-              <label>
-                <input className="App-Input" 
-                type="text" 
-                name="login" 
-                placeholder="Логин"
-                value={login}
-                required="required"
-                onChange={(e) => setLogin(e.target.value)}/>
-              </label>
-              <label>
-                <input className="App-Input" 
-                type="password" 
-                name="password" 
+      })
+      .catch((error) => {
+        console.log(error.response.data.errors.error[0]);
+        setErrorMessage(authError);
+      })
+  }
+
+  return (
+    <div>
+      <header><NavbarLogin /></header>
+      <div style={Container}>
+        <Form onSubmit={handleSubmit} style={{
+          border: "none", borderRadius: "49px",
+          backgroundColor: "rgba(193, 227, 214, 0.4)", fontSize: "20px", padding: '3%'
+        }}>
+          <h4>Панель администратора</h4>
+          <FormGroup row style={{ marginTop: "10%" }}>
+            <Col sm={14}>
+              <Input style={{ borderRadius: "10px" }}
+                id="email"
+                name="email"
+                type="email"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </Col>
+          </FormGroup>
+          <FormGroup row style={{ marginTop: "10%" }}>
+            <Col sm={14}>
+              <Input style={{ borderRadius: "10px" }}
+                id="password"
+                name="password"
+                type="password"
                 placeholder="Пароль"
                 value={password}
-                required="required"
-                onChange={(e) => setPassword(e.target.value)}/>
-              </label>
-              <button className="App-ButtonLogin" type="submit"> Войти
-                </button>
-            </form>
-            <a className="Link-Password" href="url"> Забыли пароль?</a>
-            </div>
-          </main>
-          <footer></footer>
-        </div>
-    );
-  }
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </Col>
+          </FormGroup>
+          {/*<p style={{marginTop: "7%", marginBottom: "-2%", color: "red"}}>{authError}</p>*/}
+          <Button style={ButtonStyle} type="submit">
+            Войти
+          </Button>
+        </Form>
+      </div>
+    </div>
+  )
+}

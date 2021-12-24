@@ -1,7 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Component } from "react";
+import { useHistory } from 'react-router-dom';
 import { Navbar, Nav, NavItem, Button } from "reactstrap";
-import logout from '../static/icons/logout.svg';
+import exit from '../static/icons/logout.svg';
 
 const NavbarStyle = {
     backgroundColor: '#84C7AE'
@@ -14,16 +14,24 @@ const ButtonStyle = {
     border: "none"
 }
 
-export default class CustomNavbar extends Component {
-    render() {
+export default function CustomNavbar() {
+    let history = useHistory();
+
+    function logout() {
+        localStorage.removeItem('token');
+        localStorage.removeItem('group');
+        localStorage.removeItem('email');
+        history.push("/");
+    }
+    
         return (
             <div>
                 <Navbar container expand="md" fixed="top" style={NavbarStyle}>
                     <Nav className="ms-auto"
-                        navbar style={{ marginRight: "1%" }}>
+                        navbar style={{ marginRight: "-3%" }}>
                         <NavItem>
-                            <Button style={ButtonStyle}>
-                                <img src={logout} alt="" style={{ height: "24px", paddingRight: "10px", paddingLeft: "5px" }} />
+                            <Button style={ButtonStyle} onClick={logout} href="/">
+                                <img src={exit} alt="" style={{ height: "24px", paddingRight: "10px", paddingLeft: "5px" }} />
                                 <span style={{ paddingRight: "10px" }}>Выйти</span>
                             </Button>
                         </NavItem>
@@ -31,5 +39,4 @@ export default class CustomNavbar extends Component {
                 </Navbar>
             </div>
         )
-    }
 }
