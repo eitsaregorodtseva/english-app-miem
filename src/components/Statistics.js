@@ -4,34 +4,20 @@ import { Breadcrumb, BreadcrumbItem, Table } from "reactstrap";
 import CustomNavbar from './Navbar';
 import '../style.css';
 
-const Container = {
-    marginLeft: '20%',
-    marginRight: '15%',
-    justifyContent: 'left',
-    alignItems: 'left',
-    display: 'block'
-}
-
 export default class Statisctics extends Component {
     render() {
         return (
-            <div style={Container}>
+            <div class="Container">
                 <header><CustomNavbar /></header>
-                <div style={{ marginTop: "10%" }}>
-                    <Breadcrumb listTag="div">
-                        <BreadcrumbItem
-                            href="/menu"
-                            tag="a">
-                            Меню
-                        </BreadcrumbItem>
-                        <BreadcrumbItem
-                            active
-                            tag="span">
-                            Статистика
-                        </BreadcrumbItem>
-                    </Breadcrumb>
+                <div style={{ marginTop: "100px" }}>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/menu">Меню</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Статистика</li>
+                        </ol>
+                    </nav>
                 </div>
-                <div style={{ marginTop: "5%", textAlign: "center"}}>
+                <div style={{ marginTop: "5%", textAlign: "center" }}>
                     <Table hover responsive bordered>
                         <thead>
                             <tr>

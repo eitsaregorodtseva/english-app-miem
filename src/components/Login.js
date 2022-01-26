@@ -2,29 +2,12 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
 import { React, useState } from 'react';
 import { useHistory } from "react-router-dom";
-import { Button, Col, Form, FormGroup, Input } from "reactstrap";
+import { Col, Form, FormGroup, Input } from "reactstrap";
 import NavbarLogin from './NavbarLogin';
+import '../style.css';
 
 const authError = "Неверный логин или пароль!";
 const baseAPIUrl = "https://tractor-factory-interface.herokuapp.com/api";
-
-const Container = {
-  justifyContent: 'center',
-  alignItems: 'center',
-  display: 'flex',
-  flexDirection: 'column',
-  marginTop: '11%',
-  textAlign: 'center'
-}
-
-const ButtonStyle = {
-  border: "none",
-  borderRadius: "20px",
-  backgroundColor: "#84C7AE",
-  marginTop: "10%",
-  color: "#ffffff",
-  padding: "3% 20% 3% 20%"
-}
 
 export default function LoginForm() {
   const history = useHistory();
@@ -74,10 +57,10 @@ export default function LoginForm() {
   return (
     <div>
       <header><NavbarLogin /></header>
-      <div style={Container}>
+      <div class="LoginContainer">
         <Form onSubmit={handleSubmit} style={{
           border: "none", borderRadius: "49px",
-          backgroundColor: "rgba(193, 227, 214, 0.4)", fontSize: "20px", padding: '3%'
+          backgroundColor: "rgba(193, 227, 214, 0.4)", fontSize: "20px", padding: '44px'
         }}>
           <h4>Панель администратора</h4>
           <FormGroup row style={{ marginTop: "10%" }}>
@@ -107,9 +90,9 @@ export default function LoginForm() {
             </Col>
           </FormGroup>
           {/*<p style={{marginTop: "7%", marginBottom: "-2%", color: "red"}}>{authError}</p>*/}
-          <Button style={ButtonStyle} type="submit">
+          <button class="LoginButtonStyle" type="submit">
             Войти
-          </Button>
+          </button>
         </Form>
       </div>
     </div>

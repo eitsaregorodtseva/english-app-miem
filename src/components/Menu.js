@@ -16,7 +16,7 @@ const MenuContainer = {
     alignItems: 'center',
     display: 'flex',
     flexDirection: 'column',
-    marginTop: '10%'
+    marginTop: '150px'
 }
 
 const MenuItems = {

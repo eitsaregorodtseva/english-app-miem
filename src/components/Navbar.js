@@ -23,20 +23,20 @@ export default function CustomNavbar() {
         localStorage.removeItem('email');
         history.push("/");
     }
-    
-        return (
-            <div>
-                <Navbar container expand="md" fixed="top" style={NavbarStyle}>
-                    <Nav className="ms-auto"
-                        navbar style={{ marginRight: "-3%" }}>
-                        <NavItem>
-                            <Button style={ButtonStyle} onClick={logout} href="/">
-                                <img src={exit} alt="" style={{ height: "24px", paddingRight: "10px", paddingLeft: "5px" }} />
-                                <span style={{ paddingRight: "10px" }}>Выйти</span>
-                            </Button>
-                        </NavItem>
-                    </Nav>
-                </Navbar>
-            </div>
-        )
+
+    return (
+        <div>
+            <Navbar container expand="md" fixed="top" style={NavbarStyle}>
+                <Nav className="ms-auto"
+                    navbar style={{ marginRight: "-3%" }}>
+                    <NavItem>
+                        <Button style={ButtonStyle} onClick={logout} href="/">
+                            <img src={exit} alt="" style={{ height: "24px", paddingRight: "10px", paddingLeft: "5px" }} />
+                            <span style={{ paddingRight: "10px" }}>Выйти</span>
+                        </Button>
+                    </NavItem>
+                </Nav>
+            </Navbar>
+        </div>
+    )
 }

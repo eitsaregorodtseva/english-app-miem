@@ -1,48 +1,33 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { React, Component } from 'react';
-import { Breadcrumb, BreadcrumbItem, Col, Form, FormGroup, Input, Label, Table } from "reactstrap";
+import { Col, Form, FormGroup, Input, Label, Table } from "reactstrap";
 import CustomNavbar from './Navbar';
 import '../style.css';
-
-const Container = {
-    marginLeft: '20%',
-    marginRight: '15%',
-    justifyContent: 'left',
-    alignItems: 'left',
-    display: 'block'
-}
-
 
 export default class Profile extends Component {
     render() {
         return (
-            <div style={Container}>
+            <div class="Container">
                 <header><CustomNavbar /></header>
-                <div style={{ marginTop: "10%" }}>
-                    <Breadcrumb listTag="div">
-                        <BreadcrumbItem
-                            href="/menu"
-                            tag="a">
-                            Меню
-                        </BreadcrumbItem>
-                        <BreadcrumbItem
-                            active
-                            tag="span">
-                            Личные данные
-                        </BreadcrumbItem>
-                    </Breadcrumb>
+                <div style={{ marginTop: "100px" }}>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/menu">Меню</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Личные данные</li>
+                        </ol>
+                    </nav>
                 </div>
                 <div>
                     <Form>
-                        <FormGroup row style={{ marginTop: "80px" }}>
-                            <Label 
+                        <FormGroup row style={{ marginTop: "7%" }}>
+                            <Label
                                 for="name"
                                 sm={2}
                             >
                                 Имя
                             </Label>
                             <Col sm={10}>
-                                <Input  style={{ width: "40%", borderRadius: "10px" }}
+                                <Input style={{ width: "40%", borderRadius: "10px" }}
                                     id="name"
                                     name="name"
                                     type="text"
@@ -86,7 +71,7 @@ export default class Profile extends Component {
                     </Form>
                 </div>
                 <div style={{ marginTop: "10%" }}>
-                <h4>История изменений</h4>
+                    <h4>История изменений</h4>
                     <Table hover responsive bordered style={{ textAlign: "center", marginTop: "2%" }}>
                         <thead>
                             <tr>

@@ -8,6 +8,7 @@ import NewBlock from './components/NewBlock';
 import Editing from './components/Editing';
 import Statistics from './components/Statistics';
 import Cabinet from './components/Cabinet';
+import MakeVideo from './components/MakeVideo';
 
 export default function App() {
 
@@ -24,6 +25,7 @@ export default function App() {
           <Route exact path="/editing" component={Editing} />
           <Route exact path="/statistics" component={Statistics} />
           <Route exact path="/cabinet" component={Cabinet} />
+          <Route exact path="/make_video" component={MakeVideo} />
         </Switch>
       </div>
     </BrowserRouter>
