@@ -2,6 +2,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { React, Component } from 'react';
 import { Button, Col, Form, FormGroup, Input, Label } from "reactstrap";
 import CustomNavbar from './Navbar';
+import Vocabulary from './Vocabulary';
+import Phrases from './Phrases';
+import Rules from './Rules';
+import Dialogs from './Dialogs';
 import '../style.css';
 import axios from 'axios';
 
@@ -14,8 +18,8 @@ export default class NewBlock extends Component {
                 {
                     id: 1,
                     lessons_info: [{ video_st: 'Готов', leks_st: 'Готов', phr_st: 'Готов', dialog_st: 'Пусто', rules_st: 'Пусто' }],
-                    video: [/*{id: 1, link: '123'}, {id: 2, link: '456'}*/],
-                    leks: [/*{id: 1, leksType: 1}, {id: 2, leksType: 2}*/],
+                    video: [],
+                    leks: [],
                     phr: [],
                     dialog: [],
                     rules: []
@@ -27,30 +31,40 @@ export default class NewBlock extends Component {
             ],
             description: "",
             current_video_link: { lessonId: null, videoId: null, value: "" },
-            current_leks: { lessonId: null, leksId: null, leksType: '0' },
-            current_phr: { lessonId: null, leksId: null, phrType: '0' },
-            current_dialog: { lessonId: null, leksId: null, dialogType: '0' },
-            current_rule: { lessonId: null, leksId: null, ruleType: '0' },
         }
         this.handleChange = this.handleChange.bind(this);
         this.handleChangeVideoTab = this.handleChangeVideoTab.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.addNewVideo = this.addNewVideo.bind(this);
         this.showCurrentVideoLink = this.showCurrentVideoLink.bind(this);
-        this.addNewLeks = this.addNewLeks.bind(this);
-        this.showCurrentLeks = this.showCurrentLeks.bind(this);
-        this.addNewPhr = this.addNewPhr.bind(this);
-        this.showCurrentPhr = this.showCurrentPhr.bind(this);
-        this.addNewDialog = this.addNewDialog.bind(this);
-        this.showCurrentDialog = this.showCurrentDialog.bind(this);
-        this.addNewRule = this.addNewRule.bind(this);
-        this.showCurrentRule = this.showCurrentRule.bind(this);
         this.addNewLesson = this.addNewLesson.bind(this);
         this.deleteLesson = this.deleteLesson.bind(this);
         this.cancellingAllChanges = this.cancellingAllChanges.bind(this);
-        this.getSelectedTypeLeks = this.getSelectedTypeLeks.bind(this);
-        this.getSelectedTypePhr = this.getSelectedTypePhr.bind(this);
         this.checkStatuses = this.checkStatuses.bind(this);
+    }
+
+    handleCallbackVoc = (propsVocabulary) => {
+        let newLessons = this.state.lessons;
+        newLessons[0].leks = propsVocabulary;
+        this.setState({ lessons: newLessons });
+    }
+
+    handleCallbackPhr = (propsPhrases) => {
+        let newLessons = this.state.lessons;
+        newLessons[0].phr = propsPhrases;
+        this.setState({ lessons: newLessons });
+    }
+
+    handleCallbackDialog = (propsDialogs) => {
+        let newLessons = this.state.lessons;
+        newLessons[0].phr = propsDialogs;
+        this.setState({ lessons: newLessons });
+    }
+
+    handleCallbackRule = (propsRules) => {
+        let newLessons = this.state.lessons;
+        newLessons[0].phr = propsRules;
+        this.setState({ lessons: newLessons });
     }
 
     handleChange(event) {
@@ -138,122 +152,11 @@ export default class NewBlock extends Component {
         this.setState({ lessons: newLessons });
     }
 
-    addNewLeks(lessonId) {
-        let leks = this.state.lessons[lessonId].leks;
-        leks.push(
-            {
-                id: this.state.lessons[lessonId].leks.length + 1,
-                leksType: '0'
-            });
-        let newLessons = this.state.lessons;
-        newLessons[lessonId].leks = leks;
-        this.setState({ lessons: newLessons });
-        console.log(this.state.lessons);
-    }
-
-    addNewPhr(lessonId) {
-        let phr = this.state.lessons[lessonId].phr;
-        phr.push(
-            {
-                id: this.state.lessons[lessonId].phr.length + 1,
-                phrType: '0'
-            });
-        let newLessons = this.state.lessons;
-        newLessons[lessonId].phr = phr;
-        this.setState({ lessons: newLessons });
-        console.log(this.state.lessons);
-    }
-
-    addNewDialog(lessonId) {
-        let dialog = this.state.lessons[lessonId].dialog;
-        dialog.push(
-            {
-                id: this.state.lessons[lessonId].dialog.length + 1,
-                dialogType: '0'
-            });
-        let newLessons = this.state.lessons;
-        newLessons[lessonId].dialog = dialog;
-        this.setState({ lessons: newLessons });
-        console.log(this.state.lessons);
-    }
-
-    addNewRule(lessonId) {
-        let rules = this.state.lessons[lessonId].rules;
-        rules.push(
-            {
-                id: this.state.lessons[lessonId].rules.length + 1,
-                ruleType: '0'
-            });
-        let newLessons = this.state.lessons;
-        newLessons[lessonId].rules = rules;
-        this.setState({ lessons: newLessons });
-        console.log(this.state.lessons);
-    }
-
     showCurrentVideoLink(lessonId, videoId) {
         this.setState({
             current_video_link: { lessonId: lessonId, videoId: videoId, value: this.state.lessons[lessonId].video[videoId].link },
         })
         console.log(this.state.current_video_link);
-    }
-
-    showCurrentLeks(lessonId, leksId) {
-        this.setState({
-            current_leks: { lessonId: lessonId, leksId: leksId, leksType: this.state.lessons[lessonId].leks[leksId].leksType },
-        });
-        console.log(this.state.current_leks);
-    }
-
-    showCurrentPhr(lessonId, phrId) {
-        this.setState({
-            current_phr: { lessonId: lessonId, phrId: phrId, phrType: this.state.lessons[lessonId].phr[phrId].phrType },
-        });
-        console.log(this.state.current_phr);
-    }
-
-    showCurrentDialog(lessonId, dialogId) {
-        this.setState({
-            current_dialog: { lessonId: lessonId, dialogId: dialogId, dialogType: this.state.lessons[lessonId].dialog[dialogId].dialogType },
-        });
-        console.log(this.state.current_dialog);
-    }
-
-    showCurrentRule(lessonId, ruleId) {
-        this.setState({
-            current_rule: { lessonId: lessonId, ruleId: ruleId, ruleType: this.state.lessons[lessonId].rules[ruleId].ruleType },
-        });
-        console.log(this.state.current_rule);
-    }
-
-    getSelectedTypeLeks(event) {
-        console.log(event.target.value);
-        let newLeks = { ...this.state.current_leks, leksType: event.target.value };
-        //newLeks.push({pictureLink: ""});
-        console.log(newLeks);
-        let leks = this.state.lessons[newLeks.lessonId].leks;
-        leks[newLeks.leksId].leksType = newLeks.leksType;
-
-        let newLessons = this.state.lessons;
-        newLessons[newLeks.lessonId].leks = leks;
-        this.setState({
-            current_leks: newLeks,
-            lessons: newLessons
-        });
-    }
-
-    getSelectedTypePhr(event) {
-        console.log(event.target.value);
-        let newLeks = { ...this.state.current_leks, leksType: event.target.value };
-
-        let leks = this.state.lessons[newLeks.lessonId].leks;
-        leks[newLeks.leksId].leksType = newLeks.leksType;
-
-        let newLessons = this.state.lessons;
-        newLessons[newLeks.lessonId].leks = leks;
-        this.setState({
-            current_leks: newLeks,
-            lessons: newLessons
-        });
     }
 
     addNewLesson() {
@@ -345,138 +248,19 @@ export default class NewBlock extends Component {
                                         </div>
                                     </div>
                                     <div class="tab-pane fade" id="letter" role="tabpanel" aria-labelledby="letter-tab">
-                                        <div class="row" style={{ marginBottom: "3%" }}>
-                                            <div class="col-sm-3" style={{ marginTop: "1%", overflowY: "scroll", minHeight: "5px", height: "300px" }}>
-                                                <Col sm={12}>
-                                                    <Button style={{ width: "190px" }} onClick={() => this.addNewLeks(i)}>Добавить</Button>
-                                                    {obj.leks.map((obj, j) =>
-                                                        <Button style={{ width: "190px" }} onClick={() => this.showCurrentLeks(i, j)}>Буквы-слова {j + 1}</Button>)}
-                                                </Col>
-                                            </div>
-                                            {this.state.lessons[i].leks.length === 0 ? <div></div> :
-                                                <div class="col" style={{ marginTop: "1%" }}>
-                                                    <Form>
-                                                        <select value={this.state.current_leks.leksType} onChange={this.getSelectedTypeLeks}>
-                                                            <option value={0}>Выберите тип</option>
-                                                            <option value={1}>картинка рупор слово</option>
-                                                            <option value={2}>картинка 2 рупора 2 слова</option>
-                                                            <option value={3}>4 рупора 4 слова</option>
-                                                            <option value={4}>картинка рупор слово 4 варианта букв правильный ответ</option>
-                                                        </select>
-                                                        {this.state.current_leks.leksType === '0' ? <div></div> :
-                                                            this.state.current_leks.leksType === '1' ?
-                                                                <div>
-                                                                    <Label>Ссылка на картинку:</Label>
-                                                                    <Input type="text" rows="1"></Input>
-                                                                    <Label>Ссылка на звук:</Label>
-                                                                    <Input type="text" rows="1"></Input>
-                                                                    <Label>Слово или буква:</Label>
-                                                                    <Input type="text"></Input>
-                                                                </div> :
-                                                                this.state.current_leks.leksType === '2' ?
-                                                                    <div>
-                                                                        <Label>Ссылка на картинку:</Label>
-                                                                        <Input type="text" rows="1"></Input>
-                                                                        <Label>Ссылка на звук 1:</Label>
-                                                                        <Input type="text" rows="1"></Input>
-                                                                        <Label>Слово или буква 1 :</Label>
-                                                                        <Input type="text"></Input>
-                                                                        <Label>Ссылка на звук 2:</Label>
-                                                                        <Input type="text" rows="1"></Input>
-                                                                        <Label>Слово или буква 2:</Label>
-                                                                        <Input type="text"></Input>
-                                                                    </div> :
-                                                                    this.state.current_leks.leksType === '3' ?
-                                                                        <div>
-                                                                            <Label>Ссылка на звук 1:</Label>
-                                                                            <Input type="text" rows="1"></Input>
-                                                                            <Label>Слово или буква 1 :</Label>
-                                                                            <Input type="text"></Input>
-                                                                            <Label>Ссылка на звук 2:</Label>
-                                                                            <Input type="text" rows="1"></Input>
-                                                                            <Label>Слово или буква 2:</Label>
-                                                                            <Input type="text"></Input>
-                                                                            <Label>Ссылка на звук 3:</Label>
-                                                                            <Input type="text" rows="1"></Input>
-                                                                            <Label>Слово или буква 3:</Label>
-                                                                            <Input type="text"></Input>
-                                                                            <Label>Ссылка на звук 4:</Label>
-                                                                            <Input type="text" rows="1"></Input>
-                                                                            <Label>Слово или буква 4:</Label>
-                                                                            <Input type="text"></Input>
-                                                                        </div> :
-                                                                        this.state.current_leks.leksType === '4' ?
-                                                                            <div>
-                                                                                <Label>Ссылка на картинку:</Label>
-                                                                                <Input type="text" rows="1"></Input>
-                                                                                <Label>Ссылка на звук:</Label>
-                                                                                <Input type="text" rows="1"></Input>
-                                                                                <Label>Слово или буква:</Label>
-                                                                                <Input type="text"></Input>
-                                                                                <Label>Вариант ответа 1:</Label>
-                                                                                <Input type="text" rows="1"></Input>
-                                                                                <Label>Вариант ответа 2:</Label>
-                                                                                <Input type="text" rows="1"></Input>
-                                                                                <Label>Вариант ответа 3:</Label>
-                                                                                <Input type="text" rows="1"></Input>
-                                                                                <Label>Вариант ответа 4:</Label>
-                                                                                <Input type="text" rows="1"></Input>
-                                                                                <Label>Правильный ответ:</Label>
-                                                                                <Input type="text" rows="1"></Input>
-                                                                            </div> :
-                                                                            <Input type="textarea" rows="3"></Input>}
-                                                    </Form>
-                                                </div>}
-                                        </div>
+                                        <Vocabulary leks={Object.assign(this.state.lessons[0].leks)} parentCallback={this.handleCallbackVoc} />
                                     </div>
                                     <div class="tab-pane fade" id="phrase" role="tabpanel" aria-labelledby="phrase-tab">
-                                        <div class="row" style={{ marginBottom: "3%" }}>
-                                            <div class="col-sm-3" style={{ marginTop: "1%", overflowY: "scroll", minHeight: "5px", height: "300px" }}>
-                                                <Col sm={12}>
-                                                    <Button style={{ width: "190px" }} onClick={() => this.addNewPhr(i)}>Добавить</Button>
-                                                    {obj.phr.map((obj, j) =>
-                                                        <Button style={{ width: "190px" }} onClick={() => this.showCurrentPhr(i, j)}>Фраза {j + 1}</Button>)}
-                                                </Col>
-                                            </div>
-                                            <div class="col" style={{ marginTop: "1%" }}>
-                                            </div>
-                                        </div>
+                                        <Phrases phr={Object.assign(this.state.lessons[0].phr)} parentCallback={this.handleCallbackPhr} />
                                     </div>
                                     <div class="tab-pane fade" id="dialog" role="tabpanel" aria-labelledby="dialog-tab">
-                                        <div class="row" style={{ marginBottom: "3%" }}>
-                                            <div class="col-sm-3" style={{ marginTop: "1%", overflowY: "scroll", minHeight: "5px", height: "300px" }}>
-                                                <Col sm={12}>
-                                                    <Button style={{ width: "190px" }} onClick={() => this.addNewDialog(i)}>Добавить</Button>
-                                                    {obj.dialog.map((obj, j) =>
-                                                        <Button style={{ width: "190px" }} onClick={() => this.showCurrentDialog(i, j)}>Диалог {j + 1}</Button>)}
-                                                </Col>
-                                            </div>
-                                            <div class="col" style={{ marginTop: "1%" }}>
-                                            </div>
-                                        </div>
+                                        <Dialogs dialog={Object.assign(this.state.lessons[0].dialog)} parentCallback={this.handleCallbackDialog} />
                                     </div>
                                     <div class="tab-pane fade" id="rule" role="tabpanel" aria-labelledby="rule-tab">
-                                        <div class="row" style={{ marginBottom: "3%" }}>
-                                            <div class="col-sm-3" style={{ marginTop: "1%", overflowY: "scroll", minHeight: "5px", height: "300px" }}>
-                                                <Col sm={12}>
-                                                    <Button style={{ width: "190px" }} onClick={() => this.addNewRule(i)}>Добавить</Button>
-                                                    {obj.rules.map((obj, j) =>
-                                                        <Button style={{ width: "190px" }} onClick={() => this.showCurrentRule(i, j)}>Правило {j + 1}</Button>)}
-                                                </Col>
-                                            </div>
-                                            <div class="col" style={{ marginTop: "1%" }}>
-                                            </div>
-                                        </div>
+                                        <Rules rule={Object.assign(this.state.lessons[0].rules)} parentCallback={this.handleCallbackRule} />
                                     </div>
                                 </div>
                             </div>
-                            {/*<div style={{ marginLeft: "6%", marginTop: "5%" }}>
-                        <div style={{ marginTop: "3%" }}><Button style={neutralButton}>Новое видео</Button></div>
-                        <div style={{ marginTop: "3%" }}><Button style={neutralButton}>Новые буквы-слова</Button></div>
-                        <div style={{ marginTop: "3%" }}><Button style={neutralButton}>Новая фраза</Button></div>
-                        <div style={{ marginTop: "3%" }}><Button style={neutralButton}>Новый диалог</Button></div>
-                        <div style={{ marginTop: "3%" }}><Button style={neutralButton}>Новое правило</Button></div>
-                    </div>*/}
                         </div>
                         <div style={{ marginTop: "5%" }}>
                             <button disabled class="GreyBox">Статусы</button>

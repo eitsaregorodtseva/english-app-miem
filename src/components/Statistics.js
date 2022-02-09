@@ -1,6 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { React, Component } from 'react';
-import { Breadcrumb, BreadcrumbItem, Table } from "reactstrap";
+import { Table } from "reactstrap";
 import CustomNavbar from './Navbar';
 import '../style.css';
 
@@ -36,34 +36,6 @@ export default class Statisctics extends Component {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>
-                                    Table cell
-                                </td>
-                                <td>
-                                    Table cell
-                                </td>
-                                <td>
-                                    Table cell
-                                </td>
-                                <td>
-                                    Table cell
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    Table cell
-                                </td>
-                                <td>
-                                    Table cell
-                                </td>
-                                <td>
-                                    Table cell
-                                </td>
-                                <td>
-                                    Table cell
-                                </td>
-                            </tr>
                             <tr>
                                 <td>
                                     Table cell

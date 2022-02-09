@@ -24,7 +24,10 @@ export default class Editing extends Component {
     };
 
     componentDidMount() {
-        console.log(this.props.location.state);
+        if (this.props.location.state) {
+            this.setState({selectState: false,
+            lessonState: false});
+        }
     }
 
     addNewLesson() {
@@ -73,14 +76,15 @@ export default class Editing extends Component {
                     <Form row>
                         <FormGroup row>
                             <Label sm={3}>Выберите блок:</Label>
-                            <Col sm={4}><Input type="select"></Input></Col>
+                            <Col sm={4}><Input type="select" value={this.props.location.state ? this.props.location.state.block_id : ""}>
+                                <option>1</option></Input></Col>
                             <Col><button type="button" class="GreyButton" onClick={this.openLessonSelect}>Выбрать</button></Col>
                         </FormGroup>
                     </Form>
                     <Form row hidden={this.state.selectState}>
                         <FormGroup row>
                             <Label sm={3}>Выберите номер урока:</Label>
-                            <Col sm={4}><Input type="select"></Input></Col>
+                            <Col sm={4}><Input type="select"  value={this.props.location.state ? this.props.location.state.lesson_id : ""}></Input></Col>
                             <Col><button type="button" class="GreyButton" onClick={this.openLesson}>Выбрать</button></Col>
                         </FormGroup>
                     </Form>
@@ -90,12 +94,11 @@ export default class Editing extends Component {
                         <Form row>
                             <FormGroup row>
                                 <Label sm={2}>Название блока:</Label>
-                                <Col sm={3}><Input type="text"></Input></Col>
+                                <Col sm={3}><Input type="text" value={this.props.location.state ? this.props.location.state.block_id : ""}></Input></Col>
                                 <Col><button type="button" class="GreyButton">Изменить</button></Col>
                             </FormGroup>
                         </Form>
                     </div>
-
                     <div style={{ marginTop: "7%" }}>
                         <button disabled class="GreyBox">Урок 1</button>
                         <div style={{ marginTop: "5%", marginLeft: "3%" }}>
@@ -150,13 +153,6 @@ export default class Editing extends Component {
                                 <div class="tab-pane fade" id="rule" role="tabpanel" aria-labelledby="rule-tab">5</div>
                             </div>
                         </div>
-                        {/* <div style={{ marginLeft: "6%", marginTop: "5%" }}>
-                        <div style={{ marginTop: "3%" }}><Button style={neutralButton}>Новое видео</Button></div>
-                        <div style={{ marginTop: "3%" }}><Button style={neutralButton}>Новые буквы-слова</Button></div>
-                        <div style={{ marginTop: "3%" }}><Button style={neutralButton}>Новая фраза</Button></div>
-                        <div style={{ marginTop: "3%" }}><Button style={neutralButton}>Новый диалог</Button></div>
-                        <div style={{ marginTop: "3%" }}><Button style={neutralButton}>Новое правило</Button></div>
-                    </div> */}
                     </div>
                     <div style={{ marginTop: "5%" }}>
                         <button disabled class="GreyBox">Статусы</button>
@@ -197,7 +193,7 @@ export default class Editing extends Component {
                     </div>
                     <div style={{ marginTop: "5%" }}>
                         <button type="button" class="ViewLesson">Предпросмотр</button>
-                        <button type="button" class="DeleteLesson">Удалить урок</button>
+                        <button type="button" class="DeleteLesson" onClick={this.deleteLesson}>Удалить урок</button>
                     </div>
                     <div style={{ marginTop: "5%" }}>
                         <button disabled class="GreyBox">Описание</button>

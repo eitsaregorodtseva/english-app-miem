@@ -12,10 +12,9 @@ export default class NewAdmin extends Component {
             last_name: "",
             email: "",
             password: "",
-            verifyPassword: "",
-            errorPasswords: "",
-            match: false
-
+            //verify_password: "",
+            //match: false,
+            //errorPasswords: ""
         }
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -30,23 +29,31 @@ export default class NewAdmin extends Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        this.validatePasswords();
+        const new_admin = {
+            name: this.state.name,
+            last_name: this.state.last_name,
+            email: this.state.email,
+            password: this.state.password,
+        }
+        console.log(new_admin);
+
     }
 
-    validatePasswords() {
-        if (this.state.password !== this.state.verifyPassword) {
+    /*validatePasswords() {
+        if (this.state.password !== this.state.verify_password) {
             this.setState({
-                match: false
+                match: false,
+                errorPasswords: "Пароли не совпадают!",
             });
-            console.log("no match");
         }
         else {
             this.setState({
-                match: true
+                match: true,
+                errorPasswords: "",
             });
-            console.log("match");
         }
-    }
+        return this.state.match;
+    }*/
 
     render() {
         return (
@@ -61,9 +68,7 @@ export default class NewAdmin extends Component {
                     </nav>
                 </div>
                 <div class="FormContainer">
-                    <Form onSubmit={this.handleSubmit} style={{
-                        border: "1px solid black", borderRadius: "30px", padding: '4% 5% 4% 5%'
-                    }}>
+                    <Form onSubmit={this.handleSubmit} style={{ border: "1px solid black", borderRadius: "30px", padding: '4% 5% 4% 5%' }}>
                         <h4>Регистрация нового</h4>
                         <h4>администратора в системе</h4>
                         <FormGroup row style={{ marginTop: "50px" }}>
@@ -75,8 +80,7 @@ export default class NewAdmin extends Component {
                                     placeholder="Имя"
                                     onChange={this.handleChange}
                                     value={this.state.name}
-                                    required
-                                />
+                                    required />
                             </Col>
                         </FormGroup>
                         <FormGroup row style={{ marginTop: "30px" }}>
@@ -88,8 +92,7 @@ export default class NewAdmin extends Component {
                                     placeholder="Фамилия"
                                     onChange={this.handleChange}
                                     value={this.state.last_name}
-                                    required
-                                />
+                                    required />
                             </Col>
                         </FormGroup>
                         <FormGroup row style={{ marginTop: "30px" }}>
@@ -101,8 +104,7 @@ export default class NewAdmin extends Component {
                                     placeholder="Email"
                                     onChange={this.handleChange}
                                     value={this.state.email}
-                                    required
-                                />
+                                    required />
                             </Col>
                         </FormGroup>
                         <FormGroup row style={{ marginTop: "30px" }}>
@@ -114,27 +116,23 @@ export default class NewAdmin extends Component {
                                     placeholder="Пароль"
                                     onChange={this.handleChange}
                                     value={this.state.password}
-                                    required
-                                />
+                                    required />
                             </Col>
                         </FormGroup>
-                        <p>{this.state.errorPasswords}</p>
+                        {/*<p>{this.state.errorPasswords}</p>
                         <FormGroup row style={{ marginTop: "30px" }}>
                             <Col sm={14}>
                                 <Input style={{ borderRadius: "10px" }}
-                                    id="verifyPassword"
-                                    name="verifyPassword"
+                                    id="verify_password"
+                                    name="verify_password"
                                     type="password"
                                     placeholder="Подтверждение пароля"
                                     onChange={this.handleChange}
-                                    value={this.state.verifyPassword}
-                                    required
-                                />
+                                    value={this.state.verify_password}
+                                    required />
                             </Col>
-                        </FormGroup>
-                        <button class="AdminButtonStyle">
-                            Зарегистрировать
-                        </button>
+        </FormGroup>*/}
+                        <button type="submit" class="AdminButtonStyle">Зарегистрировать</button>
                     </Form>
                 </div>
             </div>

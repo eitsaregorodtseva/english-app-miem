@@ -78,7 +78,7 @@ export default class Cabinet extends Component {
           </nav>
         </div>
         <div class="accordion" id="accordion" style={{ marginTop: "5%" }}>
-          {this.state.blocks == null ? <p>данные загружаются</p> : this.state.blocks.map((obj, i) => (
+          {this.state.blocks === null ? <p>данные загружаются</p> : this.state.blocks.map((obj, i) => (
             <div class="accordion-item">
               <h2 class="accordion-header" id="heading">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseArea" aria-expanded="false" aria-controls="collapseArea">
