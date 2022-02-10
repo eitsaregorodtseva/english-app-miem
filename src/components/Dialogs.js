@@ -50,7 +50,7 @@ export default class Dialogs extends Component {
     render() {
         return (
             <div class="row" style={{ marginBottom: "3%" }}>
-                <div class="col-sm-3" style={{ marginTop: "1%", overflowY: "scroll", minHeight: "5px", height: "850px" }}>
+                <div class="col-sm-3" style={{ marginTop: "1%", overflowY: "scroll", minHeight: "5px", height: "450px" }}>
                     <Col sm={12}>
                         <Button style={{ width: "190px" }} onClick={() => this.addNewDialog()}>Добавить</Button>
                         {this.state.dialog.map((obj, i) =>
@@ -58,7 +58,7 @@ export default class Dialogs extends Component {
                     </Col>
                 </div>
                 {this.state.dialog.length === 0 ? <div></div> :
-                    <div class="col" style={{ marginTop: "1%" }}>
+                    <div class="col" style={{ marginTop: "1%", width: "500px" }}>
                         <Form>
                             <select class="form-select" style={{ marginBottom: "20px" }} value={this.state.current_dialog.dialogType} onChange={this.getSelectedTypeDialog}>
                                 <option value={0}>Выберите тип</option>

@@ -1,6 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { React, Component } from 'react';
-import { Button, Col, Form, FormGroup, Input, Label } from "reactstrap";
+import { Button, Col, Form, Input, Label, Row} from "reactstrap";
 import '../style.css';
 
 export default class Vocabulary extends Component {
@@ -8,36 +8,148 @@ export default class Vocabulary extends Component {
         super(props);
         this.state = {
             leks: this.props.leks,
-            current_leks: { leksId: null, leksType: '0' },
+            current_leks: { id: null, leksType: '0'},
+            word: "",
+            stress: "",
+            image1: "",
+            sound1: "",
+            sound2: "",
+            sound3: "",
+            sound4: "",
+            letter1: "",
+            letter2: "",
+            letter3: "",
+            letter4: "",
+            var1: "",
+            var2: "",
+            var3: "",
+            number: "",
+            numbers: "",
+            letters: "",
         }
+        this.handleChange = this.handleChange.bind(this);
         this.addNewLeks = this.addNewLeks.bind(this);
         this.showCurrentLeks = this.showCurrentLeks.bind(this);
         this.getSelectedTypeLeks = this.getSelectedTypeLeks.bind(this);
     }
 
+    handleChange(event) {
+        let newLeks = { ...this.state.current_leks, [event.target.name]: event.target.value };
+        let leks = this.state.leks;
+        leks[newLeks.id] = newLeks;
+        this.setState({ 
+            current_leks: newLeks,
+            leks: leks,
+            [event.target.name]: event.target.value }); 
+    }
+
     addNewLeks() {
         this.setState({
             leks: [...this.state.leks, {
-                id: this.state.leks.length + 1,
+                id: this.state.leks.length,
                 leksType: '0',
             }],
-        })
+        });
         this.passPropsToParent();
     }
 
-    showCurrentLeks(leksId) {
-        this.setState({
-            current_leks: { leksId: leksId, leksType: this.state.leks[leksId].leksType },
-        });
+    showCurrentLeks(id) {
+        switch (this.state.leks[id].leksType) {
+            case "0":
+                this.setState({
+                    current_leks: this.state.leks[id],
+                });
+                break;
+            case "1":
+                this.setState({
+                    current_leks: this.state.leks[id],
+                    word: this.state.leks[id].word ? this.state.leks[id].word : "",
+                    stress: this.state.leks[id].stress ? this.state.leks[id].stress : "",
+                    image1: this.state.leks[id].image1 ? this.state.leks[id].image1 : "",
+                    sound1: this.state.leks[id].sound1 ? this.state.leks[id].sound1 : "",
+                });
+                break;
+            case "2":
+                this.setState({
+                    current_leks: this.state.leks[id],
+                    image1: this.state.leks[id].image1 ? this.state.leks[id].image1 : "",
+                    sound1: this.state.leks[id].sound1 ? this.state.leks[id].sound1 : "",
+                    sound2: this.state.leks[id].sound2 ? this.state.leks[id].sound2 : "",
+                    letter1: this.state.leks[id].letter1 ? this.state.leks[id].letter1 : "",
+                    letter2: this.state.leks[id].letter2 ? this.state.leks[id].letter2 : "",
+                });
+                break;
+            case "3":
+                this.setState({
+                    current_leks: this.state.leks[id],
+                    sound1: this.state.leks[id].sound1 ? this.state.leks[id].sound1 : "",
+                    sound2: this.state.leks[id].sound2 ? this.state.leks[id].sound2 : "",
+                    sound3: this.state.leks[id].sound3 ? this.state.leks[id].sound3 : "",
+                    sound4: this.state.leks[id].sound4 ? this.state.leks[id].sound4 : "",
+                    letter1: this.state.leks[id].letter1 ? this.state.leks[id].letter1 : "",
+                    letter2: this.state.leks[id].letter2 ? this.state.leks[id].letter2 : "",
+                    letter3: this.state.leks[id].letter3 ? this.state.leks[id].letter3 : "",
+                    letter4: this.state.leks[id].letter4 ? this.state.leks[id].letter4 : "",
+                });
+                break;
+            case "4":
+                this.setState({
+                    current_leks: this.state.leks[id],
+                    word: this.state.leks[id].word ? this.state.leks[id].word : "",
+                    image1: this.state.leks[id].image1 ? this.state.leks[id].image1 : "",
+                    sound1: this.state.leks[id].sound1 ? this.state.leks[id].sound1 : "",
+                    var1: this.state.leks[id].var1 ? this.state.leks[id].var1 : "",
+                    var2: this.state.leks[id].var2 ? this.state.leks[id].var2 : "",
+                    var3: this.state.leks[id].var3 ? this.state.leks[id].var3 : "",
+                    number: this.state.leks[id].number ? this.state.leks[id].number : "",
+                });
+                break;
+            case "5":
+                this.setState({
+                    current_leks: this.state.leks[id],
+                    word: this.state.leks[id].word ? this.state.leks[id].word : "",
+                    image1: this.state.leks[id].image1 ? this.state.leks[id].image1: "",
+                    sound1: this.state.leks[id].sound1 ? this.state.leks[id].sound1 : "",
+                    numbers: this.state.leks[id].numbers ? this.state.leks[id].numbers : "",
+                    letters: this.state.leks[id].letters ? this.state.leks[id].letters : "",
+                });
+                break;
+            case "6":
+                this.setState({
+                    current_leks: this.state.leks[id],
+                    word: this.state.leks[id].word ? this.state.leks[id].word : "",
+                    image1: this.state.leks[id].image1 ? this.state.leks[id].image1 : "",
+                    sound1: this.state.leks[id].sound1 ? this.state.leks[id].sound1 : "",
+                    letters: this.state.leks[id].letters ? this.state.leks[id].letters : "",
+                });
+                break;    
+        }
     }
 
     getSelectedTypeLeks(event) {
-        let newLeks = { ...this.state.current_leks, leksType: event.target.value };
+        let newLeks = {id: this.state.current_leks.id, leksType: event.target.value };
         let leks = this.state.leks;
-        leks[newLeks.leksId].leksType = newLeks.leksType;
+        leks[newLeks.id] = newLeks;
         this.setState({
             current_leks: newLeks,
-            leks: leks
+            leks: leks,
+            word: "",
+            stress: "",
+            image1: "",
+            sound1: "",
+            sound2: "",
+            sound3: "",
+            sound4: "",
+            letter1: "",
+            letter2: "",
+            letter3: "",
+            letter4: "",
+            var1: "",
+            var2: "",
+            var3: "",
+            number: "",
+            numbers: "",
+            letters: "",
         });
         this.passPropsToParent();
     }
@@ -46,11 +158,10 @@ export default class Vocabulary extends Component {
         this.props.parentCallback(this.state.leks);
     }
 
-
     render() {
         return (
             <div class="row" style={{ marginBottom: "3%" }}>
-                <div class="col-sm-3" style={{ marginTop: "1%", overflowY: "scroll", minHeight: "5px", height: "850px" }}>
+                <div class="col-sm-3" style={{ marginTop: "1%", overflowY: "scroll", minHeight: "5px", height: "450px" }}>
                     <Col sm={12}>
                         <Button style={{ width: "190px" }} onClick={() => this.addNewLeks()}>Добавить</Button>
                         {this.state.leks.map((obj, i) =>
@@ -58,11 +169,11 @@ export default class Vocabulary extends Component {
                     </Col>
                 </div>
                 {this.state.leks.length === 0 ? <div></div> :
-                    <div class="col" style={{ marginTop: "1%" }}>
+                    <div class="col" style={{ marginTop: "1%", width: "500px"}}>
                         <Form>
                             <select class="form-select" style={{ marginBottom: "20px" }} value={this.state.current_leks.leksType} onChange={this.getSelectedTypeLeks}>
                                 <option value={0}>Выберите тип</option>
-                                <option value={1}>Моделирование 1</option>
+                                <option value={1}>Моделирование слова</option>
                                 <option value={2}>Моделирование 2</option>
                                 <option value={3}>Задание на слоги</option>
                                 <option value={4}>Задание на выбор буквы</option>
@@ -72,85 +183,219 @@ export default class Vocabulary extends Component {
                             {this.state.current_leks.leksType === '0' ? <div></div> :
                                 this.state.current_leks.leksType === '1' ?
                                     <div>
-                                        <Label>Ссылка на изображение:</Label>
-                                        <Input type="text" rows="1"></Input>
-                                        <Label>Ссылка на звук:</Label>
-                                        <Input type="text" rows="1"></Input>
-                                        <Label>Слово или буква:</Label>
-                                        <Input type="text"></Input>
+                                        <div class="row StructureFields">
+                                            <Label sm={4}>Слово:</Label>
+                                            <Col sm={8}>
+                                                <Input type="text" name="word" value={this.state.word} onChange={this.handleChange}></Input>
+                                            </Col>
+                                        </div>
+                                        <div class="row StructureFields">
+                                            <Label sm={4}>Номер ударной гласной:</Label>
+                                            <Col sm={8}>
+                                                <Input type="text" name="stress" value={this.state.stress} onChange={this.handleChange}></Input>
+                                            </Col>
+                                        </div>
+                                        <div class="row StructureFields">
+                                            <Label sm={4}>Ссылка на изображение:</Label>
+                                            <Col sm={8}>
+                                                <Input type="text" name="image1" value={this.state.image1} onChange={this.handleChange}></Input>
+                                            </Col>
+                                        </div>
+                                        <div class="row StructureFields">
+                                            <Label sm={4}>Ссылка на звук:</Label>
+                                            <Col sm={8}>
+                                                <Input type="text" name="sound1" value={this.state.sound1} onChange={this.handleChange}></Input>
+                                            </Col>
+                                        </div>
                                     </div> :
                                     this.state.current_leks.leksType === '2' ?
                                         <div>
-                                            <Label>Ссылка на изображение:</Label>
-                                            <Input type="text" rows="1"></Input>
-                                            <Label>Ссылка на звук 1:</Label>
-                                            <Input type="text" rows="1"></Input>
-                                            <Label>Слово или буква 1 :</Label>
-                                            <Input type="text"></Input>
-                                            <Label>Ссылка на звук 2:</Label>
-                                            <Input type="text" rows="1"></Input>
-                                            <Label>Слово или буква 2:</Label>
-                                            <Input type="text"></Input>
+                                            <div class="row StructureFields">
+                                                <Label sm={4}>Ссылка на изображение:</Label>
+                                                <Col sm={8}>
+                                                    <Input type="text" name="image1" value={this.state.image1} onChange={this.handleChange}></Input>
+                                                </Col>
+                                            </div>
+                                            <div class="row StructureFields">
+                                                <Label sm={4}>Ссылка на звук 1:</Label>
+                                                <Col sm={8}>
+                                                    <Input type="text" name="sound1" value={this.state.sound1} onChange={this.handleChange}></Input>
+                                                </Col>
+                                            </div>
+                                            <div class="row StructureFields">
+                                                <Label sm={4}>Слово или буква 1 :</Label>
+                                                <Col sm={8}>
+                                                    <Input type="text" name="letter1" value={this.state.letter1} onChange={this.handleChange}></Input>
+                                                </Col>
+                                            </div>
+                                            <div class="row StructureFields">
+                                                <Label sm={4}>Ссылка на звук 2:</Label>
+                                                <Col sm={8}>
+                                                    <Input type="text" name="sound2" value={this.state.sound2} onChange={this.handleChange}></Input>
+                                                </Col>
+                                            </div>
+                                            <div class="row StructureFields">
+                                                <Label sm={4}>Слово или буква 2:</Label>
+                                                <Col sm={8}>
+                                                    <Input type="text" name="letter2" value={this.state.letter2} onChange={this.handleChange}></Input>
+                                                </Col>
+                                            </div>
                                         </div> :
                                         this.state.current_leks.leksType === '3' ?
                                             <div>
-                                                <Label>Ссылка на звук 1:</Label>
-                                                <Input type="text" rows="1"></Input>
-                                                <Label>Слово или буква 1 :</Label>
-                                                <Input type="text"></Input>
-                                                <Label>Ссылка на звук 2:</Label>
-                                                <Input type="text" rows="1"></Input>
-                                                <Label>Слово или буква 2:</Label>
-                                                <Input type="text"></Input>
-                                                <Label>Ссылка на звук 3:</Label>
-                                                <Input type="text" rows="1"></Input>
-                                                <Label>Слово или буква 3:</Label>
-                                                <Input type="text"></Input>
-                                                <Label>Ссылка на звук 4:</Label>
-                                                <Input type="text" rows="1"></Input>
-                                                <Label>Слово или буква 4:</Label>
-                                                <Input type="text"></Input>
+                                                <div class="row StructureFields">
+                                                    <Label sm={4}>Ссылка на звук 1:</Label>
+                                                    <Col sm={8}>
+                                                        <Input type="text" name="sound1" value={this.state.sound1} onChange={this.handleChange}></Input>
+                                                    </Col>
+                                                </div>
+                                                <div class="row StructureFields">
+                                                    <Label sm={4}>Слово или буква 1 :</Label>
+                                                    <Col sm={8}>
+                                                        <Input type="text" name="letter1" value={this.state.letter1} onChange={this.handleChange}></Input>
+                                                    </Col>
+                                                </div>
+                                                <div class="row StructureFields">
+                                                    <Label sm={4}>Ссылка на звук 2:</Label>
+                                                    <Col sm={8}>
+                                                        <Input type="text" name="sound2" value={this.state.sound2} onChange={this.handleChange}></Input>
+                                                    </Col>
+                                                </div>
+                                                <div class="row StructureFields">
+                                                    <Label sm={4}>Слово или буква 2:</Label>
+                                                    <Col sm={8}>
+                                                        <Input type="text" name="letter2" value={this.state.letter2} onChange={this.handleChange}></Input>
+                                                    </Col>
+                                                </div>
+                                                <div class="row StructureFields">
+                                                    <Label sm={4}>Ссылка на звук 3:</Label>
+                                                    <Col sm={8}>
+                                                        <Input type="text" name="sound3" value={this.state.sound3} onChange={this.handleChange}></Input>
+                                                    </Col>
+                                                </div>
+                                                <div class="row StructureFields">
+                                                    <Label sm={4}>Слово или буква 3:</Label>
+                                                    <Col sm={8}>
+                                                        <Input type="text" name="letter3" value={this.state.letter3} onChange={this.handleChange}></Input>
+                                                    </Col>
+                                                </div>
+                                                <div class="row StructureFields">
+                                                    <Label sm={4}>Ссылка на звук 4:</Label>
+                                                    <Col sm={8}>
+                                                        <Input type="text" name="sound4" value={this.state.sound4} onChange={this.handleChange}></Input>
+                                                    </Col>
+                                                </div>
+                                                <div class="row StructureFields">
+                                                    <Label sm={4}>Слово или буква 4:</Label>
+                                                    <Col sm={8}>
+                                                        <Input type="text" name="letter4" value={this.state.letter4} onChange={this.handleChange}></Input>
+                                                    </Col>
+                                                </div>
                                             </div> :
                                             this.state.current_leks.leksType === '4' ?
                                                 <div>
-                                                    <Label>Ссылка на изображение:</Label>
-                                                    <Input type="text" rows="1"></Input>
-                                                    <Label>Ссылка на звук:</Label>
-                                                    <Input type="text" rows="1"></Input>
-                                                    <Label>Слово:</Label>
-                                                    <Input type="text"></Input>
-                                                    <Label>Вариант ответа 1:</Label>
-                                                    <Input type="text" rows="1"></Input>
-                                                    <Label>Вариант ответа 2:</Label>
-                                                    <Input type="text" rows="1"></Input>
-                                                    <Label>Вариант ответа 3:</Label>
-                                                    <Input type="text" rows="1"></Input>
-                                                    <Label>Номер пропущенной буквы:</Label>
-                                                    <Input type="text" rows="1"></Input>
+                                                    <div class="row StructureFields">
+                                                        <Label sm={4}>Ссылка на изображение:</Label>
+                                                        <Col sm={8}>
+                                                            <Input type="text" name="image1" value={this.state.image1} onChange={this.handleChange}></Input>
+                                                        </Col>
+                                                    </div>
+                                                    <div class="row StructureFields">
+                                                        <Label sm={4}>Ссылка на звук:</Label>
+                                                        <Col sm={8}>
+                                                            <Input type="text" name="sound1" value={this.state.sound1} onChange={this.handleChange}></Input>
+                                                        </Col>
+                                                    </div>
+                                                    <div class="row StructureFields">
+                                                        <Label sm={4}>Слово:</Label>
+                                                        <Col sm={8}>
+                                                            <Input type="text" name="letter1" value={this.state.letter1} onChange={this.handleChange}></Input>
+                                                        </Col>
+                                                    </div>
+                                                    <div class="row StructureFields">
+                                                        <Label sm={4}>Вариант ответа 1:</Label>
+                                                        <Col sm={8}>
+                                                            <Input type="text" name="var1" value={this.state.var1} onChange={this.handleChange}></Input>
+                                                        </Col>
+                                                    </div>
+                                                    <div class="row StructureFields">
+                                                        <Label sm={4}>Вариант ответа 2:</Label>
+                                                        <Col sm={8}>
+                                                            <Input type="text" name="var2" value={this.state.var2} onChange={this.handleChange}></Input>
+                                                        </Col>
+                                                    </div>
+                                                    <div class="row StructureFields">
+                                                        <Label sm={4}>Вариант ответа 3:</Label>
+                                                        <Col sm={8}>
+                                                            <Input type="text" name="var3" value={this.state.var3} onChange={this.handleChange}></Input>
+                                                        </Col>
+                                                    </div>
+                                                    <div class="row StructureFields">
+                                                        <Label sm={5}>Номер пропущенной буквы:</Label>
+                                                        <Col sm={7}>
+                                                            <Input type="text" name="number" value={this.state.number} onChange={this.handleChange}></Input>
+                                                        </Col>
+                                                    </div>
                                                 </div> :
                                                 this.state.current_leks.leksType === '5' ?
                                                     <div>
-                                                        <Label>Ссылка на изображение:</Label>
-                                                        <Input type="text" rows="1"></Input>
-                                                        <Label>Ссылка на звук:</Label>
-                                                        <Input type="text" rows="1"></Input>
-                                                        <Label>Слово:</Label>
-                                                        <Input type="text"></Input>
-                                                        <Label>Номера пропущенных букв:</Label>
-                                                        <Input type="text" rows="1"></Input>
-                                                        <Label>Набор букв:</Label>
-                                                        <Input type="text" rows="1"></Input>
+                                                        <div class="row StructureFields">
+                                                            <Label sm={4}>Ссылка на изображение:</Label>
+                                                            <Col sm={8}>
+                                                                <Input type="text" name="image1" value={this.state.image1} onChange={this.handleChange}></Input>
+                                                            </Col>
+                                                        </div>
+                                                        <div class="row StructureFields">
+                                                            <Label sm={4}>Ссылка на звук:</Label>
+                                                            <Col sm={8}>
+                                                                <Input type="text" name="sound1" value={this.state.sound1} onChange={this.handleChange}></Input>
+                                                            </Col>
+                                                        </div>
+                                                        <div class="row StructureFields">
+                                                            <Label sm={4}>Слово:</Label>
+                                                            <Col sm={8}>
+                                                                <Input type="text" name="letter1" value={this.state.letter1} onChange={this.handleChange}></Input>
+                                                            </Col>
+                                                        </div>
+                                                        <div class="row StructureFields">
+                                                            <Label sm={5}>Номера пропущенных букв:</Label>
+                                                            <Col sm={7}>
+                                                                <Input type="text" name="numbers" value={this.state.numbers} onChange={this.handleChange}></Input>
+                                                            </Col>
+                                                        </div>
+                                                        <div class="row StructureFields">
+                                                            <Label sm={4}>Набор букв:</Label>
+                                                            <Col sm={8}>
+                                                                <Input type="text" name="letters" value={this.state.letters} onChange={this.handleChange}></Input>
+                                                            </Col>
+                                                        </div>
                                                     </div> :
                                                     this.state.current_leks.leksType === '6' ?
                                                         <div>
-                                                            <Label>Ссылка на изображение:</Label>
-                                                            <Input type="text" rows="1"></Input>
-                                                            <Label>Ссылка на звук:</Label>
-                                                            <Input type="text" rows="1"></Input>
-                                                            <Label>Слово:</Label>
-                                                            <Input type="text"></Input>
-                                                            <Label>Набор букв:</Label>
-                                                            <Input type="text" rows="1"></Input>
+                                                            <div class="row StructureFields">
+                                                                <Label sm={4}>Ссылка на изображение:</Label>
+                                                                <Col sm={8}>
+                                                                    <Input type="text" name="image1" value={this.state.image1} onChange={this.handleChange}></Input>
+                                                                </Col>
+                                                            </div>
+                                                            <div class="row StructureFields">
+                                                                <Label sm={4}>Ссылка на звук:</Label>
+                                                                <Col sm={8}>
+                                                                    <Input type="text" name="sound1" value={this.state.sound1} onChange={this.handleChange}></Input>
+                                                                </Col>
+                                                            </div>
+                                                            <div class="row StructureFields">
+                                                                <Label sm={4}>Слово:</Label>
+                                                                <Col sm={8}>
+                                                                    <Input type="text" name="letter1" value={this.state.letter1} onChange={this.handleChange}></Input>
+                                                                </Col>
+                                                            </div>
+                                                            <div class="row StructureFields">
+                                                                <Label sm={4}>Набор букв:</Label>
+                                                                <Col sm={8}>
+                                                                    <Input type="text" name="letters" value={this.state.letters} onChange={this.handleChange}></Input>
+                                                                </Col>
+                                                            </div>
                                                         </div> :
                                                         <div></div>}
                         </Form>

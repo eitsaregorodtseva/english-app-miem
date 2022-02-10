@@ -19,15 +19,11 @@ export default class NewBlock extends Component {
                     id: 1,
                     lessons_info: [{ video_st: 'Готов', leks_st: 'Готов', phr_st: 'Готов', dialog_st: 'Пусто', rules_st: 'Пусто' }],
                     video: [],
-                    leks: [],
+                    leks: [{id: 0, leksType: '1', word: '1234'}, {id: 1, leksType: '1', word: 'word'}],
                     phr: [],
                     dialog: [],
                     rules: []
                 },
-                /*{
-                    id: "2",
-                    lessons_info: { video_st: '', leks_st: '', phr_st: '', dialog_st: '', rules_st: '' }
-                }*/
             ],
             description: "",
             current_video_link: { lessonId: null, videoId: null, value: "" },
@@ -239,12 +235,13 @@ export default class NewBlock extends Component {
                                                         <Button style={{ width: "190px" }} onClick={() => this.showCurrentVideoLink(i, j)}>Видео {j + 1}</Button>)}
                                                 </Col>
                                             </div>
+                                            {this.state.lessons[0].video.length === 0 ? <div></div> :
                                             <div class="col" style={{ marginTop: "1%" }}>
                                                 <Form>
                                                     <Label>Ссылка на видео:</Label>
                                                     <Input type="textarea" rows="3" name="current_video_link" value={this.state.current_video_link.value} onChange={this.handleChangeVideoTab}></Input>
                                                 </Form>
-                                            </div>
+                                            </div>}
                                         </div>
                                     </div>
                                     <div class="tab-pane fade" id="letter" role="tabpanel" aria-labelledby="letter-tab">
