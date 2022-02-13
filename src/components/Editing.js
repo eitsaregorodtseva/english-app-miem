@@ -3,6 +3,11 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { React, Component } from 'react';
 import { Col, Form, FormGroup, Input, Label, List, Badge } from "reactstrap";
 import CustomNavbar from './Navbar';
+import Videos from './Videos';
+import Vocabulary from './Vocabulary';
+import Phrases from './Phrases';
+import Rules from './Rules';
+import Dialogs from './Dialogs';
 import '../style.css';
 
 const BadgePills = {
@@ -13,9 +18,20 @@ export default class Editing extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            lessons: [],
+            lessons: [
+                {
+                    id: 1,
+                    lessons_info: [{ video_st: 'Готов', leks_st: 'Готов', phr_st: 'Готов', dialog_st: 'Пусто', rules_st: 'Пусто' }],
+                    video: [],
+                    leks: [],
+                    phr: [],
+                    dialog: [],
+                    rules: []
+                },
+            ],
             selectState: true,
-            lessonState: true
+            lessonState: true,
+            description: "",
         }
         this.openLessonSelect = this.openLessonSelect.bind(this);
         this.openLesson = this.openLesson.bind(this);
@@ -28,6 +44,36 @@ export default class Editing extends Component {
             this.setState({selectState: false,
             lessonState: false});
         }
+    }
+
+    handleCallbackVideo = (propsVideos) => {
+        let newLessons = this.state.lessons;
+        newLessons[0].video = propsVideos;
+        this.setState({ lessons: newLessons });
+    }
+
+    handleCallbackVoc = (propsVocabulary) => {
+        let newLessons = this.state.lessons;
+        newLessons[0].leks = propsVocabulary;
+        this.setState({ lessons: newLessons });
+    }
+
+    handleCallbackPhr = (propsPhrases) => {
+        let newLessons = this.state.lessons;
+        newLessons[0].phr = propsPhrases;
+        this.setState({ lessons: newLessons });
+    }
+
+    handleCallbackDialog = (propsDialogs) => {
+        let newLessons = this.state.lessons;
+        newLessons[0].dialog = propsDialogs;
+        this.setState({ lessons: newLessons });
+    }
+
+    handleCallbackRule = (propsRules) => {
+        let newLessons = this.state.lessons;
+        newLessons[0].rules = propsRules;
+        this.setState({ lessons: newLessons });
     }
 
     addNewLesson() {
@@ -135,7 +181,7 @@ export default class Editing extends Component {
                                 </FormGroup>
                             </List>
                         </div>
-                        <div style={{ marginTop: "5%", marginLeft: "3%", width: "60%" }} >
+                        <div style={{ marginTop: "5%", marginLeft: "3%", width: "90%" }} >
                             <nav>
                                 <div class="nav nav-pills" id="myTab" role="tablist">
                                     <button class="nav-link active" id="video-tab" data-bs-toggle="tab" data-bs-target="#video" type="button" role="tab" aria-controls="video" aria-selected="true">Видео</button>
@@ -146,11 +192,21 @@ export default class Editing extends Component {
                                 </div>
                             </nav>
                             <div class="tab-content" id="myTabContent">
-                                <div class="tab-pane fade show active" id="video" role="tabpanel" aria-labelledby="video-tab">1</div>
-                                <div class="tab-pane fade" id="letter" role="tabpanel" aria-labelledby="letter-tab">2</div>
-                                <div class="tab-pane fade" id="phrase" role="tabpanel" aria-labelledby="phrase-tab">3</div>
-                                <div class="tab-pane fade" id="dialog" role="tabpanel" aria-labelledby="dialog-tab">4</div>
-                                <div class="tab-pane fade" id="rule" role="tabpanel" aria-labelledby="rule-tab">5</div>
+                                <div class="tab-pane fade show active" id="video" role="tabpanel" aria-labelledby="video-tab">
+                                    <Videos video={Object.assign(this.state.lessons[0].video)} parentCallback={this.handleCallbackVideo} />
+                                </div>
+                                <div class="tab-pane fade" id="letter" role="tabpanel" aria-labelledby="letter-tab">
+                                    <Vocabulary leks={Object.assign(this.state.lessons[0].leks)} parentCallback={this.handleCallbackVoc} />
+                                </div>
+                                <div class="tab-pane fade" id="phrase" role="tabpanel" aria-labelledby="phrase-tab">
+                                    <Phrases phr={Object.assign(this.state.lessons[0].phr)} parentCallback={this.handleCallbackPhr} />
+                                </div>
+                                <div class="tab-pane fade" id="dialog" role="tabpanel" aria-labelledby="dialog-tab">
+                                    <Dialogs dialog={Object.assign(this.state.lessons[0].dialog)} parentCallback={this.handleCallbackDialog} />
+                                </div>
+                                <div class="tab-pane fade" id="rule" role="tabpanel" aria-labelledby="rule-tab">
+                                    <Rules rule={Object.assign(this.state.lessons[0].rules)} parentCallback={this.handleCallbackRule} />
+                                </div>
                             </div>
                         </div>
                     </div>

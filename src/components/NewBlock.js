@@ -2,6 +2,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { React, Component } from 'react';
 import { Button, Col, Form, FormGroup, Input, Label } from "reactstrap";
 import CustomNavbar from './Navbar';
+import Videos from './Videos';
 import Vocabulary from './Vocabulary';
 import Phrases from './Phrases';
 import Rules from './Rules';
@@ -26,17 +27,23 @@ export default class NewBlock extends Component {
                 },
             ],
             description: "",
-            current_video_link: { lessonId: null, videoId: null, value: "" },
+            //current_video_link: { lessonId: null, videoId: null, value: "" },
         }
         this.handleChange = this.handleChange.bind(this);
-        this.handleChangeVideoTab = this.handleChangeVideoTab.bind(this);
+        //this.handleChangeVideoTab = this.handleChangeVideoTab.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.addNewVideo = this.addNewVideo.bind(this);
-        this.showCurrentVideoLink = this.showCurrentVideoLink.bind(this);
+        //this.addNewVideo = this.addNewVideo.bind(this);
+        //this.showCurrentVideoLink = this.showCurrentVideoLink.bind(this);
         this.addNewLesson = this.addNewLesson.bind(this);
         this.deleteLesson = this.deleteLesson.bind(this);
         this.cancellingAllChanges = this.cancellingAllChanges.bind(this);
         this.checkStatuses = this.checkStatuses.bind(this);
+    }
+
+    handleCallbackVideo = (propsVideos) => {
+        let newLessons = this.state.lessons;
+        newLessons[0].video = propsVideos;
+        this.setState({ lessons: newLessons });
     }
 
     handleCallbackVoc = (propsVocabulary) => {
@@ -53,13 +60,13 @@ export default class NewBlock extends Component {
 
     handleCallbackDialog = (propsDialogs) => {
         let newLessons = this.state.lessons;
-        newLessons[0].phr = propsDialogs;
+        newLessons[0].dialog = propsDialogs;
         this.setState({ lessons: newLessons });
     }
 
     handleCallbackRule = (propsRules) => {
         let newLessons = this.state.lessons;
-        newLessons[0].phr = propsRules;
+        newLessons[0].rules = propsRules;
         this.setState({ lessons: newLessons });
     }
 
@@ -227,22 +234,7 @@ export default class NewBlock extends Component {
                                 </nav>
                                 <div class="tab-content" id="myTabContent">
                                     <div class="tab-pane fade show active" id="video" role="tabpanel" aria-labelledby="video-tab">
-                                        <div class="row" style={{ marginBottom: "3%" }}>
-                                            <div class="col-sm-3" style={{ marginTop: "1%", overflowY: "scroll", minHeight: "5px", height: "300px" }}>
-                                                <Col sm={10}>
-                                                    <Button style={{ width: "190px" }} onClick={() => this.addNewVideo(i)}>Добавить</Button>
-                                                    {obj.video.map((obj, j) =>
-                                                        <Button style={{ width: "190px" }} onClick={() => this.showCurrentVideoLink(i, j)}>Видео {j + 1}</Button>)}
-                                                </Col>
-                                            </div>
-                                            {this.state.lessons[0].video.length === 0 ? <div></div> :
-                                            <div class="col" style={{ marginTop: "1%" }}>
-                                                <Form>
-                                                    <Label>Ссылка на видео:</Label>
-                                                    <Input type="textarea" rows="3" name="current_video_link" value={this.state.current_video_link.value} onChange={this.handleChangeVideoTab}></Input>
-                                                </Form>
-                                            </div>}
-                                        </div>
+                                        <Videos video={Object.assign(this.state.lessons[0].video)} parentCallback={this.handleCallbackVideo} />
                                     </div>
                                     <div class="tab-pane fade" id="letter" role="tabpanel" aria-labelledby="letter-tab">
                                         <Vocabulary leks={Object.assign(this.state.lessons[0].leks)} parentCallback={this.handleCallbackVoc} />
