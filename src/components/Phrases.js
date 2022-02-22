@@ -1,18 +1,19 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { React, Component } from 'react';
-import { Button, Col, Form, Input, Label } from "reactstrap";
+import { Button, Col, Form, Input, Label, UncontrolledPopover, PopoverBody } from "reactstrap";
 import '../style.css';
+import model_phrase from "../static/tips/model_phrase.jpg";
+import model_phrase_2 from "../static/tips/model_phrase_2.jpg";
+import phrase_create_word from "../static/tips/phrase_create_word.jpg";
+import phrase_insert_words from "../static/tips/phrase_insert_words.jpg";
 
 export default class Phrases extends Component {
     constructor(props) {
         super(props);
         this.state = {
             phr: this.props.phr,
-            current_phr: { id: null, phrType: '0' },
+            current_phr: { id: null, phr_type: '0' },
             word1: "",
-            word2: "",
-            word3: "",
-            word4: "",
             words: "",
             image1: "",
             image2: "",
@@ -45,14 +46,14 @@ export default class Phrases extends Component {
         this.setState({
             phr: [...this.state.phr, {
                 id: this.state.phr.length,
-                phrType: '0',
+                phr_type: '0',
             }],
         })
         this.passPropsToParent();
     }
 
     showCurrentPhr(id) {
-        switch (this.state.phr[id].phrType) {
+        switch (this.state.phr[id].phr_type) {
             case "0":
                 this.setState({
                     current_phr: this.state.phr[id],
@@ -96,11 +97,8 @@ export default class Phrases extends Component {
                     image1: this.state.phr[id].image1 ? this.state.phr[id].image1 : "",
                     sound1: this.state.phr[id].sound1 ? this.state.phr[id].sound1 : "",
                     words: this.state.phr[id].words ? this.state.phr[id].words : "",
-                    word1: this.state.phr[id].word1 ? this.state.phr[id].word1 : "",
-                    word2: this.state.phr[id].word2 ? this.state.phr[id].word2 : "",
-                    word3: this.state.phr[id].word1 ? this.state.phr[id].word1 : "",
-                    word4: this.state.phr[id].word2 ? this.state.phr[id].word2 : "",
                     phrase: this.state.phr[id].phrase ? this.state.phr[id].phrase : "",
+                    scheme1: this.state.phr[id].scheme1 ? this.state.phr[id].scheme1 : "",
                 });
                 break;
         }
@@ -108,16 +106,13 @@ export default class Phrases extends Component {
     }
 
     getSelectedTypePhr(event) {
-        let newPhr = { id: this.state.current_phr.id, phrType: event.target.value };
+        let newPhr = { id: this.state.current_phr.id, phr_type: event.target.value };
         let phr = this.state.phr;
         phr[newPhr.id] = newPhr;
         this.setState({
             current_phr: newPhr,
             phr: phr,
             word1: "",
-            word2: "",
-            word3: "",
-            word4: "",
             words: "",
             image1: "",
             image2: "",
@@ -148,18 +143,26 @@ export default class Phrases extends Component {
                 {this.state.phr.length === 0 || this.state.current_phr.id === null ? <div></div> :
                     <div class="col" style={{ marginTop: "1%", width: "500px" }}>
                         <Form>
-                            <select class="form-select" style={{ marginBottom: "20px" }} value={this.state.current_phr.phrType} onChange={this.getSelectedTypePhr}>
+                            <select class="form-select" style={{ marginBottom: "20px" }} value={this.state.current_phr.phr_type} onChange={this.getSelectedTypePhr}>
                                 <option value={0}>Выберите тип</option>
                                 <option value={10}>Моделирование фразы 1</option>
                                 <option value={11}>Моделирование фразы 2</option>
                                 <option value={12}>Вставить буквы во фразу</option>
                                 <option value={13}>Задание на выбор слов</option>
                             </select>
-                            {this.state.current_phr.phrType === '0' ? <div></div> :
-                                this.state.current_phr.phrType === '10' ?
+                            {this.state.current_phr.phr_type === '0' ? <div></div> :
+                                this.state.current_phr.phr_type === '10' ?
                                     <div>
+                                        <div style={{ paddingLeft: "530px", paddingBottom: "10px" }}>
+                                            <Button id="Popover10" type="button">Подсказка</Button>
+                                            <UncontrolledPopover placement="right" target="Popover10" trigger="focus">
+                                                <PopoverBody>
+                                                    <img id="1" style={{ height: "150px", width: "150px" }} src={model_phrase} alt="" />
+                                                </PopoverBody>
+                                            </UncontrolledPopover>
+                                        </div>
                                         <div class="row StructureFields">
-                                            <Label sm={4}>Фраза</Label>
+                                            <Label sm={4}>Фраза:</Label>
                                             <Col sm={8}>
                                                 <Input type="text" name="phrase" value={this.state.phrase} onChange={this.handleChange}></Input>
                                             </Col>
@@ -189,10 +192,18 @@ export default class Phrases extends Component {
                                             </Col>
                                         </div>
                                     </div> :
-                                    this.state.current_phr.phrType === '11' ?
+                                    this.state.current_phr.phr_type === '11' ?
                                         <div>
+                                            <div style={{ paddingLeft: "530px", paddingBottom: "10px" }}>
+                                            <Button id="Popover11" type="button">Подсказка</Button>
+                                            <UncontrolledPopover placement="right" target="Popover11" trigger="focus">
+                                                <PopoverBody>
+                                                    <img id="1" style={{ height: "150px", width: "150px" }} src={model_phrase_2} alt="" />
+                                                </PopoverBody>
+                                            </UncontrolledPopover>
+                                        </div>
                                             <div class="row StructureFields">
-                                                <Label sm={4}>Фраза</Label>
+                                                <Label sm={4}>Фраза:</Label>
                                                 <Col sm={8}>
                                                     <Input type="text" name="phrase" value={this.state.phrase} onChange={this.handleChange}></Input>
                                                 </Col>
@@ -210,15 +221,15 @@ export default class Phrases extends Component {
                                                 </Col>
                                             </div>
                                             <div class="row StructureFields">
-                                                <Label sm={4}>Ссылка на схему 1:</Label>
-                                                <Col sm={8}>
-                                                    <Input type="text" name="scheme1" value={this.state.scheme1} onChange={this.handleChange}></Input>
-                                                </Col>
-                                            </div>
-                                            <div class="row StructureFields">
                                                 <Label sm={5}>Ссылка на изображение 2:</Label>
                                                 <Col sm={7}>
                                                     <Input type="text" name="image2" value={this.state.image2} onChange={this.handleChange}></Input>
+                                                </Col>
+                                            </div>
+                                            <div class="row StructureFields">
+                                                <Label sm={4}>Ссылка на схему 1:</Label>
+                                                <Col sm={8}>
+                                                    <Input type="text" name="scheme1" value={this.state.scheme1} onChange={this.handleChange}></Input>
                                                 </Col>
                                             </div>
                                             <div class="row StructureFields">
@@ -234,8 +245,34 @@ export default class Phrases extends Component {
                                                 </Col>
                                             </div>
                                         </div> :
-                                        this.state.current_phr.phrType === '12' ?
+                                        this.state.current_phr.phr_type === '12' ?
                                             <div>
+                                                <div style={{ paddingLeft: "530px", paddingBottom: "10px" }}>
+                                            <Button id="Popover12" type="button">Подсказка</Button>
+                                            <UncontrolledPopover placement="right" target="Popover12" trigger="focus">
+                                                <PopoverBody>
+                                                    <img id="1" style={{ height: "150px", width: "150px" }} src={phrase_create_word} alt="" />
+                                                </PopoverBody>
+                                            </UncontrolledPopover>
+                                        </div>
+                                                <div class="row StructureFields">
+                                                    <Label sm={4}>Фраза:</Label>
+                                                    <Col sm={8}>
+                                                        <Input type="text" name="phrase" value={this.state.phrase} onChange={this.handleChange}></Input>
+                                                    </Col>
+                                                </div>
+                                                <div class="row StructureFields">
+                                                    <Label sm={4}>Слово:</Label>
+                                                    <Col sm={8}>
+                                                        <Input type="text" name="word1" value={this.state.word1} onChange={this.handleChange}></Input>
+                                                    </Col>
+                                                </div>
+                                                <div class="row StructureFields">
+                                                    <Label sm={4}>Набор букв:</Label>
+                                                    <Col sm={8}>
+                                                        <Input type="text" name="letters" value={this.state.letters} onChange={this.handleChange}></Input>
+                                                    </Col>
+                                                </div>
                                                 <div class="row StructureFields">
                                                     <Label sm={4}>Ссылка на изображение:</Label>
                                                     <Col sm={8}>
@@ -248,27 +285,29 @@ export default class Phrases extends Component {
                                                         <Input type="text" name="sound1" value={this.state.sound1} onChange={this.handleChange}></Input>
                                                     </Col>
                                                 </div>
-                                                <div class="row StructureFields">
-                                                    <Label sm={4}>Слово:</Label>
-                                                    <Col sm={8}>
-                                                        <Input type="text" name="word1" value={this.state.word1} onChange={this.handleChange}></Input>
-                                                    </Col>
-                                                </div>
-                                                <div class="row StructureFields">
-                                                    <Label sm={4}>Фраза:</Label>
-                                                    <Col sm={8}>
-                                                        <Input type="text" name="phrase" value={this.state.phrase} onChange={this.handleChange}></Input>
-                                                    </Col>
-                                                </div>
-                                                <div class="row StructureFields">
-                                                    <Label sm={4}>Набор букв:</Label>
-                                                    <Col sm={8}>
-                                                        <Input type="text" name="letters" value={this.state.letters} onChange={this.handleChange}></Input>
-                                                    </Col>
-                                                </div>
                                             </div> :
-                                            this.state.current_phr.phrType === '13' ?
+                                            this.state.current_phr.phr_type === '13' ?
                                                 <div>
+                                                    <div style={{ paddingLeft: "530px", paddingBottom: "10px" }}>
+                                            <Button id="Popover13" type="button">Подсказка</Button>
+                                            <UncontrolledPopover placement="right" target="Popover13" trigger="focus">
+                                                <PopoverBody>
+                                                    <img id="1" style={{ height: "150px", width: "150px" }} src={phrase_insert_words} alt="" />
+                                                </PopoverBody>
+                                            </UncontrolledPopover>
+                                        </div>
+                                        <div class="row StructureFields">
+                                                        <Label sm={4}>Фраза:</Label>
+                                                        <Col sm={8}>
+                                                            <Input type="text" name="phrase" value={this.state.phrase} onChange={this.handleChange}></Input>
+                                                        </Col>
+                                                    </div>
+                                                    <div class="row StructureFields">
+                                                        <Label sm={4}>Набор слов:</Label>
+                                                        <Col sm={8}>
+                                                            <Input type="text" name="words" value={this.state.words} onChange={this.handleChange}></Input>
+                                                        </Col>
+                                                    </div>
                                                     <div class="row StructureFields">
                                                         <Label sm={4}>Ссылка на изображение:</Label>
                                                         <Col sm={8}>
@@ -276,45 +315,15 @@ export default class Phrases extends Component {
                                                         </Col>
                                                     </div>
                                                     <div class="row StructureFields">
+                                                <Label sm={4}>Ссылка на схему:</Label>
+                                                <Col sm={8}>
+                                                    <Input type="text" name="scheme1" value={this.state.scheme1} onChange={this.handleChange}></Input>
+                                                </Col>
+                                            </div>
+                                                    <div class="row StructureFields">
                                                         <Label sm={4}>Ссылка на звук:</Label>
                                                         <Col sm={8}>
                                                             <Input type="text" name="sound1" value={this.state.sound1} onChange={this.handleChange}></Input>
-                                                        </Col>
-                                                    </div>
-                                                    <div class="row StructureFields">
-                                                        <Label sm={4}>Фраза</Label>
-                                                        <Col sm={8}>
-                                                            <Input type="text" name="phrase" value={this.state.phrase} onChange={this.handleChange}></Input>
-                                                        </Col>
-                                                    </div>
-                                                    <div class="row StructureFields">
-                                                        <Label sm={4}>Набор слов</Label>
-                                                        <Col sm={8}>
-                                                            <Input type="text" name="words" value={this.state.words} onChange={this.handleChange}></Input>
-                                                        </Col>
-                                                    </div>
-                                                    <div class="row StructureFields">
-                                                        <Label sm={4}>Слово 1:</Label>
-                                                        <Col sm={8}>
-                                                            <Input type="text" name="word1" value={this.state.word1} onChange={this.handleChange}></Input>
-                                                        </Col>
-                                                    </div>
-                                                    <div class="row StructureFields">
-                                                        <Label sm={4}>Слово 2:</Label>
-                                                        <Col sm={8}>
-                                                            <Input type="text" name="word2" value={this.state.word2} onChange={this.handleChange}></Input>
-                                                        </Col>
-                                                    </div>
-                                                    <div class="row StructureFields">
-                                                        <Label sm={4}>Слово 3:</Label>
-                                                        <Col sm={8}>
-                                                            <Input type="text" name="word3" value={this.state.word3} onChange={this.handleChange}></Input>
-                                                        </Col>
-                                                    </div>
-                                                    <div class="row StructureFields">
-                                                        <Label sm={4}>Слово 4:</Label>
-                                                        <Col sm={8}>
-                                                            <Input type="text" name="word4" value={this.state.word4} onChange={this.handleChange}></Input>
                                                         </Col>
                                                     </div>
                                                 </div> :

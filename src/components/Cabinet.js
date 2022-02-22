@@ -11,7 +11,7 @@ import axios from 'axios';
 const BadgePills = {
   padding: "1% 5% 1% 5%"
 }
-
+const statuses = ["Пусто", "В процессе", "Не требуется", "Готово"];
 export default class Cabinet extends Component {
   constructor() {
     super();
@@ -20,8 +20,8 @@ export default class Cabinet extends Component {
         {
           id: 1,
           lessons_info: [
-            { id: 1, video_st: 'В процессе', leks_st: 'Пусто', phr_st: 'Пусто', dialog_st: 'Пусто', rules_st: 'Пусто' },
-            { id: 2, video_st: 'В процессе', leks_st: 'В процессе', phr_st: 'Готов', dialog_st: 'Пусто', rules_st: 'Пусто' }]
+            { id: 1, video_st: 'В процессе', leks_st: 'Пусто', phr_st: 'Пусто', dialog_st: 'Пусто', rules_st: 'Не требуется' },
+            { id: 2, video_st: 'В процессе', leks_st: 'В процессе', phr_st: 'Готово', dialog_st: 'Пусто', rules_st: 'Пусто' }]
         },
         {
           id: 2,
@@ -104,31 +104,31 @@ export default class Cabinet extends Component {
                           <FormGroup row>
                             <Label sm={3}>Видео</Label>
                             <Col sm={9}>
-                              <Badge pill color={obj.video_st === 'Пусто' ? "danger" : obj.video_st === 'В процессе' ? "warning" : "success"} style={BadgePills}>{obj.video_st}</Badge>
+                              <Badge pill color={obj.video_st === statuses[0] ? "danger" : obj.video_st === statuses[1] ? "warning" : obj.video_st === statuses[2] ? "secondary" : "success"} style={BadgePills}>{obj.video_st}</Badge>
                             </Col>
                           </FormGroup>
                           <FormGroup row>
                             <Label sm={3}>Буквы-слова</Label>
                             <Col sm={9}>
-                              <Badge pill color={obj.leks_st === 'Пусто' ? "danger" : obj.leks_st === 'В процессе' ? "warning" : "success"} style={BadgePills}>{obj.leks_st}</Badge>
+                              <Badge pill color={obj.leks_st === statuses[0] ? "danger" : obj.leks_st === statuses[1] ? "warning" : obj.leks_st === statuses[2] ? "secondary" : "success"} style={BadgePills}>{obj.leks_st}</Badge>
                             </Col>
                           </FormGroup>
                           <FormGroup row>
                             <Label sm={3}>Фразы</Label>
                             <Col sm={9}>
-                              <Badge pill color={obj.phr_st === 'Пусто' ? "danger" : obj.phr_st === 'В процессе' ? "warning" : "success"} style={BadgePills}>{obj.phr_st}</Badge>
+                              <Badge pill color={obj.phr_st === statuses[0] ? "danger" : obj.phr_st === statuses[1] ? "warning" : obj.phr_st === statuses[2] ? "secondary" : "success"} style={BadgePills}>{obj.phr_st}</Badge>
                             </Col>
                           </FormGroup>
                           <FormGroup row>
                             <Label sm={3}>Диалог</Label>
                             <Col sm={9}>
-                              <Badge pill color={obj.dialog_st === 'Пусто' ? "danger" : obj.dialog_st === 'В процессе' ? "warning" : "success"} style={BadgePills}>{obj.dialog_st}</Badge>
+                              <Badge pill color={obj.dialog_st === statuses[0] ? "danger" : obj.dialog_st === statuses[1] ? "warning" : obj.dialog_st === statuses[2] ? "secondary" : "success"} style={BadgePills}>{obj.dialog_st}</Badge>
                             </Col>
                           </FormGroup>
                           <FormGroup row>
                             <Label sm={3}>Правила</Label>
                             <Col sm={9}>
-                              <Badge pill color={obj.rules_st === 'Пусто' ? "danger" : obj.rules_st === 'В процессе' ? "warning" : "success"} style={BadgePills}>{obj.rules_st}</Badge>
+                              <Badge pill color={obj.rules_st === statuses[0] ? "danger" : obj.rules_st === statuses[1] ? "warning" : obj.rules_st === statuses[2] ? "secondary" : "success"} style={BadgePills}>{obj.rules_st}</Badge>
                             </Col>
                           </FormGroup>
                         </List>

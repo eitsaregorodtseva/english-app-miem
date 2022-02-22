@@ -61,7 +61,7 @@ export default class Videos extends Component {
                     <Col sm={10}>
                         <Button style={{ width: "190px" }} onClick={() => this.addNewVideo()}>Добавить</Button>
                         {this.state.video.map((obj, i) =>
-                            <Button style={{ width: "190px" }} color={this.state.current_video.id === i ? "primary" : "secondary"} onClick={() => this.showCurrentVideo(i)}>Видео {i + 1}</Button>)}
+                            <Button key={i} style={{ width: "190px" }} color={this.state.current_video.id === i ? "primary" : "secondary"} onClick={() => this.showCurrentVideo(i)}>Видео {i + 1}</Button>)}
                     </Col>
                 </div>
                 {this.state.video.length === 0 || this.state.current_video.id === null ? <div></div> :

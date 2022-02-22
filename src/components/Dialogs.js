@@ -1,14 +1,16 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { React, Component } from 'react';
-import { Button, Col, Form, Input, Label } from "reactstrap";
+import { Button, Col, Form, Input, Label, UncontrolledPopover, PopoverBody } from "reactstrap";
 import '../style.css';
+import model_dialog from "../static/tips/model_dialog.jpg";
+import dialog_insert_phrases from "../static/tips/dialog_insert_phrases.jpg";
 
 export default class Dialogs extends Component {
     constructor(props) {
         super(props);
         this.state = {
             dialog: this.props.dialog,
-            current_dialog: { id: null, dialogType: '0' },
+            current_dialog: { id: null, dialog_type: '0' },
             video: "",
             dialog_text: "",
             phrase1: "",
@@ -38,7 +40,7 @@ export default class Dialogs extends Component {
         this.setState({
             dialog: [...this.state.dialog, {
                 id: this.state.dialog.length,
-                dialogType: '0',
+                dialog_type: '0',
             }],
         });
         console.log(this.state.dialog);
@@ -47,7 +49,7 @@ export default class Dialogs extends Component {
     }
 
     showCurrentDialog(id) {
-        switch (this.state.dialog[id].dialogType) {
+        switch (this.state.dialog[id].dialog_type) {
             case "0":
                 this.setState({
                     current_dialog: this.state.dialog[id],
@@ -74,7 +76,7 @@ export default class Dialogs extends Component {
     }
 
     getSelectedTypeDialog(event) {
-        let newDialog = {id: this.state.current_dialog.id, dialogType: event.target.value };
+        let newDialog = {id: this.state.current_dialog.id, dialog_type: event.target.value };
         let dialog = this.state.dialog;
         dialog[newDialog.id] = newDialog;
         this.setState({
@@ -107,14 +109,22 @@ export default class Dialogs extends Component {
                 {this.state.dialog.length === 0 || this.state.current_dialog.id === null ? <div></div> :
                     <div class="col" style={{ marginTop: "1%", width: "500px" }}>
                         <Form>
-                            <select class="form-select" style={{ marginBottom: "20px" }} value={this.state.current_dialog.dialogType} onChange={this.getSelectedTypeDialog}>
+                            <select class="form-select" style={{ marginBottom: "20px" }} value={this.state.current_dialog.dialog_type} onChange={this.getSelectedTypeDialog}>
                                 <option value={0}>Выберите тип</option>
                                 <option value={18}>Моделирование диалога</option>
                                 <option value={19}>Задание на выбор фраз</option>
                             </select>
-                            {this.state.current_dialog.dialogType === '0' ? <div></div> :
-                                this.state.current_dialog.dialogType === '18' ?
+                            {this.state.current_dialog.dialog_type === '0' ? <div></div> :
+                                this.state.current_dialog.dialog_type === '18' ?
                                     <div>
+                                        <div style={{ paddingLeft: "530px", paddingBottom: "10px" }}>
+                                            <Button id="Popover18" type="button">Подсказка</Button>
+                                            <UncontrolledPopover placement="right" target="Popover18" trigger="focus">
+                                                <PopoverBody>
+                                                    <img id="1" style={{ height: "150px", width: "150px" }} src={model_dialog} alt="" />
+                                                </PopoverBody>
+                                            </UncontrolledPopover>
+                                        </div>
                                         <div class="row StructureFields">
                                             <Label sm={4}>Ссылка на видео:</Label>
                                             <Col sm={8}>
@@ -128,8 +138,16 @@ export default class Dialogs extends Component {
                                             </Col>
                                         </div>
                                     </div> :
-                                    this.state.current_dialog.dialogType === '19' ?
+                                    this.state.current_dialog.dialog_type === '19' ?
                                         <div>
+                                            <div style={{ paddingLeft: "530px", paddingBottom: "10px" }}>
+                                            <Button id="Popover19" type="button">Подсказка</Button>
+                                            <UncontrolledPopover placement="right" target="Popover19" trigger="focus">
+                                                <PopoverBody>
+                                                    <img id="1" style={{ height: "150px", width: "150px" }} src={dialog_insert_phrases} alt="" />
+                                                </PopoverBody>
+                                            </UncontrolledPopover>
+                                        </div>
                                             <div class="row StructureFields">
                                                 <Label sm={4}>Диалог:</Label>
                                                 <Col sm={8}>
@@ -154,7 +172,6 @@ export default class Dialogs extends Component {
                                                     <Input type="text" name="phrase3" value={this.state.phrase3} onChange={this.handleChange}></Input>
                                                 </Col>
                                             </div>
-
                                         </div> :
                                         <div></div>}
                         </Form>

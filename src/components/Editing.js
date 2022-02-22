@@ -8,6 +8,7 @@ import Vocabulary from './Vocabulary';
 import Phrases from './Phrases';
 import Rules from './Rules';
 import Dialogs from './Dialogs';
+import Statuses from './Statuses';
 import '../style.css';
 
 const BadgePills = {
@@ -21,7 +22,6 @@ export default class Editing extends Component {
             lessons: [
                 {
                     id: 1,
-                    lessons_info: [{ video_st: 'Готов', leks_st: 'Готов', phr_st: 'Готов', dialog_st: 'Пусто', rules_st: 'Пусто' }],
                     video: [],
                     leks: [],
                     phr: [],
@@ -32,6 +32,7 @@ export default class Editing extends Component {
             selectState: true,
             lessonState: true,
             description: "",
+            statuses: {}
         }
         this.openLessonSelect = this.openLessonSelect.bind(this);
         this.openLesson = this.openLesson.bind(this);
@@ -41,8 +42,10 @@ export default class Editing extends Component {
 
     componentDidMount() {
         if (this.props.location.state) {
-            this.setState({selectState: false,
-            lessonState: false});
+            this.setState({
+                selectState: false,
+                lessonState: false
+            });
         }
     }
 
@@ -74,6 +77,12 @@ export default class Editing extends Component {
         let newLessons = this.state.lessons;
         newLessons[0].rules = propsRules;
         this.setState({ lessons: newLessons });
+    }
+
+    handleCallbackStatuses = (props) => {
+        console.log(props);
+        let newStatuses = props;
+        this.setState({ statuses : newStatuses });
     }
 
     addNewLesson() {
@@ -130,7 +139,7 @@ export default class Editing extends Component {
                     <Form row hidden={this.state.selectState}>
                         <FormGroup row>
                             <Label sm={3}>Выберите номер урока:</Label>
-                            <Col sm={4}><Input type="select"  value={this.props.location.state ? this.props.location.state.lesson_id : ""}></Input></Col>
+                            <Col sm={4}><Input type="select" value={this.props.location.state ? this.props.location.state.lesson_id : ""}></Input></Col>
                             <Col><button type="button" class="GreyButton" onClick={this.openLesson}>Выбрать</button></Col>
                         </FormGroup>
                     </Form>
@@ -213,38 +222,7 @@ export default class Editing extends Component {
                     <div style={{ marginTop: "5%" }}>
                         <button disabled class="GreyBox">Статусы</button>
                         <div style={{ marginTop: "5%", marginLeft: "25%" }}>
-                            <Form>
-                                <FormGroup row>
-                                    <Label sm={3}>Видео</Label>
-                                    <Col sm={3}>
-                                        <Input type="select"></Input>
-                                    </Col>
-                                </FormGroup>
-                                <FormGroup row>
-                                    <Label sm={3}>Буквы-слова</Label>
-                                    <Col sm={3}>
-                                        <Input type="select"></Input>
-                                    </Col>
-                                </FormGroup>
-                                <FormGroup row>
-                                    <Label sm={3}>Фразы</Label>
-                                    <Col sm={3}>
-                                        <Input type="select"></Input>
-                                    </Col>
-                                </FormGroup>
-                                <FormGroup row>
-                                    <Label sm={3}>Диалог</Label>
-                                    <Col sm={3}>
-                                        <Input type="select"></Input>
-                                    </Col>
-                                </FormGroup>
-                                <FormGroup row>
-                                    <Label sm={3}>Правила</Label>
-                                    <Col sm={3}>
-                                        <Input type="select"></Input>
-                                    </Col>
-                                </FormGroup>
-                            </Form>
+                            <Statuses statuses={this.state.statuses} parentCallback={this.handleCallbackStatuses} />
                         </div>
                     </div>
                     <div style={{ marginTop: "5%" }}>
