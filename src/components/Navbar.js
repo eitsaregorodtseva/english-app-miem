@@ -35,6 +35,9 @@ export default function CustomNavbar() {
                             <span style={{ paddingRight: "10px" }}>Выйти</span>
                         </Button>
                     </NavItem>
+                    {/*<NavItem>
+                        <img src={exit} alt="" style={{ height: "24px", paddingRight: "10px", paddingLeft: "5px" }}  onClick={logout} href="/"/>
+                    </NavItem>*/}
                 </Nav>
             </Navbar>
         </div>

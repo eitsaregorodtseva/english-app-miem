@@ -31,13 +31,12 @@ export default class Videos extends Component {
     }
 
     addNewVideo() {
+        let newVideo = { id: this.state.video.length, video_link: ""};
+        let video = this.state.video;
+        video[newVideo.id] = newVideo;
         this.setState({
-            video: [...this.state.video, {
-                id: this.state.video.length,
-                video_link: "",
-            }],
+            video: video,
         });
-        console.log(this.state.video);
         this.passPropsToParent();
     }
 

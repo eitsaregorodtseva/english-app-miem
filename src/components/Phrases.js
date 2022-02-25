@@ -43,12 +43,12 @@ export default class Phrases extends Component {
     }
 
     addNewPhr() {
+        let newPhr = { id: this.state.phr.length, phr_type: '0'};
+        let phr = this.state.phr;
+        phr[newPhr.id] = newPhr;
         this.setState({
-            phr: [...this.state.phr, {
-                id: this.state.phr.length,
-                phr_type: '0',
-            }],
-        })
+            phr: phr,
+        });
         this.passPropsToParent();
     }
 
@@ -102,7 +102,6 @@ export default class Phrases extends Component {
                 });
                 break;
         }
-        this.passPropsToParent();
     }
 
     getSelectedTypePhr(event) {

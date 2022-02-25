@@ -35,16 +35,13 @@ export default class Dialogs extends Component {
         this.passPropsToParent();
     }
 
-
     addNewDialog() {
+        let newDialog = { id: this.state.dialog.length, dialog_type: '0'};
+        let dialog = this.state.dialog;
+        dialog[newDialog.id] = newDialog;
         this.setState({
-            dialog: [...this.state.dialog, {
-                id: this.state.dialog.length,
-                dialog_type: '0',
-            }],
+            dialog: dialog,
         });
-        console.log(this.state.dialog);
-        console.log(this.state.dialog.length);
         this.passPropsToParent();
     }
 

@@ -11,57 +11,24 @@ import axios from 'axios';
 const BadgePills = {
   padding: "1% 5% 1% 5%"
 }
-const statuses = ["Пусто", "В процессе", "Не требуется", "Готово"];
+const statuses = ["Пусто     ", "В процессе", "Не требуется", "Готово"];
 export default class Cabinet extends Component {
   constructor() {
     super();
     this.state = {
-      blocks: [
-        {
-          id: 1,
-          lessons_info: [
-            { id: 1, video_st: 'В процессе', leks_st: 'Пусто', phr_st: 'Пусто', dialog_st: 'Пусто', rules_st: 'Не требуется' },
-            { id: 2, video_st: 'В процессе', leks_st: 'В процессе', phr_st: 'Готово', dialog_st: 'Пусто', rules_st: 'Пусто' }]
-        },
-        {
-          id: 2,
-          lessons_info: [
-            { id: 1, video_st: 'В процессе', leks_st: 'Пусто', phr_st: 'Пусто', dialog_st: 'Пусто', rules_st: 'Пусто' }]
-        }
-      ],
-      new_blocks: null,
+      blocks: null
     }
-    this.sendPostRequest = this.sendPostRequest.bind(this);
   };
 
   componentDidMount() {
-    /*fetch('http://172.18.130.45:5052/api/lessonblocks/')
+    fetch('http://172.18.130.45:5052/api/lessonblocks/')
       .then((response) => {
-        //console.log(response);
+        console.log(response);
         return response.json();
     }) 
       .then((data) => {
         console.log(data);
-      })*/
-  }
-
-  sendPostRequest() {
-    axios.post('http://172.18.130.45:5052/api/lessons/',
-      { 'name_les': "урок 1", "id_lb": 3 },
-      {
-        headers: {
-          'Content-Type': 'application/json'
-        },
-      })
-      .then((response) => {
-        console.log(response);
-      }, (error) => {
-        console.log(error);
-      });
-
-    fetch('http://172.18.130.45:5052/api/lessons/')
-      .then((response) => {
-        console.log(response.json())
+        this.setState({blocks: data});
       })
   }
 
@@ -78,24 +45,23 @@ export default class Cabinet extends Component {
           </nav>
         </div>
         <div class="accordion" id="accordion" style={{ marginTop: "5%" }}>
-          {this.state.blocks === null ? <p>данные загружаются</p> : this.state.blocks.map((obj, i) => (
+          {this.state.blocks === null ? <p>данные загружаются</p> : this.state.blocks.map((obj_b, i) => (
             <div class="accordion-item">
               <h2 class="accordion-header" id="heading">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseArea" aria-expanded="false" aria-controls="collapseArea">
-                  Блок {i + 1}
+                  Блок {obj_b.id_lb}
                 </button>
               </h2>
               <div id="collapseArea" class="accordion-collapse collapse" aria-labelledby="heading" data-bs-parent="#accordionExample">
                 <div class="accordion-body">
-                  {obj.lessons_info.map((obj, j) => (
+                  {obj_b.lesson.map((obj_l, j) => (
                     <div class="LessonDiv">
-                      <button disabled class="GreyBox">Урок {j + 1}</button>
+                      <button disabled class="GreyBox">Урок {obj_l.id_les}: {obj_l.name_les}</button>
                       <div style={{ marginTop: "5%" }}>
                         <Link to={{
                           pathname: "/editing",
-                          state: { block_id: i, lesson_id: j, blocks: this.state.blocks }
-                        }}>
-                          <button type="button" class="EditLesson" /*href="/editing"*/>
+                          state: { id_lb: obj_b.id_lb, id_les: obj_l.id_les, blocks: this.state.blocks }}}>
+                          <button type="button" class="EditLesson">
                             Редактировать урок</button></Link>
                         <button class="ViewLesson">Предпросмотр</button>
                       </div>
@@ -104,31 +70,31 @@ export default class Cabinet extends Component {
                           <FormGroup row>
                             <Label sm={3}>Видео</Label>
                             <Col sm={9}>
-                              <Badge pill color={obj.video_st === statuses[0] ? "danger" : obj.video_st === statuses[1] ? "warning" : obj.video_st === statuses[2] ? "secondary" : "success"} style={BadgePills}>{obj.video_st}</Badge>
+                              <Badge pill color={obj_l.video_st === statuses[0] ? "danger" : obj_l.video_st === statuses[1] ? "warning" : obj_l.video_st === statuses[2] ? "secondary" : "success"} style={BadgePills}>{obj_l.video_st}</Badge>
                             </Col>
                           </FormGroup>
                           <FormGroup row>
                             <Label sm={3}>Буквы-слова</Label>
                             <Col sm={9}>
-                              <Badge pill color={obj.leks_st === statuses[0] ? "danger" : obj.leks_st === statuses[1] ? "warning" : obj.leks_st === statuses[2] ? "secondary" : "success"} style={BadgePills}>{obj.leks_st}</Badge>
-                            </Col>
-                          </FormGroup>
-                          <FormGroup row>
-                            <Label sm={3}>Фразы</Label>
-                            <Col sm={9}>
-                              <Badge pill color={obj.phr_st === statuses[0] ? "danger" : obj.phr_st === statuses[1] ? "warning" : obj.phr_st === statuses[2] ? "secondary" : "success"} style={BadgePills}>{obj.phr_st}</Badge>
-                            </Col>
-                          </FormGroup>
-                          <FormGroup row>
-                            <Label sm={3}>Диалог</Label>
-                            <Col sm={9}>
-                              <Badge pill color={obj.dialog_st === statuses[0] ? "danger" : obj.dialog_st === statuses[1] ? "warning" : obj.dialog_st === statuses[2] ? "secondary" : "success"} style={BadgePills}>{obj.dialog_st}</Badge>
+                              <Badge pill color={obj_l.lex_st === statuses[0] ? "danger" : obj_l.lex_st === statuses[1] ? "warning" : obj_l.lex_st === statuses[2] ? "secondary" : "success"} style={BadgePills}>{obj_l.lex_st}</Badge>
                             </Col>
                           </FormGroup>
                           <FormGroup row>
                             <Label sm={3}>Правила</Label>
                             <Col sm={9}>
-                              <Badge pill color={obj.rules_st === statuses[0] ? "danger" : obj.rules_st === statuses[1] ? "warning" : obj.rules_st === statuses[2] ? "secondary" : "success"} style={BadgePills}>{obj.rules_st}</Badge>
+                              <Badge pill color={obj_l.rules_st === statuses[0] ? "danger" : obj_l.rules_st === statuses[1] ? "warning" : obj_l.rules_st === statuses[2] ? "secondary" : "success"} style={BadgePills}>{obj_l.rules_st}</Badge>
+                            </Col>
+                          </FormGroup>
+                          <FormGroup row>
+                            <Label sm={3}>Фразы</Label>
+                            <Col sm={9}>
+                              <Badge pill color={obj_l.phr_st === statuses[0] ? "danger" : obj_l.phr_st === statuses[1] ? "warning" : obj_l.phr_st === statuses[2] ? "secondary" : "success"} style={BadgePills}>{obj_l.phr_st}</Badge>
+                            </Col>
+                          </FormGroup>
+                          <FormGroup row>
+                            <Label sm={3}>Диалоги</Label>
+                            <Col sm={9}>
+                              <Badge pill color={obj_l.dialog_st === statuses[0] ? "danger" : obj_l.dialog_st === statuses[1] ? "warning" : obj_l.dialog_st === statuses[2] ? "secondary" : "success"} style={BadgePills}>{obj_l.dialog_st}</Badge>
                             </Col>
                           </FormGroup>
                         </List>

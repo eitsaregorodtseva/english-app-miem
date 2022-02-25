@@ -54,11 +54,11 @@ export default class Vocabulary extends Component {
     }
 
     addNewLeks() {
+        let newLeks = { id: this.state.leks.length, leks_type: '0'};
+        let leks = this.state.leks;
+        leks[newLeks.id] = newLeks;
         this.setState({
-            leks: [...this.state.leks, {
-                id: this.state.leks.length,
-                leks_type: '0',
-            }],
+            leks: leks,
         });
         this.passPropsToParent();
     }

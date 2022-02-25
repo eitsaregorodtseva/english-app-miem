@@ -69,6 +69,7 @@ export default class NewBlock extends Component {
     }
 
     checkStatuses = () => {
+        console.log(this.state.dialogs);
         let mistakes = 0;
         for (var i = 0; i < this.state.lessons.length; i++) {
             if (this.state.lessons[i].video.length + 0 === 0 && this.state.statuses.video_st !== "Пусто" && this.state.statuses.video_st !== "Не требуется") {

@@ -45,13 +45,13 @@ export default class Rules extends Component {
         this.passPropsToParent();
     }
 
-    addNewRule() {
+    addNewRule() { 
+        let newRule = { id: this.state.rule.length, rule_type: '0'};
+        let rule = this.state.rule;
+        rule[newRule.id] = newRule;
         this.setState({
-            rule: [...this.state.rule, {
-                id: this.state.rule.length,
-                rule_type: '0',
-            }],
-        })
+            rule: rule,
+        });
         this.passPropsToParent();
     }
 
