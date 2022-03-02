@@ -136,6 +136,7 @@ export default class Editing extends Component {
         let newLessons = this.state.lessons;
         newLessons[0].rules = propsRules;
         this.setState({ lessons: newLessons });
+        
     }
 
     handleChange = (event) => {
