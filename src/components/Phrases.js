@@ -125,6 +125,20 @@ export default class Phrases extends Component {
         this.passPropsToParent();
     }
 
+    deleteElement = (id) => {
+        let phr = this.state.phr;
+        phr.splice(id, 1);
+        for (var i = 0; i < phr.length; i++) {
+            phr[i].id = i;
+        }
+        let newPhr = { id: null, phr_type: '0' };
+        this.setState({
+            phr: phr,
+            current_phr: newPhr,
+        });
+        this.passPropsToParent();
+    }
+
     passPropsToParent() {
         this.props.parentCallback(this.state.phr);
     }
@@ -149,6 +163,7 @@ export default class Phrases extends Component {
                                 <option value={12}>Вставить буквы во фразу</option>
                                 <option value={13}>Задание на выбор слов</option>
                             </select>
+                            <Button color="danger" onClick={() => this.deleteElement(this.state.current_phr.id)}>Удалить</Button>
                             {this.state.current_phr.phr_type === '0' ? <div></div> :
                                 this.state.current_phr.phr_type === '10' ?
                                     <div>

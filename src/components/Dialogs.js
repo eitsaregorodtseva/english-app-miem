@@ -88,6 +88,20 @@ export default class Dialogs extends Component {
         this.passPropsToParent();
     }
 
+    deleteElement = (id) => {
+        let dialog = this.state.dialog;
+        dialog.splice(id, 1);
+        for (var i = 0; i < dialog.length; i++) {
+            dialog[i].id = i;
+        }
+        let newDialog = { id: null, dialog_type: '0' };
+        this.setState({
+            dialog: dialog,
+            current_dialog: newDialog,
+        });
+        this.passPropsToParent();
+    }
+
     passPropsToParent() {
         this.props.parentCallback(this.state.dialog);
     }
@@ -111,6 +125,7 @@ export default class Dialogs extends Component {
                                 <option value={18}>Моделирование диалога</option>
                                 <option value={19}>Задание на выбор фраз</option>
                             </select>
+                            <Button color="danger" onClick={() => this.deleteElement(this.state.current_dialog.id)}>Удалить</Button>
                             {this.state.current_dialog.dialog_type === '0' ? <div></div> :
                                 this.state.current_dialog.dialog_type === '18' ?
                                     <div>

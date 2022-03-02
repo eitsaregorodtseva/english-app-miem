@@ -35,11 +35,17 @@ export default class Vocabulary extends Component {
             number: "",
             numbers: "",
             letters: "",
+            id_lexeme: "",
+            lexemes: this.props.lexemes,
         }
         this.handleChange = this.handleChange.bind(this);
         this.addNewLeks = this.addNewLeks.bind(this);
         this.showCurrentLeks = this.showCurrentLeks.bind(this);
         this.getSelectedTypeLeks = this.getSelectedTypeLeks.bind(this);
+    }
+
+    componentDidMount() {
+        console.log(this.props);
     }
 
     handleChange(event) {
@@ -54,7 +60,7 @@ export default class Vocabulary extends Component {
     }
 
     addNewLeks() {
-        let newLeks = { id: this.state.leks.length, leks_type: '0'};
+        let newLeks = { id: this.state.leks.length, leks_type: '0' };
         let leks = this.state.leks;
         leks[newLeks.id] = newLeks;
         this.setState({
@@ -64,6 +70,8 @@ export default class Vocabulary extends Component {
     }
 
     showCurrentLeks(id) {
+        console.log(id);
+        //console.log(document.getAttribute("data-key"));
         switch (this.state.leks[id].leks_type) {
             case "0":
                 this.setState({
@@ -73,18 +81,20 @@ export default class Vocabulary extends Component {
             case "1":
                 this.setState({
                     current_leks: this.state.leks[id],
-                    word: this.state.leks[id].word ? this.state.leks[id].word : "",
+                    /*word: this.state.leks[id].word ? this.state.leks[id].word : "",
                     stress: this.state.leks[id].stress ? this.state.leks[id].stress : "",
                     image1: this.state.leks[id].image1 ? this.state.leks[id].image1 : "",
-                    sound1: this.state.leks[id].sound1 ? this.state.leks[id].sound1 : "",
+                    sound1: this.state.leks[id].sound1 ? this.state.leks[id].sound1 : "",*/
+                    id_lexeme: this.state.leks[id].id_lexeme ? this.state.leks[id].id_lexeme : "",
                 });
                 break;
             case "2":
                 this.setState({
                     current_leks: this.state.leks[id],
-                    word: this.state.leks[id].word ? this.state.leks[id].word : "",
+                    /*word: this.state.leks[id].word ? this.state.leks[id].word : "",
                     image1: this.state.leks[id].image1 ? this.state.leks[id].image1 : "",
-                    sound1: this.state.leks[id].sound1 ? this.state.leks[id].sound1 : "",
+                    sound1: this.state.leks[id].sound1 ? this.state.leks[id].sound1 : "",*/
+                    id_lexeme: this.state.leks[id].id_lexeme ? this.state.leks[id].id_lexeme : "",
                 });
                 break;
             case "3":
@@ -95,14 +105,16 @@ export default class Vocabulary extends Component {
                     sound2: this.state.leks[id].sound2 ? this.state.leks[id].sound2 : "",
                     letter1: this.state.leks[id].letter1 ? this.state.leks[id].letter1 : "",
                     letter2: this.state.leks[id].letter2 ? this.state.leks[id].letter2 : "",
+                    id_lexeme: this.state.leks[id].id_lexeme ? this.state.leks[id].id_lexeme : "",
                 });
                 break;
             case "4":
                 this.setState({
                     current_leks: this.state.leks[id],
-                    word: this.state.leks[id].word ? this.state.leks[id].word : "",
+                    /*word: this.state.leks[id].word ? this.state.leks[id].word : "",
                     image1: this.state.leks[id].image1 ? this.state.leks[id].image1 : "",
-                    sound1: this.state.leks[id].sound1 ? this.state.leks[id].sound1 : "",
+                    sound1: this.state.leks[id].sound1 ? this.state.leks[id].sound1 : "",*/
+                    id_lexeme: this.state.leks[id].id_lexeme ? this.state.leks[id].id_lexeme : "",
                 });
                 break;
             case "5":
@@ -113,6 +125,7 @@ export default class Vocabulary extends Component {
                     sound2: this.state.leks[id].sound2 ? this.state.leks[id].sound2 : "",
                     letter1: this.state.leks[id].letter1 ? this.state.leks[id].letter1 : "",
                     letter2: this.state.leks[id].letter2 ? this.state.leks[id].letter2 : "",
+                    id_lexeme: this.state.leks[id].id_lexeme ? this.state.leks[id].id_lexeme : "",
                 });
                 break;
             case "6":
@@ -181,6 +194,35 @@ export default class Vocabulary extends Component {
             number: "",
             numbers: "",
             letters: "",
+            id_lexeme: "",
+        });
+        this.passPropsToParent();
+    }
+
+    getSelectedLexemeId = (event) => {
+        console.log(parseInt(event.target.value));
+        let id_lexeme = parseInt(event.target.value);
+        let newLeks = { ...this.state.current_leks, id_lexeme: id_lexeme };
+        let leks = this.state.leks;
+        leks[newLeks.id] = newLeks;
+        this.setState({
+            current_leks: newLeks,
+            leks: leks,
+            id_lexeme: id_lexeme
+        });
+        this.passPropsToParent();
+    }
+
+    deleteElement = (id) => {
+        let leks = this.state.leks;
+        leks.splice(id, 1);
+        for (var i = 0; i < leks.length; i++) {
+            leks[i].id = i;
+        }
+        let newLeks = { id: null, leks_type: '0' };
+        this.setState({
+            leks: leks,
+            current_leks: newLeks
         });
         this.passPropsToParent();
     }
@@ -194,9 +236,9 @@ export default class Vocabulary extends Component {
             <div className="row" style={{ marginBottom: "3%" }}>
                 <div className="col-sm-3" style={{ marginTop: "1%", overflowY: "scroll", minHeight: "5px", height: "480px" }}>
                     <Col sm={12}>
-                        <Button style={{ width: "190px" }} onClick={() => this.addNewLeks()}>Добавить</Button>
+                        <Button style={{ width: "190px" }} onClick={this.addNewLeks}>Добавить</Button>
                         {this.state.leks.map((obj, i) =>
-                            <Button style={{ width: "190px" }} color={this.state.current_leks.id === i ? "primary" : "secondary"} onClick={() => this.showCurrentLeks(i)}>Буквы-слова {i + 1}</Button>)}
+                            <Button style={{ width: "190px" }} key={i} color={this.state.current_leks.id === i ? "primary" : "secondary"} onClick={() => this.showCurrentLeks(i)}>Буквы-слова {i + 1}</Button>)}
                     </Col>
                 </div>
                 {this.state.leks.length === 0 || this.state.current_leks.id === null ? <div></div> :
@@ -205,15 +247,17 @@ export default class Vocabulary extends Component {
                             <select className="form-select" style={{ marginBottom: "20px" }} value={this.state.current_leks.leks_type} onChange={this.getSelectedTypeLeks}>
                                 <option value={0}>Выберите тип</option>
                                 <option value={1}>Моделирование слова</option>
-                                <option value={2}>Моделирование согласной 1</option>
-                                <option value={3}>Моделирование согласной 2</option>
+                                <option value={3}>Моделирование согласной</option>
+                                <option value={2}>Моделирование слога</option>
                                 <option value={4}>Моделирование гласной 1</option>
                                 <option value={5}>Моделирование гласной 2</option>
                                 <option value={6}>Задание на слоги</option>
                                 <option value={7}>Вставить букву</option>
                                 <option value={8}>Задание на выбор букв</option>
                                 <option value={9}>Задание на составление слова</option>
+                                <option value={10}>Повтор слова</option>
                             </select>
+                            <Button color="danger" onClick={() => this.deleteElement(this.state.current_leks.id)}>Удалить</Button>
                             {this.state.current_leks.leks_type === '0' ? <div></div> :
                                 this.state.current_leks.leks_type === '1' ?
                                     <div>
@@ -225,7 +269,13 @@ export default class Vocabulary extends Component {
                                                 </PopoverBody>
                                             </UncontrolledPopover>
                                         </div>
-                                        <div className="row StructureFields">
+                                        <select class="form-select" style={{ marginBottom: "20px" }} value={this.state.id_lexeme} onChange={this.getSelectedLexemeId}>
+                                            <option value={0}>Выберите лексему</option>
+                                            {this.state.lexemes.map((obj, i) =>
+                                                <option value={obj.id_lex}>{(obj.type === 'слово') && obj.mean_lex}</option>
+                                            )}
+                                        </select>
+                                        {/*<div className="row StructureFields">
                                             <Label sm={4}>Слово:</Label>
                                             <Col sm={8}>
                                                 <Input type="text" name="word" value={this.state.word} onChange={this.handleChange}></Input>
@@ -248,7 +298,7 @@ export default class Vocabulary extends Component {
                                             <Col sm={8}>
                                                 <Input type="text" name="sound1" value={this.state.sound1} onChange={this.handleChange}></Input>
                                             </Col>
-                                        </div>
+                                            </div>*/}
                                     </div> :
                                     this.state.current_leks.leks_type === '2' ?
                                         <div>
@@ -260,7 +310,13 @@ export default class Vocabulary extends Component {
                                                     </PopoverBody>
                                                 </UncontrolledPopover>
                                             </div>
-                                            <div className="row StructureFields">
+                                            <select className="form-select" style={{ marginBottom: "20px" }} value={this.state.id_lexeme} onChange={this.getSelectedLexemeId}>
+                                                <option value={0}>Выберите лексему</option>
+                                                {this.state.lexemes.map((obj, i) =>
+                                                    <option value={obj.id_lex}>{(obj.type === 'буква') && obj.mean_lex}</option>
+                                                )}
+                                            </select>
+                                            {/*<div className="row StructureFields">
                                                 <Label sm={4}>Буква:</Label>
                                                 <Col sm={8}>
                                                     <Input type="text" name="word" value={this.state.word} onChange={this.handleChange}></Input>
@@ -277,7 +333,7 @@ export default class Vocabulary extends Component {
                                                 <Col sm={8}>
                                                     <Input type="text" name="sound1" value={this.state.sound1} onChange={this.handleChange}></Input>
                                                 </Col>
-                                            </div>
+                                        </div>*/}
                                         </div> :
                                         this.state.current_leks.leks_type === '3' ?
                                             <div>
@@ -289,7 +345,13 @@ export default class Vocabulary extends Component {
                                                         </PopoverBody>
                                                     </UncontrolledPopover>
                                                 </div>
-                                                <div className="row StructureFields">
+                                                <select className="form-select" style={{ marginBottom: "20px" }} value={this.state.id_lexeme} onChange={this.getSelectedLexemeId}>
+                                                <option value={0}>Выберите лексему</option>
+                                                {this.state.lexemes.map((obj, i) =>
+                                                    <option value={obj.id_lex}>{(obj.type === 'буква') && obj.mean_lex}</option>
+                                                )}
+                                            </select>
+                                                {/*<div className="row StructureFields">
                                                     <Label sm={4}>Слог 1 :</Label>
                                                     <Col sm={8}>
                                                         <Input type="text" name="letter1" value={this.state.letter1} onChange={this.handleChange}></Input>
@@ -318,7 +380,7 @@ export default class Vocabulary extends Component {
                                                     <Col sm={8}>
                                                         <Input type="text" name="sound2" value={this.state.sound2} onChange={this.handleChange}></Input>
                                                     </Col>
-                                                </div>
+                                                </div>*/}
                                             </div> :
                                             this.state.current_leks.leks_type === '4' ?
                                                 <div>
@@ -330,7 +392,13 @@ export default class Vocabulary extends Component {
                                                             </PopoverBody>
                                                         </UncontrolledPopover>
                                                     </div>
-                                                    <div className="row StructureFields">
+                                                    <select className="form-select" style={{ marginBottom: "20px" }} value={this.state.id_lexeme} onChange={this.getSelectedLexemeId}>
+                                                <option value={0}>Выберите лексему</option>
+                                                {this.state.lexemes.map((obj, i) =>
+                                                    <option value={obj.id_lex}>{(obj.type === 'буква') && obj.mean_lex}</option>
+                                                )}
+                                            </select>
+                                                    {/*<div className="row StructureFields">
                                                         <Label sm={4}>Буква:</Label>
                                                         <Col sm={8}>
                                                             <Input type="text" name="word" value={this.state.word} onChange={this.handleChange}></Input>
@@ -347,7 +415,7 @@ export default class Vocabulary extends Component {
                                                         <Col sm={8}>
                                                             <Input type="text" name="sound1" value={this.state.sound1} onChange={this.handleChange}></Input>
                                                         </Col>
-                                                    </div>
+                                                </div>*/}
                                                 </div> :
                                                 this.state.current_leks.leks_type === '5' ?
                                                     <div>
@@ -359,7 +427,13 @@ export default class Vocabulary extends Component {
                                                                 </PopoverBody>
                                                             </UncontrolledPopover>
                                                         </div>
-                                                        <div className="row StructureFields">
+                                                        <select className="form-select" style={{ marginBottom: "20px" }} value={this.state.id_lexeme} onChange={this.getSelectedLexemeId}>
+                                                <option value={0}>Выберите лексему</option>
+                                                {this.state.lexemes.map((obj, i) =>
+                                                    <option value={obj.id_lex}>{(obj.type === 'буква') && obj.mean_lex}</option>
+                                                )}
+                                            </select>
+                                                        {/*<div className="row StructureFields">
                                                             <Label sm={4}>Звук 1 :</Label>
                                                             <Col sm={8}>
                                                                 <Input type="text" name="letter1" value={this.state.letter1} onChange={this.handleChange}></Input>
@@ -388,7 +462,7 @@ export default class Vocabulary extends Component {
                                                             <Col sm={8}>
                                                                 <Input type="text" name="sound2" value={this.state.sound2} onChange={this.handleChange}></Input>
                                                             </Col>
-                                                        </div>
+                                                </div>*/}
                                                     </div> :
                                                     this.state.current_leks.leks_type === '6' ?
                                                         <div>

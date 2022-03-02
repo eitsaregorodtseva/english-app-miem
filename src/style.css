@@ -137,4 +137,10 @@ img {
   padding-bottom: 10px;
 }
 
+.CenterContainer {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
 

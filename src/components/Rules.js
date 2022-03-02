@@ -148,6 +148,20 @@ export default class Rules extends Component {
         this.passPropsToParent();
     }
 
+    deleteElement = (id) => {
+        let rule = this.state.rule;
+        rule.splice(id, 1);
+        for (var i = 0; i < rule.length; i++) {
+            rule[i].id = i;
+        }
+        let newRule = { id: null, rule_type: '0' };
+        this.setState({
+            rule: rule,
+            current_rule: newRule,
+        });
+        this.passPropsToParent();
+    }
+
     passPropsToParent() {
         this.props.parentCallback(this.state.rule);
     }
@@ -173,6 +187,7 @@ export default class Rules extends Component {
                                 <option value={16}>Задание на правило 1</option>
                                 <option value={17}>Задание на правило 2</option>
                             </select>
+                            <Button color="danger" onClick={() => this.deleteElement(this.state.current_rule.id)}>Удалить</Button>
                             {this.state.current_rule.rule_type === '0' ? <div></div> :
                                 this.state.current_rule.rule_type === '14' ?
                                     <div>

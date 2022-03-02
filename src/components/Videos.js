@@ -48,6 +48,20 @@ export default class Videos extends Component {
         this.passPropsToParent();
     }
 
+    deleteElement = (id) => {
+        let video = this.state.video;
+        video.splice(id, 1);
+        for (var i = 0; i < video.length; i++) {
+            video[i].id = i;
+        }
+        let newVideo = { id: null, video_link: "" };
+        this.setState({
+            video: video,
+            current_video: newVideo,
+        });
+        this.passPropsToParent();
+    }
+
     passPropsToParent() {
         this.props.parentCallback(this.state.video);
     }
@@ -65,6 +79,7 @@ export default class Videos extends Component {
                 </div>
                 {this.state.video.length === 0 || this.state.current_video.id === null ? <div></div> :
                     <div class="col" style={{ marginTop: "1%" }}>
+                        <Button color="danger" onClick={() => this.deleteElement(this.state.current_video.id)}>Удалить</Button>
                         <Form>
                             <Label>Ссылка на видео:</Label>
                             <Input type="textarea" rows="3" name="video_link" value={this.state.video_link} onChange={this.handleChange}></Input>

@@ -2,6 +2,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { React, Component } from 'react';
 import { Col, Button, Form, FormGroup, Input, Label, List, Badge } from "reactstrap";
+import toast, { Toaster } from 'react-hot-toast';
+import axios from 'axios';
 import CustomNavbar from './Navbar';
 import Videos from './Videos';
 import Vocabulary from './Vocabulary';
@@ -14,6 +16,9 @@ import '../style.css';
 const BadgePills = {
     padding: "1% 5% 1% 5%"
 }
+const statuses = ["Пусто     ", "В процессе", "Не требуется", "Готово"];
+const getBlocksUrl = 'http://172.18.130.45:5052/api/lessonblocks/';
+const postLessonUrl = 'http://172.18.130.45:5052/api/lessons/';
 
 export default class Editing extends Component {
     constructor(props) {
@@ -31,7 +36,9 @@ export default class Editing extends Component {
             ],
             id_lb: null,
             id_les: null,
-            lesson: [],
+            name_les: "",
+            lesson_info: [],
+            current_lesson: [],
             blocks: [],
             description: "",
             statuses: {},
@@ -39,10 +46,11 @@ export default class Editing extends Component {
             lessonState: true,
             buttonsState: true,
         }
+        this.getBlocks = this.getBlocks.bind(this);
     };
 
     componentDidMount() {
-        fetch('http://172.18.130.45:5052/api/lessonblocks/')
+        fetch(getBlocksUrl)
             .then((response) => {
                 console.log(response);
                 return response.json();
@@ -52,25 +60,53 @@ export default class Editing extends Component {
                 this.setState({ blocks: data });
             });
         if (this.props.location.state) {
-            //console.log(this.props.location.state);
-            let lesson= [];
+            let lesson_info = [];
             for (var i = 0; i < this.props.location.state.blocks.length; i++) {
                 if (this.props.location.state.blocks[i].id_lb === this.props.location.state.id_lb) {
-                    lesson = this.props.location.state.blocks[i].lesson;
+                    lesson_info = this.props.location.state.blocks[i].lesson_info;
+                }
+            }
+            let current_lesson = [];
+            for (var i = 0; i < lesson_info.length; i++) {
+                if (lesson_info[i].id_les === this.props.location.state.id_les) {
+                    current_lesson = lesson_info[i];
                 }
             }
             this.setState({
                 id_lb: this.props.location.state.id_lb,
                 id_les: this.props.location.state.id_les,
-                lesson: lesson,
+                lesson_info: lesson_info,
+                current_lesson: current_lesson,
                 buttonsState: false,
                 selectState: false,
                 lessonState: false,
-                buttonsState: false
+                emptyLessonState: true
             });
         };
-        //console.log(this.props.location.state.lesson);  
+        this.intervalGetBlocks = setInterval(this.getBlocks, 5000);
     }
+
+    async getBlocks() {
+        const response = await fetch(getBlocksUrl);
+        const blocks = await response.json();
+        console.log(blocks);
+        let lesson_info = [];
+        if (this.state.id_lb !== 0) {
+            for (var i = 0; i < blocks.length; i++) {
+                if (blocks[i].id_lb === this.state.id_lb) {
+                    lesson_info = blocks[i].lesson_info;
+                }
+            }
+        }
+        this.setState({
+            blocks: blocks,
+            lesson_info: lesson_info,
+          });
+      }
+    
+      componentWillUnmount = () => {
+        clearInterval(this.intervalGetBlocks);
+      };
 
     handleCallbackVideo = (propsVideos) => {
         let newLessons = this.state.lessons;
@@ -102,30 +138,29 @@ export default class Editing extends Component {
         this.setState({ lessons: newLessons });
     }
 
-    openLessonSelect = () => {
-        this.setState({
-            selectState: false
-        })
+    handleChange = (event) => {
+        this.setState({ [event.target.name]: event.target.value });
     }
 
-    /*openLesson = () => {
+    openLessonSelect = () => {
         this.setState({
-            lessonState: false
+            selectState: false,
+            emptyLessonState: true,
+            lessonState: true,
+            current_lesson: [],
         })
-    }*/
+        console.log(this.state.current_lesson);
+    }
 
     openEmptyLesson = () => {
         this.setState({
+            emptyLessonState: false,
             lessonState: false,
-            selectState: true
+            selectState: true,
+            current_lesson: [],
         })
+        console.log(this.state.current_lesson);
     }
-
-    /*openLessonButtons = () => {
-        this.setState({
-            buttonsState: false
-        })
-    }*/
 
     deleteLesson = () => {
 
@@ -134,35 +169,125 @@ export default class Editing extends Component {
     blockChange = (id_lb) => {
         console.log(id_lb);
         id_lb = parseInt(id_lb);
-        let lesson = [];
+        let lesson_info = [];
         let buttonsState = true;
         if (id_lb !== 0) {
             for (var i = 0; i < this.state.blocks.length; i++) {
-                if (this.state.blocks[i].id_lb === parseInt(id_lb)) {
-                    lesson = this.state.blocks[i].lesson;
+                if (this.state.blocks[i].id_lb === id_lb) {
+                    lesson_info = this.state.blocks[i].lesson_info;
                 }
             }
             buttonsState = false;
         }
         this.setState({
             id_lb: id_lb,
-            lesson: lesson,
+            id_les: null,
+            lesson_info: lesson_info,
+            current_lesson: [],
             buttonsState: buttonsState,
             lessonState: true,
+            emptyLessonState: true,
             selectState: true
         });
+        console.log(this.state.current_lesson);
     }
 
     lessonChange = (id_les) => {
         id_les = parseInt(id_les);
         let lessonState = true;
+        let current_lesson = [];
         if (id_les !== 0) {
+            for (var i = 0; i < this.state.lesson_info.length; i++) {
+                if (this.state.lesson_info[i].id_les === id_les) {
+                    current_lesson = this.state.lesson_info[i];
+                }
+            }
             lessonState = false;
         }
         this.setState({
             id_les: id_les,
             lessonState: lessonState,
+            current_lesson: current_lesson,
         });
+        console.log(this.state.current_lesson);
+    }
+
+    checkStatuses = () => {
+        console.log(this.state.dialogs);
+        let mistakes = 0;
+        for (var i = 0; i < this.state.lessons.length; i++) {
+            if (this.state.lessons[i].video.length + 0 === 0 && this.state.statuses.video_st !== statuses[0] && this.state.statuses.video_st !== "Не требуется") {
+                mistakes = mistakes + 1;
+                toast.error("Ошибка в заполнении статуса Видео.");
+            }
+            if ((this.state.lessons[i].video.length + 0 > 0) && (this.state.statuses.video_st === statuses[0] || this.state.statuses.video_st === "Не требуется" || this.state.statuses.video_st === "")) {
+                mistakes = mistakes + 1;
+                toast.error("Ошибка в заполнении статуса Видео.");
+            }
+            if ((this.state.lessons[i].leks.length + 0 === 0) && (this.state.statuses.leks_st !== statuses[0] && this.state.statuses.leks_st !== "Не требуется")) {
+                mistakes = mistakes + 1;
+                toast.error("Ошибка в заполнении статуса Буквы-слова.");
+            }
+            if ((this.state.lessons[i].leks.length + 0 > 0) && (this.state.statuses.leks_st === statuses[0] || this.state.statuses.leks_st === "Не требуется" || this.state.statuses.leks_st === "")) {
+                mistakes = mistakes + 1;
+                toast.error("Ошибка в заполнении статуса Буквы-слова.");
+            }
+            if ((this.state.lessons[i].phr.length + 0 === 0) && (this.state.statuses.phr_st !== statuses[0] && this.state.statuses.phr_st !== "Не требуется")) {
+                mistakes = mistakes + 1;
+                toast.error("Ошибка в заполнении статуса Фразы.");
+            }
+            if ((this.state.lessons[i].phr.length + 0 > 0) && (this.state.statuses.phr_st === statuses[0] || this.state.statuses.phr_st === "Не требуется" || this.state.statuses.phr_st === "")) {
+                mistakes = mistakes + 1;
+                toast.error("Ошибка в заполнении статуса Фразы.");
+            }
+            if ((this.state.lessons[i].dialog.length + 0 === 0) && (this.state.statuses.dialog_st !== statuses[0] && this.state.statuses.dialog_st !== "Не требуется")) {
+                mistakes = mistakes + 1;
+                toast.error("Ошибка в заполнении статуса Диалоги.");
+            }
+            if ((this.state.lessons[i].dialog.length + 0 > 0) && (this.state.statuses.dialog_st === statuses[0] || this.state.statuses.dialog_st === "Не требуется" || this.state.statuses.dialog_st === "")) {
+                mistakes = mistakes + 1;
+                toast.error("Ошибка в заполнении статуса Диалоги.");
+            }
+            if ((this.state.lessons[i].rules.length + 0 === 0) && (this.state.statuses.rules_st !== statuses[0] && this.state.statuses.rules_st !== "Не требуется")) {
+                mistakes = mistakes + 1;
+                toast.error("Ошибка в заполнении статуса Правила.");
+            }
+            if ((this.state.lessons[i].rules.length + 0 > 0) && (this.state.statuses.rules_st === statuses[0] || this.state.statuses.rules_st === "Не требуется" || this.state.statuses.rules_st === "")) {
+                mistakes = mistakes + 1;
+                toast.error("Ошибка в заполнении статуса Правила.");
+            }
+        }
+        if (mistakes === 0) {
+            this.handleSubmit();
+        }
+        else {
+            console.log(this.state.statuses.video_st);
+            //toast.error("Ошибки в заполнении статусов.");
+        }
+    }
+
+    handleSubmit = () => {
+        let data = {
+            name_les: this.state.name_les,
+            lessonblock: this.state.id_lb,
+            video: null,
+        }
+        console.log(data);
+        axios.post(postLessonUrl, JSON.stringify(data), {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        })
+            .then((response) => {
+                console.log(response);
+                if (response.status === 201) {
+                    toast.success("Урок успешно добавлен.");
+                }
+            }, (error) => {
+                console.log(error);
+                toast.error("Ошибка добавления урока.");
+            });
+
     }
 
     render() {
@@ -188,29 +313,29 @@ export default class Editing extends Component {
                                         <option value={obj.id_lb} key={obj.id_lb}>{obj.id_lb}</option>
                                     ))}
                                 </Input></Col>
-                            {/*<Col><button type="button" class="GreyButton" onClick={this.openLessonButtons}>Выбрать</button></Col>*/}
                         </FormGroup>
                     </Form>
                     <div row hidden={this.state.buttonsState}>
-                        <Button color={this.state.selectState === true ? "primary" : "secondary"} type="button" onClick={this.openEmptyLesson}>Новый урок</Button>
+                        <Button color={this.state.emptyLessonState === false ? "primary" : "secondary"} type="button" onClick={this.openEmptyLesson}>Новый урок</Button>
                         <Button color={this.state.selectState === false ? "primary" : "secondary"} type="button" onClick={this.openLessonSelect}>Выбрать урок</Button>
                     </div>
-                    <Form row hidden={this.state.selectState}>
-                        <FormGroup row>
-                            <Label sm={3}>Выберите номер урока:</Label>
-                            <Col sm={4}>
-                                <Input type="select" value={this.state.id_les ? this.state.id_les : "0"} onChange={(e) => this.lessonChange(e.target.value)}>
-                                    <option value={0} key={0}>Выберите урок</option>
-                                    {this.state.lesson.map((obj, j) => (
-                                        <option value={obj.id_les} key={obj.id_les}>{obj.id_les}</option>
-                                    ))}
-                                </Input></Col>
-                            {/*<Col><button type="button" class="GreyButton" onClick={this.openLesson}>Выбрать</button></Col>*/}
-                        </FormGroup>
-                    </Form>
+                    <div style={{ marginTop: "5%" }}>
+                        <Form row hidden={this.state.selectState}>
+                            <FormGroup row>
+                                <Label sm={3}>Выберите номер урока:</Label>
+                                <Col sm={4}>
+                                    <Input type="select" value={this.state.id_les ? this.state.id_les : "0"} onChange={(e) => this.lessonChange(e.target.value)}>
+                                        <option value={0} key={0}>Выберите урок</option>
+                                        {this.state.lesson_info.map((obj, j) => (
+                                            <option value={obj.id_les} key={obj.id_les}>{obj.id_les}</option>
+                                        ))}
+                                    </Input></Col>
+                            </FormGroup>
+                        </Form>
+                    </div>
                 </div>
                 <div hidden={this.state.lessonState}>
-                    <div style={{ marginTop: "7%", marginBottom: "5%" }}>
+                    {/*<div style={{ marginTop: "7%", marginBottom: "5%" }}>
                         <Form row>
                             <FormGroup row>
                                 <Label sm={2}>Название блока:</Label>
@@ -218,7 +343,7 @@ export default class Editing extends Component {
                                 <Col><button type="button" class="GreyButton">Изменить</button></Col>
                             </FormGroup>
                         </Form>
-                    </div>
+                                    </div>*/}
                     <div style={{ marginTop: "7%" }}>
                         <button disabled class="GreyBox">Урок 1</button>
                         {/*<div style={{ marginTop: "5%", marginLeft: "3%" }}>
@@ -255,6 +380,16 @@ export default class Editing extends Component {
                                 </FormGroup>
                             </List>
         </div>*/}
+                        <div style={{ marginTop: "5%", marginBottom: "5%" }}>
+                            <Form row="true">
+                                <FormGroup row>
+                                    <Label sm={2}>Название урока:</Label>
+                                    <Col sm={4}>
+                                        <Input type="text" name="name_les" value={this.state.name_les} onChange={this.handleChange}></Input>
+                                    </Col>
+                                </FormGroup>
+                            </Form>
+                        </div>
                         <div style={{ marginTop: "5%", marginLeft: "3%", width: "90%" }} >
                             <nav>
                                 <div class="nav nav-pills" id="myTab" role="tablist">
@@ -270,7 +405,7 @@ export default class Editing extends Component {
                                     <Videos video={Object.assign(this.state.lessons[0].video)} parentCallback={this.handleCallbackVideo} />
                                 </div>
                                 <div class="tab-pane fade" id="letter" role="tabpanel" aria-labelledby="letter-tab">
-                                    <Vocabulary leks={Object.assign(this.state.lessons[0].leks)} parentCallback={this.handleCallbackVoc} />
+                                    <Vocabulary leks={Object.assign(this.state.lessons[0].leks)} lexemes={this.state.lexemes} parentCallback={this.handleCallbackVoc} />
                                 </div>
                                 <div class="tab-pane fade" id="rule" role="tabpanel" aria-labelledby="rule-tab">
                                     <Rules rule={Object.assign(this.state.lessons[0].rules)} parentCallback={this.handleCallbackRule} />
@@ -300,9 +435,10 @@ export default class Editing extends Component {
                     </div>
                     <div style={{ marginTop: "5%" }}>
                         <button type="button" class="Cancel" disabled>Отменить</button>
-                        <button type="button" class="Save" disabled>Сохранить изменения</button>
+                        <button type="button" class="Save" onClick={this.checkStatuses}>Сохранить изменения</button>
                     </div>
                 </div>
+                <Toaster position="bottom-right" />
             </div>
         )
     }

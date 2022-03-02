@@ -1,7 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { React, Component } from 'react';
-import { FormGroup, Badge, Col, List, Label } from "reactstrap";
+import { FormGroup, Badge, Col, List, Label, Spinner } from "reactstrap";
 import { Link, Redirect } from 'react-router-dom';
 import CustomNavbar from './Navbar';
 import Editing from './Editing';
@@ -12,25 +12,44 @@ const BadgePills = {
   padding: "1% 5% 1% 5%"
 }
 const statuses = ["Пусто     ", "В процессе", "Не требуется", "Готово"];
+const getBlocksUrl = 'http://172.18.130.45:5052/api/lessonblocks/';
+
 export default class Cabinet extends Component {
   constructor() {
     super();
     this.state = {
       blocks: null
     }
+    this.getBlocks = this.getBlocks.bind(this);
   };
 
   componentDidMount() {
-    fetch('http://172.18.130.45:5052/api/lessonblocks/')
+    fetch(getBlocksUrl)
       .then((response) => {
         console.log(response);
         return response.json();
-    }) 
+      })
       .then((data) => {
         console.log(data);
-        this.setState({blocks: data});
+        this.setState({
+          blocks: data
+        });
       })
+    this.intervalGetBlocks = setInterval(this.getBlocks, 5000);
   }
+
+  async getBlocks() {
+    const response = await fetch(getBlocksUrl);
+    const blocks = await response.json();
+    console.log(blocks);
+    this.setState({
+      blocks: blocks
+    });
+  }
+
+  componentWillUnmount = () => {
+    clearInterval(this.intervalGetBlocks);
+  };
 
   render() {
     return (
@@ -45,7 +64,8 @@ export default class Cabinet extends Component {
           </nav>
         </div>
         <div class="accordion" id="accordion" style={{ marginTop: "5%" }}>
-          {this.state.blocks === null ? <p>данные загружаются</p> : this.state.blocks.map((obj_b, i) => (
+          {this.state.blocks === null ? 
+          <div class="CenterContainer"><Spinner color="secondary"/></div> : this.state.blocks.map((obj_b, i) => (
             <div class="accordion-item">
               <h2 class="accordion-header" id="heading">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseArea" aria-expanded="false" aria-controls="collapseArea">
@@ -54,13 +74,14 @@ export default class Cabinet extends Component {
               </h2>
               <div id="collapseArea" class="accordion-collapse collapse" aria-labelledby="heading" data-bs-parent="#accordionExample">
                 <div class="accordion-body">
-                  {obj_b.lesson.map((obj_l, j) => (
+                  {obj_b.lesson_info.map((obj_l, j) => (
                     <div class="LessonDiv">
                       <button disabled class="GreyBox">Урок {obj_l.id_les}: {obj_l.name_les}</button>
                       <div style={{ marginTop: "5%" }}>
                         <Link to={{
                           pathname: "/editing",
-                          state: { id_lb: obj_b.id_lb, id_les: obj_l.id_les, blocks: this.state.blocks }}}>
+                          state: { id_lb: obj_b.id_lb, id_les: obj_l.id_les, blocks: this.state.blocks }
+                        }}>
                           <button type="button" class="EditLesson">
                             Редактировать урок</button></Link>
                         <button class="ViewLesson">Предпросмотр</button>
