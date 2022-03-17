@@ -12,8 +12,8 @@ export default class Videos extends Component {
             video_link: "",
         }
         this.handleChange = this.handleChange.bind(this);
-        this.addNewVideo = this.addNewVideo.bind(this);
-        this.showCurrentVideo = this.showCurrentVideo.bind(this);
+        //this.addNewVideo = this.addNewVideo.bind(this);
+        //this.showCurrentVideo = this.showCurrentVideo.bind(this);
     }
 
     handleChange(event) {
@@ -30,7 +30,7 @@ export default class Videos extends Component {
         this.passPropsToParent();
     }
 
-    addNewVideo() {
+    /*addNewVideo() {
         let newVideo = { id: this.state.video.length, video_link: ""};
         let video = this.state.video;
         video[newVideo.id] = newVideo;
@@ -38,17 +38,17 @@ export default class Videos extends Component {
             video: video,
         });
         this.passPropsToParent();
-    }
+    }*/
 
-    showCurrentVideo(id) {
+    /*showCurrentVideo(id) {
         this.setState({
             current_video: this.state.video[id],
             video_link: this.state.video[id].video_link,
         });
         this.passPropsToParent();
-    }
+    }*/
 
-    deleteElement = (id) => {
+    /*deleteElement = (id) => {
         let video = this.state.video;
         video.splice(id, 1);
         for (var i = 0; i < video.length; i++) {
@@ -60,7 +60,7 @@ export default class Videos extends Component {
             current_video: newVideo,
         });
         this.passPropsToParent();
-    }
+    }*/
 
     passPropsToParent() {
         this.props.parentCallback(this.state.video);
@@ -69,22 +69,22 @@ export default class Videos extends Component {
 
     render() {
         return (
-            <div class="row" style={{ marginBottom: "3%" }}>
-                <div class="col-sm-3" style={{ marginTop: "1%", overflowY: "scroll", minHeight: "5px", height: "300px" }}>
+            <div class="row" style={{ marginTop: "3%", marginBottom: "3%" }}>
+                {/*<div class="col-sm-3" style={{ marginTop: "1%", overflowY: "scroll", minHeight: "5px", height: "300px" }}>
                     <Col sm={10}>
                         <Button style={{ width: "190px" }} onClick={() => this.addNewVideo()}>Добавить</Button>
                         {this.state.video.map((obj, i) =>
                             <Button key={i} style={{ width: "190px" }} color={this.state.current_video.id === i ? "primary" : "secondary"} onClick={() => this.showCurrentVideo(i)}>Видео {i + 1}</Button>)}
                     </Col>
-                </div>
-                {this.state.video.length === 0 || this.state.current_video.id === null ? <div></div> :
+                        </div>*/}
+                {/*{this.state.video.length === 0 || this.state.current_video.id === null ? <div></div> :
                     <div class="col" style={{ marginTop: "1%" }}>
-                        <Button color="danger" onClick={() => this.deleteElement(this.state.current_video.id)}>Удалить</Button>
+                <Button color="danger" onClick={() => this.deleteElement(this.state.current_video.id)}>Удалить</Button>*/}
                         <Form>
                             <Label>Ссылка на видео:</Label>
                             <Input type="textarea" rows="3" name="video_link" value={this.state.video_link} onChange={this.handleChange}></Input>
                         </Form>
-                    </div>}
+                    {/*</div>}*/}
             </div>)
     }
 }

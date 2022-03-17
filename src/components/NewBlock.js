@@ -301,13 +301,13 @@ export default class NewBlock extends Component {
                                         <Vocabulary leks={Object.assign(this.state.lessons[0].leks)} lexemes={this.state.lexemes} parentCallback={this.handleCallbackVoc} />
                                     </div>
                                     <div className="tab-pane fade" id="rule" role="tabpanel" aria-labelledby="rule-tab">
-                                        <Rules rule={Object.assign(this.state.lessons[0].rules)} parentCallback={this.handleCallbackRule} />
+                                        <Rules rule={Object.assign(this.state.lessons[0].rules)} lexemes={this.state.lexemes}  parentCallback={this.handleCallbackRule} />
                                     </div>
                                     <div className="tab-pane fade" id="phrase" role="tabpanel" aria-labelledby="phrase-tab">
-                                        <Phrases phr={Object.assign(this.state.lessons[0].phr)} parentCallback={this.handleCallbackPhr} />
+                                        <Phrases phr={Object.assign(this.state.lessons[0].phr)} lexemes={this.state.lexemes}  parentCallback={this.handleCallbackPhr} />
                                     </div>
                                     <div className="tab-pane fade" id="dialog" role="tabpanel" aria-labelledby="dialog-tab">
-                                        <Dialogs dialog={Object.assign(this.state.lessons[0].dialog)} parentCallback={this.handleCallbackDialog} />
+                                        <Dialogs dialog={Object.assign(this.state.lessons[0].dialog)} lexemes={this.state.lexemes}  parentCallback={this.handleCallbackDialog} />
                                     </div>
                                 </div>
                             </div>
