@@ -2,6 +2,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { React, Component } from 'react';
 import { Button, Col, Form, Input, Label, UncontrolledPopover, PopoverBody } from "reactstrap";
+import Select from 'react-select';
 import '../style.css';
 import model_word from "../static/tips/model_word.jpg";
 import model_consonant from "../static/tips/model_consonant.jpg";
@@ -13,197 +14,268 @@ import leks_insert_letter from "../static/tips/leks_insert_letter.jpg";
 import leks_insert_letters from "../static/tips/leks_insert_letters.jpg";
 import leks_create_word from "../static/tips/leks_create_word.jpg";
 
+
+const numbers = [
+    { value: 1, label: "1" },
+    { value: 2, label: "2" },
+    { value: 3, label: "3" },
+    { value: 4, label: "4" },
+    { value: 5, label: "5" },
+    { value: 6, label: "6" },
+    { value: 7, label: "7" },
+    { value: 8, label: "8" },
+    { value: 9, label: "9" },
+    { value: 10, label: "10" }];
+
 export default class Vocabulary extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            leks: this.props.leks,
-            current_leks: { id: null, leks_type: 0 },
-            number: "",
-            numbers: "",
-            letters: "",
-            id_lexeme: "",
-            id_lexeme_2: "",
-            id_lexeme_3: "",
-            id_lexeme_4: "",
-            lexemes: this.props.lexemes,
+            lex: [],
+            lexemes: [],
+            current_lex: { id: null, type_ex: 0, id_ex: 0 },
+            id_lex: "",
+            vl_lex: "",
+            id_miss: "",
+            vl_miss: "",
+            id_variant: "",
+            vl_variant: "",
+            options: [],
+            options_letters: []
         }
-        this.handleChange = this.handleChange.bind(this);
-        this.addNewLeks = this.addNewLeks.bind(this);
-        this.showCurrentLeks = this.showCurrentLeks.bind(this);
-        this.getSelectedTypeLeks = this.getSelectedTypeLeks.bind(this);
     }
 
     componentDidMount() {
-        console.log(this.props);
+        let options = [];
+        let options_letters = [];
+        for (var i = 0; i < this.props.lexemes.length; i++) {
+            options.push({ value: this.props.lexemes[i].id_lex, label: this.props.lexemes[i].mean_lex });
+            if (this.props.lexemes[i].type === "буква") {
+                options_letters.push({ value: this.props.lexemes[i].id_lex, label: this.props.lexemes[i].mean_lex })
+            }
+        }
+
+        this.setState({
+            lex: this.props.lex,
+            lexemes: this.props.lexemes,
+            options: options,
+            options_letters: options_letters
+        });
     }
 
-    handleChange(event) {
-        let newLeks = { ...this.state.current_leks, [event.target.name]: event.target.value };
-        let leks = this.state.leks;
-        leks[newLeks.id] = newLeks;
+    handleChange = (event) => {
+        let newLex = { ...this.state.current_lex, [event.target.name]: event.target.value };
+        let lex = this.state.lex;
+        lex[newLex.id] = newLex;
         this.setState({
-            current_leks: newLeks,
-            leks: leks,
+            current_lex: newLex,
+            lex: lex,
             [event.target.name]: event.target.value
         });
         this.passPropsToParent();
     }
 
-    addNewLeks() {
-        let newLeks = { id: this.state.leks.length, leks_type: 0 };
-        let leks = this.state.leks;
-        leks[newLeks.id] = newLeks;
+    handleChangeOrder = (event) => {
+        let newLex = { ...this.state.current_lex, id_ex: event.target.value };
+        let lex = this.state.lex;
+        lex[newLex.id] = newLex;
         this.setState({
-            leks: leks,
+            current_lex: newLex,
+            lex: lex,
         });
         this.passPropsToParent();
     }
 
-    showCurrentLeks(id) {
-        console.log(id);
-        //console.log(document.getAttribute("data-key"));
-        switch (this.state.leks[id].leks_type) {
+    handleChangeMultiple = (event) => {
+        let id_lex = [];
+        for (var i = 0; i < event.length; i++) {
+            id_lex.push(event[i].value)
+        }
+        console.log(id_lex);
+        let newLex = { ...this.state.current_lex, id_lex: id_lex, vl_lex: event };
+        let lex = this.state.lex;
+        lex[newLex.id] = newLex;
+        this.setState({
+            current_lex: newLex,
+            lex: lex,
+            vl_lex: event,
+            id_lex: id_lex
+        });
+        this.passPropsToParent();
+    }
+
+    handleChangeMultipleNum = (event) => {
+        let id_miss = [];
+        let vl_miss = [];
+        if (typeof (event.value) === "number") {
+            id_miss.push(event.value);
+            vl_miss = [event];
+        }
+        else {
+            for (var i = 0; i < event.length; i++) {
+                id_miss.push(event[i].value);
+                vl_miss.push(event[i]);
+            }
+        }
+        console.log(id_miss);
+        let newLex = { ...this.state.current_lex, id_miss: id_miss, vl_miss: vl_miss };
+        let lex = this.state.lex;
+        lex[newLex.id] = newLex;
+        this.setState({
+            current_lex: newLex,
+            lex: lex,
+            vl_miss: vl_miss,
+            id_miss: id_miss
+        });
+        this.passPropsToParent();
+    }
+
+    handleChangeMultipleVar = (event) => {
+        let id_variant = [];
+        for (var i = 0; i < event.length; i++) {
+            id_variant.push(event[i].value)
+        }
+        console.log(id_variant);
+        let newLex = { ...this.state.current_lex, id_variant: id_variant, vl_variant: event };
+        let lex = this.state.lex;
+        lex[newLex.id] = newLex;
+        this.setState({
+            current_lex: newLex,
+            lex: lex,
+            vl_variant: event,
+            id_variant: id_variant
+        });
+        this.passPropsToParent();
+    }
+
+    addNewLex = () => {
+        let newLex = { id: this.state.lex.length, type_ex: 0, id_ex: 0 };
+        let lex = this.state.lex;
+        lex[newLex.id] = newLex;
+        this.setState({
+            lex: lex,
+        });
+        this.passPropsToParent();
+    }
+
+    showCurrentLex = (id) => {
+        switch (this.state.lex[id].type_ex) {
             case 0:
                 this.setState({
-                    current_leks: this.state.leks[id],
+                    current_lex: this.state.lex[id],
                 });
                 break;
-            
             case 14:
-                this.setState({
-                    current_leks: this.state.leks[id],
-                    id_lexeme: this.state.leks[id].id_lexeme ? this.state.leks[id].id_lexeme : "",
-                    id_lexeme_2: this.state.leks[id].id_lexeme_2 ? this.state.leks[id].id_lexeme_2 : "",
-                    id_lexeme_3: this.state.leks[id].id_lexeme_3 ? this.state.leks[id].id_lexeme_3 : "",
-                });
-                break;
             case 3:
+            case 1:
+            case 18:
                 this.setState({
-                    current_leks: this.state.leks[id],
-                    id_lexeme: this.state.leks[id].id_lexeme ? this.state.leks[id].id_lexeme : "",
+                    current_lex: this.state.lex[id],
+                    id_lex: this.state.lex[id].id_lex ? this.state.lex[id].id_lex : "",
                 });
                 break;
             case 2:
-                this.setState({
-                    current_leks: this.state.leks[id],
-                    id_lexeme: this.state.leks[id].id_lexeme ? this.state.leks[id].id_lexeme : "",
-                    id_lexeme_2: this.state.leks[id].id_lexeme_2 ? this.state.leks[id].id_lexeme_2 : "",
-                });
-                break;
-            case 1:
-                this.setState({
-                    current_leks: this.state.leks[id],
-                    id_lexeme: this.state.leks[id].id_lexeme ? this.state.leks[id].id_lexeme : "",
-                });
-                break;
-            case 18:
-                this.setState({
-                    current_leks: this.state.leks[id],
-                    id_lexeme: this.state.leks[id].id_lexeme ? this.state.leks[id].id_lexeme : "",
-                });
-                break;
             case 7:
                 this.setState({
-                    current_leks: this.state.leks[id],
-                    id_lexeme: this.state.leks[id].id_lexeme ? this.state.leks[id].id_lexeme : "",
-                    id_lexeme_2: this.state.leks[id].id_lexeme_2 ? this.state.leks[id].id_lexeme_2 : "",
-                    id_lexeme_3: this.state.leks[id].id_lexeme_3 ? this.state.leks[id].id_lexeme_3 : "",
-                    id_lexeme_4: this.state.leks[id].id_lexeme_4 ? this.state.leks[id].id_lexeme_4 : "",
+                    current_lex: this.state.lex[id],
+                    id_lex: this.state.lex[id].id_lex ? this.state.lex[id].id_lex : "",
+                    vl_lex: this.state.lex[id].vl_lex ? this.state.lex[id].vl_lex : "",
                 });
                 break;
             case 5:
                 this.setState({
-                    current_leks: this.state.leks[id],
-                    id_lexeme: this.state.leks[id].id_lexeme ? this.state.leks[id].id_lexeme : "",
-                    number: this.state.leks[id].number ? this.state.leks[id].number : "",
-                    letters: this.state.leks[id].letters ? this.state.leks[id].letters : "",
+                    current_lex: this.state.lex[id],
+                    id_lex: this.state.lex[id].id_lex ? this.state.lex[id].id_lex : "",
+                    id_miss: this.state.lex[id].id_miss ? this.state.lex[id].id_miss : "",
+                    vl_miss: this.state.lex[id].vl_miss ? this.state.lex[id].vl_miss : "",
+                    id_variant: this.state.lex[id].id_variant ? this.state.lex[id].id_variant : "",
+                    vl_variant: this.state.lex[id].vl_variant ? this.state.lex[id].vl_variant : "",
                 });
                 break;
             case 15:
                 this.setState({
-                    current_leks: this.state.leks[id],
-                    id_lexeme: this.state.leks[id].id_lexeme ? this.state.leks[id].id_lexeme : "",
-                    numbers: this.state.leks[id].numbers ? this.state.leks[id].numbers : "",
-                    letters: this.state.leks[id].letters ? this.state.leks[id].letters : "",
+                    current_lex: this.state.lex[id],
+                    id_lex: this.state.lex[id].id_lex ? this.state.lex[id].id_lex : "",
+                    id_miss: this.state.lex[id].id_miss ? this.state.lex[id].id_miss : "",
+                    vl_miss: this.state.lex[id].vl_miss ? this.state.lex[id].vl_miss : "",
+                    id_variant: this.state.lex[id].id_variant ? this.state.lex[id].id_variant : "",
+                    vl_variant: this.state.lex[id].vl_variant ? this.state.lex[id].vl_variant : "",
                 });
                 break;
             case 6:
                 this.setState({
-                    current_leks: this.state.leks[id],
-                    id_lexeme: this.state.leks[id].id_lexeme ? this.state.leks[id].id_lexeme : "",
-                    letters: this.state.leks[id].letters ? this.state.leks[id].letters : "",
+                    current_lex: this.state.lex[id],
+                    id_lex: this.state.lex[id].id_lex ? this.state.lex[id].id_lex : "",
+                    id_variant: this.state.lex[id].id_variant ? this.state.lex[id].id_variant : "",
+                    vl_variant: this.state.lex[id].vl_variant ? this.state.lex[id].vl_variant : "",
                 });
                 break;
         }
     }
 
-    getSelectedTypeLeks(event) {
-        let leks_type = parseInt(event.target.value);
-        let newLeks = { id: this.state.current_leks.id, leks_type: leks_type };
-        let leks = this.state.leks;
-        leks[newLeks.id] = newLeks;
+    getSelectedTypeLex = (event) => {
+        let type_ex = parseInt(event.target.value);
+        let newLex = { id: this.state.current_lex.id, type_ex: type_ex, id_ex: 0 };
+        let lex = this.state.lex;
+        lex[newLex.id] = newLex;
         this.setState({
-            current_leks: newLeks,
-            leks: leks,
-            number: "",
-            numbers: "",
-            letters: "",
-            id_lexeme: "",
-            id_lexeme_2: "",
-            id_lexeme_3: "",
-            id_lexeme_4: "",
+            current_lex: newLex,
+            lex: lex,
+            id_miss: "",
+            vl_miss: "",
+            id_variant: "",
+            vl_variant: "",
+            id_lex: "",
+            vl_lex: ""
         });
         this.passPropsToParent();
     }
 
     getSelectedLexemeId = (event) => {
-        console.log(parseInt(event.target.value));
-        console.log()
-        let id_lexeme = parseInt(event.target.value);
-        let newLeks = { ...this.state.current_leks, [event.target.name]: id_lexeme };
-        let leks = this.state.leks;
-        leks[newLeks.id] = newLeks;
+        let id_lex = parseInt(event.target.value);
+        let newLex = { ...this.state.current_lex, [event.target.name]: id_lex };
+        let lex = this.state.lex;
+        lex[newLex.id] = newLex;
         this.setState({
-            current_leks: newLeks,
-            leks: leks,
-            [event.target.name]: id_lexeme
+            current_lex: newLex,
+            lex: lex,
+            [event.target.name]: id_lex
         });
         this.passPropsToParent();
     }
 
     deleteElement = (id) => {
-        let leks = this.state.leks;
-        leks.splice(id, 1);
-        for (var i = 0; i < leks.length; i++) {
-            leks[i].id = i;
+        let lex = this.state.lex;
+        lex.splice(id, 1);
+        for (var i = 0; i < lex.length; i++) {
+            lex[i].id = i;
         }
-        let newLeks = { id: null, leks_type: 0 };
+        let newLex = { id: null, type_ex: 0, id_ex: 0 };
         this.setState({
-            leks: leks,
-            current_leks: newLeks
+            lex: lex,
+            current_lex: newLex
         });
         this.passPropsToParent();
     }
 
     passPropsToParent() {
-        this.props.parentCallback(this.state.leks);
+        this.props.parentCallback(this.state.lex);
     }
 
     render() {
         return (
             <div className="row" style={{ marginBottom: "3%" }}>
-                <div className="col-sm-3" style={{ marginTop: "1%", overflowY: "scroll", minHeight: "5px", height: "350px" }}>
+                <div className="col-sm-3" style={{ marginTop: "1%", overflowY: "scroll", minHeight: "5px", height: "450px" }}>
                     <Col sm={12}>
-                        <Button style={{ width: "190px" }} onClick={this.addNewLeks}>Добавить</Button>
-                        {this.state.leks.map((obj, i) =>
-                            <Button style={{ width: "190px" }} key={i} color={this.state.current_leks.id === i ? "primary" : "secondary"} onClick={() => this.showCurrentLeks(i)}>Буквы-слова {i + 1}</Button>)}
+                        <Button style={{ width: "190px" }} onClick={this.addNewLex}>Добавить</Button>
+                        {this.state.lex.map((obj, i) =>
+                            <Button style={{ width: "190px" }} key={i} color={this.state.current_lex.id === i ? "primary" : "secondary"} onClick={() => this.showCurrentLex(i)}>Буквы-слова {i + 1}</Button>)}
                     </Col>
                 </div>
-                {this.state.leks.length === 0 || this.state.current_leks.id === null ? <div></div> :
+                {this.state.lex.length === 0 || this.state.current_lex.id === null ? <div></div> :
                     <div className="col" style={{ marginTop: "1%", width: "500px" }}>
                         <Form>
-                            <select className="form-select" style={{ marginBottom: "20px" }} value={this.state.current_leks.leks_type} onChange={this.getSelectedTypeLeks}>
+                            <select className="form-select" style={{ marginBottom: "20px" }} value={this.state.current_lex.type_ex} onChange={this.getSelectedTypeLex}>
                                 <option value={0}>Выберите тип</option>
                                 <option value={14}>Моделирование гласной</option>
                                 <option value={3}>Моделирование согласной</option>
@@ -215,229 +287,350 @@ export default class Vocabulary extends Component {
                                 <option value={15}>Задание на выбор букв</option>
                                 <option value={6}>Задание на составление слова</option>
                             </select>
-                            <Button color="danger" onClick={() => this.deleteElement(this.state.current_leks.id)}>Удалить</Button>
-                            {this.state.current_leks.leks_type === 0 ? <div></div> :
-                                this.state.current_leks.leks_type === 14 ?
-                                        <div>
-                                            <div style={{ paddingLeft: "530px", paddingBottom: "10px" }}>
-                                                <Button id="Popover2" type="button">Подсказка</Button>
-                                                <UncontrolledPopover placement="right" target="Popover2" trigger="focus">
-                                                    <PopoverBody row="true">
-                                                        <img id="1" style={{ height: "150px", width: "150px" }} src={model_vowel} alt="" />
-                                                        <img id="2" style={{ height: "150px", width: "150px" }} src={model_vowel_2} alt="" />
-                                                    </PopoverBody>
-                                                </UncontrolledPopover>
-                                            </div>
-                                            <select className="form-select" style={{ marginBottom: "20px" }} name="id_lexeme" value={this.state.id_lexeme} onChange={this.getSelectedLexemeId}>
-                                                <option value={0}>Выберите лексему</option>
-                                                {this.state.lexemes.map((obj, i) =>
-                                                    <option value={obj.id_lex}>{obj.mean_lex}</option>
-                                                )}
-                                            </select>
-                                            <select className="form-select" style={{ marginBottom: "20px" }} name="id_lexeme_2" value={this.state.id_lexeme_2} onChange={this.getSelectedLexemeId}>
-                                                <option value={0}>Выберите лексему</option>
-                                                {this.state.lexemes.map((obj, i) =>
-                                                    <option value={obj.id_lex}>{obj.mean_lex}</option>
-                                                )}
-                                            </select>
-                                            <select className="form-select" style={{ marginBottom: "20px" }} name="id_lexeme_3" value={this.state.id_lexeme_3} onChange={this.getSelectedLexemeId}>
-                                                <option value={0}>Выберите лексему</option>
-                                                {this.state.lexemes.map((obj, i) =>
-                                                    <option value={obj.id_lex}>{obj.mean_lex}</option>
-                                                )}
-                                            </select>
-                                        </div> :
-                                        this.state.current_leks.leks_type === 3 ?
-                                            <div>
-                                                <div style={{ paddingLeft: "530px", paddingBottom: "10px" }}>
-                                                    <Button id="Popover2" type="button">Подсказка</Button>
-                                                    <UncontrolledPopover placement="right" target="Popover2" trigger="focus">
-                                                        <PopoverBody>
-                                                            <img id="1" style={{ height: "150px", width: "150px" }} src={model_consonant} alt="" />
-                                                        </PopoverBody>
-                                                    </UncontrolledPopover>
-                                                </div>
-                                                <select className="form-select" style={{ marginBottom: "20px" }} name="id_lexeme" value={this.state.id_lexeme} onChange={this.getSelectedLexemeId}>
+                            <Button color="danger" onClick={() => this.deleteElement(this.state.current_lex.id)}>Удалить</Button>
+                            {this.state.current_lex.type_ex === 0 ? <div></div> :
+                                this.state.current_lex.type_ex === 14 ?
+                                    <div>
+                                        <div style={{ paddingLeft: "530px", paddingBottom: "10px" }}>
+                                            <Button id="Popover2" type="button">Подсказка</Button>
+                                            <UncontrolledPopover placement="right" target="Popover2" trigger="focus">
+                                                <PopoverBody row="true">
+                                                    <img id="1" style={{ height: "150px", width: "150px" }} src={model_vowel} alt="" />
+                                                    <img id="2" style={{ height: "150px", width: "150px" }} src={model_vowel_2} alt="" />
+                                                </PopoverBody>
+                                            </UncontrolledPopover>
+                                        </div>
+                                        <div className="row StructureFields">
+                                            <Label sm={3}>Номер в уроке:</Label>
+                                            <Col sm={2}>
+                                                <Input type="number" name="id_ex" value={this.state.current_lex.id_ex} onChange={this.handleChangeOrder}></Input>
+                                            </Col>
+                                        </div>
+                                        <div className="row StructureFields" style={{ marginTop: "20px" }}>
+                                            <Label sm={2}>Лексема:</Label>
+                                            <Col sm={10}>
+                                                <select className="form-select" name="id_lex" value={this.state.id_lex} onChange={this.getSelectedLexemeId}>
                                                     <option value={0}>Выберите лексему</option>
                                                     {this.state.lexemes.map((obj, i) =>
                                                         <option value={obj.id_lex}>{obj.mean_lex}</option>
                                                     )}
                                                 </select>
+                                            </Col>
+                                        </div>
+                                    </div> :
+                                    this.state.current_lex.type_ex === 3 ?
+                                        <div>
+                                            <div style={{ paddingLeft: "530px", paddingBottom: "10px" }}>
+                                                <Button id="Popover2" type="button">Подсказка</Button>
+                                                <UncontrolledPopover placement="right" target="Popover2" trigger="focus">
+                                                    <PopoverBody>
+                                                        <img id="1" style={{ height: "150px", width: "150px" }} src={model_consonant} alt="" />
+                                                    </PopoverBody>
+                                                </UncontrolledPopover>
+                                            </div>
+                                            <div className="row StructureFields">
+                                                <Label sm={3}>Номер в уроке:</Label>
+                                                <Col sm={2}>
+                                                    <Input type="number" name="id_ex" value={this.state.current_lex.id_ex} onChange={this.handleChangeOrder}></Input>
+                                                </Col>
+                                            </div>
+                                            <div className="row StructureFields" style={{ marginTop: "20px" }}>
+                                                <Label sm={2}>Лексема:</Label>
+                                                <Col sm={10}>
+                                                    <select className="form-select" name="id_lex" value={this.state.id_lex} onChange={this.getSelectedLexemeId}>
+                                                        <option value={0}>Выберите лексему</option>
+                                                        {this.state.lexemes.map((obj, i) =>
+                                                            <option value={obj.id_lex}>{obj.mean_lex}</option>
+                                                        )}
+                                                    </select>
+                                                </Col>
+                                            </div>
+                                        </div> :
+                                        this.state.current_lex.type_ex === 2 ?
+                                            <div>
+                                                <div style={{ paddingLeft: "530px", paddingBottom: "10px" }}>
+                                                    <Button id="Popover3" type="button">Подсказка</Button>
+                                                    <UncontrolledPopover placement="right" target="Popover3" trigger="focus">
+                                                        <PopoverBody>
+                                                            <img id="1" style={{ height: "150px", width: "150px" }} src={model_syllable} alt="" />
+                                                        </PopoverBody>
+                                                    </UncontrolledPopover>
+                                                </div>
+                                                <div className="row StructureFields">
+                                                    <Label sm={3}>Номер в уроке:</Label>
+                                                    <Col sm={2}>
+                                                        <Input type="number" name="id_ex" value={this.state.current_lex.id_ex} onChange={this.handleChangeOrder}></Input>
+                                                    </Col>
+                                                </div>
+                                                <div className="row StructureFields" style={{ marginTop: "20px" }}>
+                                                    <Label sm={2}>Лексемы:</Label>
+                                                    <Col sm={10}>
+                                                        <Select
+                                                            options={this.state.options}
+                                                            isMulti
+                                                            name="colors"
+                                                            value={this.state.vl_lex}
+                                                            className="basic-multi-select"
+                                                            classNamePrefix="select"
+                                                            onChange={this.handleChangeMultiple}
+                                                            placeholder="Выберите лексемы"
+                                                        />
+                                                    </Col>
+                                                </div>
                                             </div> :
-                                            this.state.current_leks.leks_type === 2 ?
+                                            this.state.current_lex.type_ex === 1 ?
                                                 <div>
                                                     <div style={{ paddingLeft: "530px", paddingBottom: "10px" }}>
-                                                        <Button id="Popover3" type="button">Подсказка</Button>
-                                                        <UncontrolledPopover placement="right" target="Popover3" trigger="focus">
+                                                        <Button id="Popover4" type="button">Подсказка</Button>
+                                                        <UncontrolledPopover placement="right" target="Popover4" trigger="focus">
                                                             <PopoverBody>
-                                                                <img id="1" style={{ height: "150px", width: "150px" }} src={model_syllable} alt="" />
+                                                                <img id="1" style={{ height: "150px", width: "150px" }} src={model_word} alt="" />
                                                             </PopoverBody>
                                                         </UncontrolledPopover>
                                                     </div>
-                                                    <select className="form-select" style={{ marginBottom: "20px" }} name="id_lexeme" value={this.state.id_lexeme} onChange={this.getSelectedLexemeId}>
-                                                        <option value={0}>Выберите лексему</option>
-                                                        {this.state.lexemes.map((obj, i) =>
-                                                            <option value={obj.id_lex}>{obj.mean_lex}</option>
-                                                        )}
-                                                    </select>
-                                                    <select className="form-select" style={{ marginBottom: "20px" }} name="id_lexeme_2" value={this.state.id_lexeme_2} onChange={this.getSelectedLexemeId}>
-                                                        <option value={0}>Выберите лексему</option>
-                                                        {this.state.lexemes.map((obj, i) =>
-                                                            <option value={obj.id_lex}>{obj.mean_lex}</option>
-                                                        )}
-                                                    </select>
-                                                </div> :
-                                                this.state.current_leks.leks_type === 1 ?
-                                                    <div>
-                                                        <div style={{ paddingLeft: "530px", paddingBottom: "10px" }}>
-                                                            <Button id="Popover4" type="button">Подсказка</Button>
-                                                            <UncontrolledPopover placement="right" target="Popover4" trigger="focus">
-                                                                <PopoverBody>
-                                                                    <img id="1" style={{ height: "150px", width: "150px" }} src={model_word} alt="" />
-                                                                </PopoverBody>
-                                                            </UncontrolledPopover>
-                                                        </div>
-                                                        <select className="form-select" style={{ marginBottom: "20px" }} name="id_lexeme" value={this.state.id_lexeme} onChange={this.getSelectedLexemeId}>
-                                                            <option value={0}>Выберите лексему</option>
-                                                            {this.state.lexemes.map((obj, i) =>
-                                                                <option value={obj.id_lex}>{obj.mean_lex}</option>
-                                                            )}
-                                                        </select>
-                                                    </div> :
-                                                    this.state.current_leks.leks_type === 18 ?
-                                                        <div>
-                                                            <div style={{ paddingLeft: "530px", paddingBottom: "10px" }}>
-                                                                <Button id="Popover5" type="button">Подсказка</Button>
-                                                                <UncontrolledPopover placement="right" target="Popover5" trigger="focus">
-                                                                    <PopoverBody>
-                                                                        <img id="1" style={{ height: "150px", width: "150px" }} src={model_word} alt="" />
-                                                                    </PopoverBody>
-                                                                </UncontrolledPopover>
-                                                            </div>
-                                                            <select className="form-select" style={{ marginBottom: "20px" }} name="id_lexeme" value={this.state.id_lexeme} onChange={this.getSelectedLexemeId}>
+                                                    <div className="row StructureFields">
+                                                        <Label sm={3}>Номер в уроке:</Label>
+                                                        <Col sm={2}>
+                                                            <Input type="number" name="id_ex" value={this.state.current_lex.id_ex} onChange={this.handleChangeOrder}></Input>
+                                                        </Col>
+                                                    </div>
+                                                    <div className="row StructureFields" style={{ marginTop: "20px" }}>
+                                                        <Label sm={2}>Лексема:</Label>
+                                                        <Col sm={10}>
+                                                            <select className="form-select" name="id_lex" value={this.state.id_lex} onChange={this.getSelectedLexemeId}>
                                                                 <option value={0}>Выберите лексему</option>
                                                                 {this.state.lexemes.map((obj, i) =>
                                                                     <option value={obj.id_lex}>{obj.mean_lex}</option>
                                                                 )}
                                                             </select>
+                                                        </Col>
+                                                    </div>
+                                                </div> :
+                                                this.state.current_lex.type_ex === 18 ?
+                                                    <div>
+                                                        <div style={{ paddingLeft: "530px", paddingBottom: "10px" }}>
+                                                            <Button id="Popover5" type="button">Подсказка</Button>
+                                                            <UncontrolledPopover placement="right" target="Popover5" trigger="focus">
+                                                                <PopoverBody>
+                                                                    <img id="1" style={{ height: "150px", width: "150px" }} src={model_word} alt="" />
+                                                                </PopoverBody>
+                                                            </UncontrolledPopover>
+                                                        </div>
+                                                        <div className="row StructureFields">
+                                                            <Label sm={3}>Номер в уроке:</Label>
+                                                            <Col sm={2}>
+                                                                <Input type="number" name="id_ex" value={this.state.current_lex.id_ex} onChange={this.handleChangeOrder}></Input>
+                                                            </Col>
+                                                        </div>
+                                                        <div className="row StructureFields" style={{ marginTop: "20px" }}>
+                                                            <Label sm={2}>Лексема:</Label>
+                                                            <Col sm={10}>
+                                                                <select className="form-select" name="id_lex" value={this.state.id_lex} onChange={this.getSelectedLexemeId}>
+                                                                    <option value={0}>Выберите лексему</option>
+                                                                    {this.state.lexemes.map((obj, i) =>
+                                                                        <option value={obj.id_lex}>{obj.mean_lex}</option>
+                                                                    )}
+                                                                </select>
+                                                            </Col>
+                                                        </div>
+                                                    </div> :
+                                                    this.state.current_lex.type_ex === 7 ?
+                                                        <div>
+                                                            <div style={{ paddingLeft: "530px", paddingBottom: "10px" }}>
+                                                                <Button id="Popover6" type="button">Подсказка</Button>
+                                                                <UncontrolledPopover placement="right" target="Popover6" trigger="focus">
+                                                                    <PopoverBody>
+                                                                        <img id="1" style={{ height: "150px", width: "150px" }} src={leks_syllables} alt="" />
+                                                                    </PopoverBody>
+                                                                </UncontrolledPopover>
+                                                            </div>
+                                                            <div className="row StructureFields">
+                                                                <Label sm={3}>Номер в уроке:</Label>
+                                                                <Col sm={2}>
+                                                                    <Input type="number" name="id_ex" value={this.state.current_lex.id_ex} onChange={this.handleChangeOrder}></Input>
+                                                                </Col>
+                                                            </div>
+                                                            <div className="row StructureFields" style={{ marginTop: "20px" }}>
+                                                                <Label sm={2}>Лексемы:</Label>
+                                                                <Col sm={10}>
+                                                                    <Select
+                                                                        options={this.state.options}
+                                                                        isMulti
+                                                                        name="colors"
+                                                                        value={this.state.vl_lex}
+                                                                        className="basic-multi-select"
+                                                                        classNamePrefix="select"
+                                                                        onChange={this.handleChangeMultiple}
+                                                                        placeholder="Выберите лексемы"
+                                                                    />
+                                                                </Col>
+                                                            </div>
                                                         </div> :
-                                                        this.state.current_leks.leks_type === 7 ?
+                                                        this.state.current_lex.type_ex === 5 ?
                                                             <div>
                                                                 <div style={{ paddingLeft: "530px", paddingBottom: "10px" }}>
-                                                                    <Button id="Popover6" type="button">Подсказка</Button>
-                                                                    <UncontrolledPopover placement="right" target="Popover6" trigger="focus">
+                                                                    <Button id="Popover7" type="button">Подсказка</Button>
+                                                                    <UncontrolledPopover placement="right" target="Popover7" trigger="focus">
                                                                         <PopoverBody>
-                                                                            <img id="1" style={{ height: "150px", width: "150px" }} src={leks_syllables} alt="" />
+                                                                            <img id="1" style={{ height: "150px", width: "150px" }} src={leks_insert_letter} alt="" />
                                                                         </PopoverBody>
                                                                     </UncontrolledPopover>
                                                                 </div>
-                                                                <select className="form-select" style={{ marginBottom: "20px" }} name="id_lexeme" value={this.state.id_lexeme} onChange={this.getSelectedLexemeId}>
-                                                                    <option value={0}>Выберите лексему</option>
-                                                                    {this.state.lexemes.map((obj, i) =>
-                                                                        <option value={obj.id_lex}>{obj.mean_lex}</option>
-                                                                    )}
-                                                                </select>
-                                                                <select className="form-select" style={{ marginBottom: "20px" }} name="id_lexeme_2" value={this.state.id_lexeme_2} onChange={this.getSelectedLexemeId}>
-                                                                    <option value={0}>Выберите лексему</option>
-                                                                    {this.state.lexemes.map((obj, i) =>
-                                                                        <option value={obj.id_lex}>{obj.mean_lex}</option>
-                                                                    )}
-                                                                </select>
-                                                                <select className="form-select" style={{ marginBottom: "20px" }} name="id_lexeme_3" value={this.state.id_lexeme_3} onChange={this.getSelectedLexemeId}>
-                                                                    <option value={0}>Выберите лексему</option>
-                                                                    {this.state.lexemes.map((obj, i) =>
-                                                                        <option value={obj.id_lex}>{obj.mean_lex}</option>
-                                                                    )}
-                                                                </select>
-                                                                <select className="form-select" style={{ marginBottom: "20px" }} name="id_lexeme_4" value={this.state.id_lexeme_4} onChange={this.getSelectedLexemeId}>
-                                                                    <option value={0}>Выберите лексему</option>
-                                                                    {this.state.lexemes.map((obj, i) =>
-                                                                        <option value={obj.id_lex}>{obj.mean_lex}</option>
-                                                                    )}
-                                                                </select>
-                                                            </div> :
-                                                            this.state.current_leks.leks_type === 5 ?
-                                                                <div>
-                                                                    <div style={{ paddingLeft: "530px", paddingBottom: "10px" }}>
-                                                                        <Button id="Popover7" type="button">Подсказка</Button>
-                                                                        <UncontrolledPopover placement="right" target="Popover7" trigger="focus">
-                                                                            <PopoverBody>
-                                                                                <img id="1" style={{ height: "150px", width: "150px" }} src={leks_insert_letter} alt="" />
-                                                                            </PopoverBody>
-                                                                        </UncontrolledPopover>
-                                                                    </div>
-                                                                    <select className="form-select" style={{ marginBottom: "20px" }} name="id_lexeme" value={this.state.id_lexeme} onChange={this.getSelectedLexemeId}>
-                                                                        <option value={0}>Выберите лексему</option>
-                                                                        {this.state.lexemes.map((obj, i) =>
-                                                                            <option value={obj.id_lex}>{obj.mean_lex}</option>
-                                                                        )}
-                                                                    </select>
-                                                                    <div className="row StructureFields">
-                                                                        <Label sm={5}>Номер пропущенной буквы:</Label>
-                                                                        <Col sm={7}>
-                                                                            <Input type="text" name="number" value={this.state.number} onChange={this.handleChange}></Input>
-                                                                        </Col>
-                                                                    </div>
-                                                                    <div className="row StructureFields">
-                                                                        <Label sm={4}>Набор букв:</Label>
-                                                                        <Col sm={8}>
-                                                                            <Input type="text" name="letters" value={this.state.letters} onChange={this.handleChange}></Input>
-                                                                        </Col>
-                                                                    </div>
-                                                                </div> :
-                                                                this.state.current_leks.leks_type === 15 ?
-                                                                    <div>
-                                                                        <div style={{ paddingLeft: "530px", paddingBottom: "10px" }}>
-                                                                            <Button id="Popover8" type="button">Подсказка</Button>
-                                                                            <UncontrolledPopover placement="right" target="Popover8" trigger="focus">
-                                                                                <PopoverBody>
-                                                                                    <img id="1" style={{ height: "150px", width: "150px" }} src={leks_insert_letters} alt="" />
-                                                                                </PopoverBody>
-                                                                            </UncontrolledPopover>
-                                                                        </div>
-                                                                        <select className="form-select" style={{ marginBottom: "20px" }} name="id_lexeme" value={this.state.id_lexeme} onChange={this.getSelectedLexemeId}>
+                                                                <div className="row StructureFields">
+                                                                    <Label sm={3}>Номер в уроке:</Label>
+                                                                    <Col sm={2}>
+                                                                        <Input type="number" name="id_ex" value={this.state.current_lex.id_ex} onChange={this.handleChangeOrder}></Input>
+                                                                    </Col>
+                                                                </div>
+                                                                <div className="row StructureFields" style={{ marginTop: "20px" }}>
+                                                                    <Label sm={2}>Лексема:</Label>
+                                                                    <Col sm={10}>
+                                                                        <select className="form-select" name="id_lex" value={this.state.id_lex} onChange={this.getSelectedLexemeId}>
                                                                             <option value={0}>Выберите лексему</option>
                                                                             {this.state.lexemes.map((obj, i) =>
                                                                                 <option value={obj.id_lex}>{obj.mean_lex}</option>
                                                                             )}
                                                                         </select>
-                                                                        <div className="row StructureFields">
-                                                                            <Label sm={5}>Номера пропущенных букв:</Label>
-                                                                            <Col sm={7}>
-                                                                                <Input type="text" name="numbers" value={this.state.numbers} onChange={this.handleChange}></Input>
-                                                                            </Col>
-                                                                        </div>
-                                                                        <div className="row StructureFields">
-                                                                            <Label sm={4}>Набор букв:</Label>
-                                                                            <Col sm={8}>
-                                                                                <Input type="text" name="letters" value={this.state.letters} onChange={this.handleChange}></Input>
-                                                                            </Col>
-                                                                        </div>
-                                                                    </div> :
-                                                                    this.state.current_leks.leks_type === 6 ?
-                                                                        <div>
-                                                                            <div style={{ paddingLeft: "530px", paddingBottom: "10px" }}>
-                                                                                <Button id="Popover9" type="button">Подсказка</Button>
-                                                                                <UncontrolledPopover placement="right" target="Popover9" trigger="focus">
-                                                                                    <PopoverBody>
-                                                                                        <img id="1" style={{ height: "150px", width: "150px" }} src={leks_create_word} alt="" />
-                                                                                    </PopoverBody>
-                                                                                </UncontrolledPopover>
-                                                                            </div>
-                                                                            <select className="form-select" style={{ marginBottom: "20px" }} name="id_lexeme" value={this.state.id_lexeme} onChange={this.getSelectedLexemeId}>
+                                                                    </Col>
+                                                                </div>
+                                                                <div className="row StructureFields" style={{ marginTop: "20px" }}>
+                                                                    <Label sm={3}>Номер буквы:</Label>
+                                                                    <Col sm={9}>
+                                                                        <Select
+                                                                            options={numbers}
+                                                                            name="colors"
+                                                                            value={this.state.vl_miss}
+                                                                            className="basic-multi-select"
+                                                                            classNamePrefix="select"
+                                                                            onChange={this.handleChangeMultipleNum}
+                                                                            placeholder="Выберите номер буквы"
+                                                                        />
+                                                                    </Col>
+                                                                </div>
+                                                                {/*<div className="row StructureFields" style={{ marginTop: "20px" }}>
+                                                                    <Label sm={3}>Варианты:</Label>
+                                                                    <Col sm={9}>
+                                                                        <Input type="text" name="variant" value={this.state.variant} onChange={this.handleChange}></Input>
+                                                                    </Col>
+                                                                            </div>*/}
+                                                                <div className="row StructureFields" style={{ marginTop: "20px" }}>
+                                                                    <Label sm={2}>Буквы:</Label>
+                                                                    <Col sm={10}>
+                                                                        <Select
+                                                                            options={this.state.options_letters}
+                                                                            isMulti
+                                                                            name="colors"
+                                                                            value={this.state.vl_variant}
+                                                                            className="basic-multi-select"
+                                                                            classNamePrefix="select"
+                                                                            onChange={this.handleChangeMultipleVar}
+                                                                            placeholder="Выберите буквы"
+                                                                        />
+                                                                    </Col>
+                                                                </div>
+                                                            </div> :
+                                                            this.state.current_lex.type_ex === 15 ?
+                                                                <div>
+                                                                    <div style={{ paddingLeft: "530px", paddingBottom: "10px" }}>
+                                                                        <Button id="Popover8" type="button">Подсказка</Button>
+                                                                        <UncontrolledPopover placement="right" target="Popover8" trigger="focus">
+                                                                            <PopoverBody>
+                                                                                <img id="1" style={{ height: "150px", width: "150px" }} src={leks_insert_letters} alt="" />
+                                                                            </PopoverBody>
+                                                                        </UncontrolledPopover>
+                                                                    </div>
+                                                                    <div className="row StructureFields">
+                                                                        <Label sm={3}>Номер в уроке:</Label>
+                                                                        <Col sm={2}>
+                                                                            <Input type="number" name="id_ex" value={this.state.current_lex.id_ex} onChange={this.handleChangeOrder}></Input>
+                                                                        </Col>
+                                                                    </div>
+                                                                    <div className="row StructureFields" style={{ marginTop: "20px" }}>
+                                                                        <Label sm={2}>Лексема:</Label>
+                                                                        <Col sm={10}>
+                                                                            <select className="form-select" name="id_lex" value={this.state.id_lex} onChange={this.getSelectedLexemeId}>
                                                                                 <option value={0}>Выберите лексему</option>
                                                                                 {this.state.lexemes.map((obj, i) =>
                                                                                     <option value={obj.id_lex}>{obj.mean_lex}</option>
                                                                                 )}
                                                                             </select>
-                                                                            <div className="row StructureFields">
-                                                                                <Label sm={4}>Набор букв:</Label>
-                                                                                <Col sm={8}>
-                                                                                    <Input type="text" name="letters" value={this.state.letters} onChange={this.handleChange}></Input>
-                                                                                </Col>
-                                                                            </div>
-                                                                        </div> :
-                                                                        <div></div>}
+                                                                        </Col>
+                                                                    </div>
+                                                                    <div className="row StructureFields" style={{ marginTop: "20px" }}>
+                                                                        <Label sm={3}>Номера букв:</Label>
+                                                                        <Col sm={9}>
+                                                                            <Select
+                                                                                options={numbers}
+                                                                                isMulti
+                                                                                name="colors"
+                                                                                value={this.state.vl_miss}
+                                                                                className="basic-multi-select"
+                                                                                classNamePrefix="select"
+                                                                                onChange={this.handleChangeMultipleNum}
+                                                                                placeholder="Выберите номера букв"
+                                                                            />
+                                                                        </Col>
+                                                                    </div>
+                                                                    <div className="row StructureFields" style={{ marginTop: "20px" }}>
+                                                                        <Label sm={2}>Буквы:</Label>
+                                                                        <Col sm={10}>
+                                                                            <Select
+                                                                                options={this.state.options_letters}
+                                                                                isMulti
+                                                                                name="colors"
+                                                                                value={this.state.vl_variant}
+                                                                                className="basic-multi-select"
+                                                                                classNamePrefix="select"
+                                                                                onChange={this.handleChangeMultipleVar}
+                                                                                placeholder="Выберите буквы"
+                                                                            />
+                                                                        </Col>
+                                                                    </div>
+                                                                </div> :
+                                                                this.state.current_lex.type_ex === 6 ?
+                                                                    <div>
+                                                                        <div style={{ paddingLeft: "530px", paddingBottom: "10px" }}>
+                                                                            <Button id="Popover9" type="button">Подсказка</Button>
+                                                                            <UncontrolledPopover placement="right" target="Popover9" trigger="focus">
+                                                                                <PopoverBody>
+                                                                                    <img id="1" style={{ height: "150px", width: "150px" }} src={leks_create_word} alt="" />
+                                                                                </PopoverBody>
+                                                                            </UncontrolledPopover>
+                                                                        </div>
+                                                                        <div className="row StructureFields">
+                                                                            <Label sm={3}>Номер в уроке:</Label>
+                                                                            <Col sm={2}>
+                                                                                <Input type="number" name="id_ex" value={this.state.current_lex.id_ex} onChange={this.handleChangeOrder}></Input>
+                                                                            </Col>
+                                                                        </div>
+                                                                        <div className="row StructureFields" style={{ marginTop: "20px" }}>
+                                                                            <Label sm={2}>Лексема:</Label>
+                                                                            <Col sm={10}>
+                                                                                <select className="form-select" name="id_lex" value={this.state.id_lex} onChange={this.getSelectedLexemeId}>
+                                                                                    <option value={0}>Выберите лексему</option>
+                                                                                    {this.state.lexemes.map((obj, i) =>
+                                                                                        <option value={obj.id_lex}>{obj.mean_lex}</option>
+                                                                                    )}
+                                                                                </select>
+                                                                            </Col>
+                                                                        </div>
+                                                                        <div className="row StructureFields" style={{ marginTop: "20px" }}>
+                                                                            <Label sm={2}>Буквы:</Label>
+                                                                            <Col sm={10}>
+                                                                                <Select
+                                                                                    options={this.state.options_letters}
+                                                                                    isMulti
+                                                                                    name="colors"
+                                                                                    value={this.state.vl_variant}
+                                                                                    className="basic-multi-select"
+                                                                                    classNamePrefix="select"
+                                                                                    onChange={this.handleChangeMultipleVar}
+                                                                                    placeholder="Выберите буквы"
+                                                                                />
+                                                                            </Col>
+                                                                        </div>
+                                                                    </div> :
+                                                                    <div></div>}
                         </Form>
                     </div>}
             </div>)

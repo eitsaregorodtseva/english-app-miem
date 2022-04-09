@@ -1,29 +1,54 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { React, Component } from 'react';
 import { Button, Col, Form, Input, Label, UncontrolledPopover, PopoverBody } from "reactstrap";
+import Select from 'react-select';
 import '../style.css';
 import model_dialog from "../static/tips/model_dialog.jpg";
 import dialog_insert_phrases from "../static/tips/dialog_insert_phrases.jpg";
+
+const numbers = [
+    { value: 1, label: "1" },
+    { value: 2, label: "2" },
+    { value: 3, label: "3" },
+    { value: 4, label: "4" },
+    { value: 5, label: "5" },
+    { value: 6, label: "6" },
+    { value: 7, label: "7" },
+    { value: 8, label: "8" },
+    { value: 9, label: "9" },
+    { value: 10, label: "10" }];
 
 export default class Dialogs extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            dialog: this.props.dialog,
-            current_dialog: { id: null, dialog_type: 0 },
-            phrase1: "",
-            phrase2: "",
-            phrase3: "",
-            id_lexeme: "",
-            lexemes: this.props.lexemes,
+            dialog: [],
+            lexemes: [],
+            replicas: [],
+            current_dialog: { id: null, type_ex: 0, id_ex: 0 },
+            id_rep: "",
+            vl_rep: "",
+            pic_video: "",
+            id_miss: "",
+            vl_miss: "",
+            options: []
         }
-        this.handleChange = this.handleChange.bind(this);
-        this.addNewDialog = this.addNewDialog.bind(this);
-        this.showCurrentDialog = this.showCurrentDialog.bind(this);
-        this.getSelectedTypeDialog = this.getSelectedTypeDialog.bind(this);
     }
 
-    handleChange(event) {
+    componentDidMount() {
+        let options = [];
+        for (var i = 0; i < this.props.replicas.length; i++) {
+            options.push({ value: this.props.replicas[i].id_rep, label: this.props.replicas[i].lexeme.mean_lex + this.props.replicas[i].symbol })
+        }
+        this.setState({
+            dialog: this.props.dialog,
+            lexemes: this.props.lexemes,
+            replicas: this.props.replicas,
+            options: options
+        });
+    }
+
+    handleChange = (event) => {
         let newDialog = { ...this.state.current_dialog, [event.target.name]: event.target.value };
         let dialog = this.state.dialog;
         dialog[newDialog.id] = newDialog;
@@ -35,8 +60,63 @@ export default class Dialogs extends Component {
         this.passPropsToParent();
     }
 
-    addNewDialog() {
-        let newDialog = { id: this.state.dialog.length, dialog_type: 0 };
+    handleChangeOrder = (event) => {
+        let newDialog = { ...this.state.current_dialog, id_ex: event.target.value };
+        let dialog = this.state.dialog;
+        dialog[newDialog.id] = newDialog;
+        this.setState({
+            current_dialog: newDialog,
+            dialog: dialog,
+        });
+        this.passPropsToParent();
+    }
+
+    handleChangeMultiple = (event) => {
+        let id_rep = [];
+        for (var i = 0; i < event.length; i++) {
+            id_rep.push(event[i].value)
+        }
+        console.log(id_rep);
+        let newDialog = { ...this.state.current_dialog, id_rep: id_rep, vl_rep: event };
+        let dialog = this.state.dialog;
+        dialog[newDialog.id] = newDialog;
+        this.setState({
+            current_dialog: newDialog,
+            dialog: dialog,
+            id_rep: id_rep,
+            vl_rep: event
+        });
+        this.passPropsToParent();
+    }
+
+    handleChangeMultipleNum = (event) => {
+        let id_miss = [];
+        let vl_miss = [];
+        if (typeof (event.value) === "number") {
+            id_miss.push(event.value);
+            vl_miss = [event];
+        }
+        else {
+            for (var i = 0; i < event.length; i++) {
+                id_miss.push(event[i].value);
+                vl_miss.push(event[i]);
+            }
+        }
+        console.log(id_miss);
+        let newDialog = { ...this.state.current_dialog, id_miss: id_miss, vl_miss: vl_miss };
+        let dialog = this.state.dialog;
+        dialog[newDialog.id] = newDialog;
+        this.setState({
+            current_dialog: newDialog,
+            dialog: dialog,
+            vl_miss: vl_miss,
+            id_miss: id_miss
+        });
+        this.passPropsToParent();
+    }
+
+    addNewDialog = () => {
+        let newDialog = { id: this.state.dialog.length, type_ex: 0, id_ex: 0 };
         let dialog = this.state.dialog;
         dialog[newDialog.id] = newDialog;
         this.setState({
@@ -45,9 +125,8 @@ export default class Dialogs extends Component {
         this.passPropsToParent();
     }
 
-    showCurrentDialog(id) {
-        console.log(id);
-        switch (this.state.dialog[id].dialog_type) {
+    showCurrentDialog = (id) => {
+        switch (this.state.dialog[id].type_ex) {
             case 0:
                 this.setState({
                     current_dialog: this.state.dialog[id],
@@ -56,48 +135,48 @@ export default class Dialogs extends Component {
             case 21:
                 this.setState({
                     current_dialog: this.state.dialog[id],
-                    id_lexeme: this.state.dialog[id].id_lexeme ? this.state.dialog[id].id_lexeme : "",
+                    id_rep: this.state.dialog[id].id_rep ? this.state.dialog[id].id_rep : "",
+                    pic_video: this.state.dialog[id].pic_video ? this.state.dialog[id].pic_video : ""
                 });
                 break;
             case 22:
                 this.setState({
                     current_dialog: this.state.dialog[id],
-                    id_lexeme: this.state.dialog[id].id_lexeme ? this.state.dialog[id].id_lexeme : "",
-                    phrase1: this.state.dialog[id].phrase1 ? this.state.dialog[id].phrase1 : "",
-                    phrase2: this.state.dialog[id].phrase2 ? this.state.dialog[id].phrase2 : "",
-                    phrase3: this.state.dialog[id].phrase3 ? this.state.dialog[id].phrase3 : "",
+                    id_rep: this.state.dialog[id].id_rep ? this.state.dialog[id].id_rep : "",
+                    vl_rep: this.state.dialog[id].vl_rep ? this.state.dialog[id].vl_rep : "",
+                    id_miss: this.state.dialog[id].id_miss ? this.state.dialog[id].id_miss : "",
+                    vl_miss: this.state.dialog[id].vl_miss ? this.state.dialog[id].vl_miss : ""
                 });
                 break;
         }
     }
 
-    getSelectedTypeDialog(event) {
-        let dialog_type = parseInt(event.target.value);
-        let newDialog = { id: this.state.current_dialog.id, dialog_type: dialog_type };
+    getSelectedTypeDialog = (event) => {
+        let type_ex = parseInt(event.target.value);
+        let newDialog = { id: this.state.current_dialog.id, type_ex: type_ex, id_ex: 0 };
         let dialog = this.state.dialog;
         dialog[newDialog.id] = newDialog;
         this.setState({
             current_dialog: newDialog,
             dialog: dialog,
-            phrase1: "",
-            phrase2: "",
-            phrase3: "",
-            id_lexeme: "",
+            id_rep: "",
+            pic_video: "",
+            vl_rep: "",
+            id_miss: "",
+            vl_miss: ""
         });
         this.passPropsToParent();
     }
 
-    getSelectedLexemeId = (event) => {
-        console.log(parseInt(event.target.value));
-        console.log()
-        let id_lexeme = parseInt(event.target.value);
-        let newDialog = { ...this.state.current_dialog, [event.target.name]: id_lexeme };
+    getSelectedRepId = (event) => {
+        let id_rep = parseInt(event.target.value);
+        let newDialog = { ...this.state.current_dialog, [event.target.name]: id_rep };
         let dialog = this.state.dialog;
         dialog[newDialog.id] = newDialog;
         this.setState({
             current_dialog: newDialog,
             dialog: dialog,
-            [event.target.name]: id_lexeme
+            [event.target.name]: id_rep
         });
         this.passPropsToParent();
     }
@@ -108,7 +187,7 @@ export default class Dialogs extends Component {
         for (var i = 0; i < dialog.length; i++) {
             dialog[i].id = i;
         }
-        let newDialog = { id: null, dialog_type: 0 };
+        let newDialog = { id: null, type_ex: 0, id_ex: 0 };
         this.setState({
             dialog: dialog,
             current_dialog: newDialog,
@@ -124,7 +203,7 @@ export default class Dialogs extends Component {
     render() {
         return (
             <div class="row" style={{ marginBottom: "3%" }}>
-                <div class="col-sm-3" style={{ marginTop: "1%", overflowY: "scroll", minHeight: "5px", height: "350px" }}>
+                <div class="col-sm-3" style={{ marginTop: "1%", overflowY: "scroll", minHeight: "5px", height: "370px" }}>
                     <Col sm={12}>
                         <Button style={{ width: "190px" }} onClick={() => this.addNewDialog()}>Добавить</Button>
                         {this.state.dialog.map((obj, i) =>
@@ -134,14 +213,14 @@ export default class Dialogs extends Component {
                 {this.state.dialog.length === 0 || this.state.current_dialog.id === null ? <div></div> :
                     <div class="col" style={{ marginTop: "1%", width: "500px" }}>
                         <Form>
-                            <select class="form-select" style={{ marginBottom: "20px" }} value={this.state.current_dialog.dialog_type} onChange={this.getSelectedTypeDialog}>
+                            <select class="form-select" style={{ marginBottom: "20px" }} value={this.state.current_dialog.type_ex} onChange={this.getSelectedTypeDialog}>
                                 <option value={0}>Выберите тип</option>
                                 <option value={21}>Моделирование диалога</option>
                                 <option value={22}>Задание вставь фразы</option>
                             </select>
                             <Button color="danger" onClick={() => this.deleteElement(this.state.current_dialog.id)}>Удалить</Button>
-                            {this.state.current_dialog.dialog_type === 0 ? <div></div> :
-                                this.state.current_dialog.dialog_type === 21 ?
+                            {this.state.current_dialog.type_ex === 0 ? <div></div> :
+                                this.state.current_dialog.type_ex === 21 ?
                                     <div>
                                         <div style={{ paddingLeft: "530px", paddingBottom: "10px" }}>
                                             <Button id="Popover18" type="button">Подсказка</Button>
@@ -151,14 +230,31 @@ export default class Dialogs extends Component {
                                                 </PopoverBody>
                                             </UncontrolledPopover>
                                         </div>
-                                        <select class="form-select" style={{ marginBottom: "20px" }} name="id_lexeme" value={this.state.id_lexeme} onChange={this.getSelectedLexemeId}>
-                                            <option value={0}>Выберите лексему</option>
-                                            {this.state.lexemes.map((obj, i) =>
-                                                <option value={obj.id_lex}>{obj.mean_lex}</option>
-                                            )}
-                                        </select>
+                                        <div className="row StructureFields">
+                                            <Label sm={3}>Номер в уроке:</Label>
+                                            <Col sm={2}>
+                                                <Input type="number" name="id_ex" value={this.state.current_dialog.id_ex} onChange={this.handleChangeOrder}></Input>
+                                            </Col>
+                                        </div>
+                                        <div className="row StructureFields" style={{ marginTop: "20px" }}>
+                                            <Label sm={2}>Диалог:</Label>
+                                            <Col sm={10}>
+                                                <select class="form-select" style={{ marginBottom: "20px" }} name="id_rep" value={this.state.id_rep} onChange={this.getSelectedrepid}>
+                                                    <option value={0}>Выберите лексему</option>
+                                                    {this.state.lexemes.map((obj, i) =>
+                                                        <option value={obj.id_lex}>{obj.mean_lex}</option>
+                                                    )}
+                                                </select>
+                                            </Col>
+                                        </div>
+                                        <div class="row StructureFields">
+                                            <Label sm={2}>Видео:</Label>
+                                            <Col sm={10}>
+                                                <Input type="textarea" rows="2" name="pic_video" value={this.state.pic_video} onChange={this.handleChange}></Input>
+                                            </Col>
+                                        </div>
                                     </div> :
-                                    this.state.current_dialog.dialog_type === 22 ?
+                                    this.state.current_dialog.type_ex === 22 ?
                                         <div>
                                             <div style={{ paddingLeft: "530px", paddingBottom: "10px" }}>
                                                 <Button id="Popover19" type="button">Подсказка</Button>
@@ -168,30 +264,41 @@ export default class Dialogs extends Component {
                                                     </PopoverBody>
                                                 </UncontrolledPopover>
                                             </div>
-                                            <select class="form-select" style={{ marginBottom: "20px" }} name="id_lexeme" value={this.state.id_lexeme} onChange={this.getSelectedLexemeId}>
-                                                <option value={0}>Выберите лексему</option>
-                                                {this.state.lexemes.map((obj, i) =>
-                                                    <option value={obj.id_lex}>{obj.mean_lex}</option>
-                                                )}
-                                            </select>
-                                            <select class="form-select" style={{ marginBottom: "20px" }} name="phrase1" value={this.state.phrase1} onChange={this.getSelectedLexemeId}>
-                                                <option value={0}>Выберите лексему</option>
-                                                {this.state.lexemes.map((obj, i) =>
-                                                    <option value={obj.id_lex}>{obj.mean_lex}</option>
-                                                )}
-                                            </select>
-                                            <select class="form-select" style={{ marginBottom: "20px" }} name="phrase2" value={this.state.phrase2} onChange={this.getSelectedLexemeId}>
-                                                <option value={0}>Выберите лексему</option>
-                                                {this.state.lexemes.map((obj, i) =>
-                                                    <option value={obj.id_lex}>{obj.mean_lex}</option>
-                                                )}
-                                            </select>
-                                            <select class="form-select" style={{ marginBottom: "20px" }} name="phrase3" value={this.state.phrase3} onChange={this.getSelectedLexemeId}>
-                                                <option value={0}>Выберите лексему</option>
-                                                {this.state.lexemes.map((obj, i) =>
-                                                    <option value={obj.id_lex}>{obj.mean_lex}</option>
-                                                )}
-                                            </select>
+                                            <div className="row StructureFields">
+                                                <Label sm={3}>Номер в уроке:</Label>
+                                                <Col sm={2}>
+                                                    <Input type="number" name="id_ex" value={this.state.current_dialog.id_ex} onChange={this.handleChangeOrder}></Input>
+                                                </Col>
+                                            </div>
+                                            <div className="row StructureFields" style={{ marginTop: "20px" }}>
+                                                <Label sm={3}>Диалог:</Label>
+                                                <Col sm={9}>
+                                                    <Select
+                                                        options={this.state.options}
+                                                        isMulti
+                                                        value={this.state.vl_rep}
+                                                        className="basic-multi-select"
+                                                        classNamePrefix="select"
+                                                        onChange={this.handleChangeMultiple}
+                                                        placeholder="Выберите реплики"
+                                                    />
+                                                </Col>
+                                            </div>
+                                            <div className="row StructureFields" style={{ marginTop: "20px" }}>
+                                                <Label sm={3}>Номера реплик:</Label>
+                                                <Col sm={9}>
+                                                    <Select
+                                                        options={numbers}
+                                                        isMulti
+                                                        name="colors"
+                                                        value={this.state.vl_miss}
+                                                        className="basic-multi-select"
+                                                        classNamePrefix="select"
+                                                        onChange={this.handleChangeMultipleNum}
+                                                        placeholder="Выберите номера реплик"
+                                                    />
+                                                </Col>
+                                            </div>
                                         </div> :
                                         <div></div>}
                         </Form>

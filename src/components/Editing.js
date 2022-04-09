@@ -18,22 +18,15 @@ const BadgePills = {
 }
 const statuses = ["Пусто     ", "В процессе", "Не требуется", "Готово"];
 const getBlocksUrl = 'http://172.18.130.45:5052/api/lessonblocks/';
+const getLexemesUrl = 'http://172.18.130.45:5052/api/lexemes/';
 const postLessonUrl = 'http://172.18.130.45:5052/api/lessons/';
 
 export default class Editing extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            lessons: [
-                {
-                    id: 1,
-                    video: [],
-                    leks: [],
-                    phr: [],
-                    dialog: [],
-                    rules: []
-                },
-            ],
+            lesson: [],
+            video: { video_link: null },
             id_lb: null,
             id_les: null,
             name_les: "",
@@ -45,21 +38,23 @@ export default class Editing extends Component {
             selectState: true,
             lessonState: true,
             buttonsState: true,
+            lexemes: [],
+            replicas: []
         }
         this.getBlocks = this.getBlocks.bind(this);
+        this.getLexemes = this.getLexemes.bind(this);
     };
 
     componentDidMount() {
-        fetch(getBlocksUrl)
-            .then((response) => {
-                console.log(response);
-                return response.json();
-            })
-            .then((data) => {
-                console.log(data);
-                this.setState({ blocks: data });
-            });
-        if (this.props.location.state) {
+        /*let lesson = [{ lex: this.props.location.state.lesson.lex, phr: this.props.location.state.lesson.phr, dialog: this.props.location.state.lesson.dialog, rules: this.props.location.state.lesson.rules }];
+        console.log(this.props.location.state.lexemes);
+        this.setState({ lesson: lesson,
+            lexemes: this.props.location.state.lexemes,
+            buttonsState: false,
+            selectState: false,
+            lessonState: false,
+            emptyLessonState: true });*/
+        /*if (this.props.location.state) {
             let lesson_info = [];
             for (var i = 0; i < this.props.location.state.blocks.length; i++) {
                 if (this.props.location.state.blocks[i].id_lb === this.props.location.state.id_lb) {
@@ -72,9 +67,18 @@ export default class Editing extends Component {
                     current_lesson = lesson_info[i];
                 }
             }
+            let video = { video_link: current_lesson.video };
             this.setState({
+                lesson: [{
+                    lex: [],
+                    phr: [],
+                    dialog: [],
+                    rules: [],
+                }],
                 id_lb: this.props.location.state.id_lb,
                 id_les: this.props.location.state.id_les,
+                name_les: current_lesson.name_les,
+                video: video,
                 lesson_info: lesson_info,
                 current_lesson: current_lesson,
                 buttonsState: false,
@@ -82,8 +86,92 @@ export default class Editing extends Component {
                 lessonState: false,
                 emptyLessonState: true
             });
-        };
-        this.intervalGetBlocks = setInterval(this.getBlocks, 5000);
+        };*/
+        console.log(this.props);
+        if (this.props.location.state.id_lb) {
+            let lesson_info = [];
+            for (var i = 0; i < this.props.location.state.blocks.length; i++) {
+                if (this.props.location.state.blocks[i].id_lb === this.props.location.state.id_lb) {
+                    lesson_info = this.props.location.state.blocks[i].lesson_info;
+                }
+            }
+            let current_lesson = [];
+            for (var i = 0; i < lesson_info.length; i++) {
+                if (lesson_info[i].id_les === this.props.location.state.id_les) {
+                    current_lesson = lesson_info[i];
+                }
+            }
+            let video = { video_link: current_lesson.video };
+            console.log(current_lesson.lesson);
+            this.setState({
+                blocks: this.props.location.state.blocks,
+                lexemes: this.props.location.state.lexemes,
+                replicas: this.props.location.state.replicas,
+                id_lb: this.props.location.state.id_lb,
+                id_les: this.props.location.state.id_les,
+                name_les: current_lesson.name_les,
+                lesson: [current_lesson.lesson],
+                video: video,
+                lesson_info: lesson_info,
+                current_lesson: current_lesson,
+                buttonsState: false,
+                selectState: false,
+                lessonState: false,
+                emptyLessonState: true
+            });
+
+        }
+        else {
+            this.setState({
+                blocks: this.props.location.state.blocks,
+                lexemes: this.props.location.state.lexemes,
+                replicas: this.props.location.state.replicas
+            });
+
+        }
+        /*fetch(getBlocksUrl)
+            .then((response) => {
+                console.log(response);
+                return response.json();
+            })
+            .then((data) => {
+                console.log(data);
+                this.setState({ blocks: data });
+            });*/
+        /*fetch(getLexemesUrl)
+            .then((response) => {
+                console.log(response);
+                return response.json();
+            })
+            .then((data) => {
+                console.log(data);
+                this.setState({
+                    lexemes: data,
+                });
+            });*/
+        //console.log(this.props.location.state.lesson.lex);
+        //this.intervalGetBlocks = setInterval(this.getLexemes, 5000);
+        //this.intervalGetBlocks = setInterval(this.getBlocks, 5000);
+    }
+
+    async getLexemes() {
+        const response = await fetch(getLexemesUrl);
+        const lexemes = await response.json();
+        console.log(lexemes);
+        this.setState({
+            lexemes: lexemes,
+        });
+        /*fetch(getLexemesUrl)
+            .then((response) => {
+                console.log(response);
+                return response.json();
+            })
+            .then((data) => {
+                console.log(data);
+                this.setState({
+                    lexemes: data,
+                });
+            });*/
     }
 
     async getBlocks() {
@@ -101,42 +189,42 @@ export default class Editing extends Component {
         this.setState({
             blocks: blocks,
             lesson_info: lesson_info,
-          });
-      }
-    
-      componentWillUnmount = () => {
-        clearInterval(this.intervalGetBlocks);
-      };
+        });
+    }
 
-    handleCallbackVideo = (propsVideos) => {
-        let newLessons = this.state.lessons;
-        newLessons[0].video = propsVideos;
-        this.setState({ lessons: newLessons });
+    componentWillUnmount = () => {
+        clearInterval(this.intervalGetBlocks);
+    };
+
+    handleCallbackVideo = (props) => {
+        //let newLessons = this.state.lesson;
+        //newLessons[0].video = propsVideos;
+        this.setState({ video: props });
     }
 
     handleCallbackVoc = (propsVocabulary) => {
-        let newLessons = this.state.lessons;
-        newLessons[0].leks = propsVocabulary;
-        this.setState({ lessons: newLessons });
+        let newLessons = this.state.lesson;
+        newLessons[0].lex = propsVocabulary;
+        this.setState({ lesson: newLessons });
     }
 
     handleCallbackPhr = (propsPhrases) => {
-        let newLessons = this.state.lessons;
+        let newLessons = this.state.lesson;
         newLessons[0].phr = propsPhrases;
-        this.setState({ lessons: newLessons });
+        this.setState({ lesson: newLessons });
     }
 
     handleCallbackDialog = (propsDialogs) => {
-        let newLessons = this.state.lessons;
+        let newLessons = this.state.lesson;
         newLessons[0].dialog = propsDialogs;
-        this.setState({ lessons: newLessons });
+        this.setState({ lesson: newLessons });
     }
 
     handleCallbackRule = (propsRules) => {
-        let newLessons = this.state.lessons;
+        let newLessons = this.state.lesson;
         newLessons[0].rules = propsRules;
-        this.setState({ lessons: newLessons });
-        
+        this.setState({ lesson: newLessons });
+
     }
 
     handleChange = (event) => {
@@ -148,17 +236,28 @@ export default class Editing extends Component {
             selectState: false,
             emptyLessonState: true,
             lessonState: true,
-            current_lesson: [],
+            current_lesson: []
         })
         console.log(this.state.current_lesson);
     }
 
     openEmptyLesson = () => {
+        let video = { video_link: null };
+        console.log(video);
         this.setState({
+            lesson: [{
+                lex: [],
+                phr: [],
+                dialog: [],
+                rules: [],
+            }],
             emptyLessonState: false,
             lessonState: false,
             selectState: true,
             current_lesson: [],
+            name_les: "",
+            id_les: null,
+            video: video
         })
         console.log(this.state.current_lesson);
     }
@@ -183,14 +282,14 @@ export default class Editing extends Component {
         this.setState({
             id_lb: id_lb,
             id_les: null,
+            name_les: "",
             lesson_info: lesson_info,
             current_lesson: [],
             buttonsState: buttonsState,
             lessonState: true,
             emptyLessonState: true,
-            selectState: true
+            selectState: true,
         });
-        console.log(this.state.current_lesson);
     }
 
     lessonChange = (id_les) => {
@@ -205,55 +304,62 @@ export default class Editing extends Component {
             }
             lessonState = false;
         }
+        let name_les = current_lesson.name_les;
+        let video = { video_link: current_lesson.video };
+        console.log(video);
         this.setState({
+            lesson: [current_lesson.lesson],
             id_les: id_les,
+            name_les: name_les,
+            video: video,
             lessonState: lessonState,
             current_lesson: current_lesson,
         });
-        console.log(this.state.current_lesson);
+        console.log(current_lesson);
+        this.forceUpdate();
     }
 
     checkStatuses = () => {
         console.log(this.state.dialogs);
         let mistakes = 0;
-        for (var i = 0; i < this.state.lessons.length; i++) {
-            if (this.state.lessons[i].video.length + 0 === 0 && this.state.statuses.video_st !== statuses[0] && this.state.statuses.video_st !== "Не требуется") {
+        for (var i = 0; i < this.state.lesson.length; i++) {
+            /*if (this.state.lessons[i].video.length + 0 === 0 && this.state.statuses.video_st !== statuses[0] && this.state.statuses.video_st !== "Не требуется") {
                 mistakes = mistakes + 1;
                 toast.error("Ошибка в заполнении статуса Видео.");
             }
             if ((this.state.lessons[i].video.length + 0 > 0) && (this.state.statuses.video_st === statuses[0] || this.state.statuses.video_st === "Не требуется" || this.state.statuses.video_st === "")) {
                 mistakes = mistakes + 1;
                 toast.error("Ошибка в заполнении статуса Видео.");
-            }
-            if ((this.state.lessons[i].leks.length + 0 === 0) && (this.state.statuses.leks_st !== statuses[0] && this.state.statuses.leks_st !== "Не требуется")) {
+            }*/
+            if ((this.state.lesson[i].lex.length + 0 === 0) && (this.state.statuses.lex_st !== statuses[0] && this.state.statuses.lex_st !== "Не требуется")) {
                 mistakes = mistakes + 1;
                 toast.error("Ошибка в заполнении статуса Буквы-слова.");
             }
-            if ((this.state.lessons[i].leks.length + 0 > 0) && (this.state.statuses.leks_st === statuses[0] || this.state.statuses.leks_st === "Не требуется" || this.state.statuses.leks_st === "")) {
+            if ((this.state.lesson[i].lex.length + 0 > 0) && (this.state.statuses.lex_st === statuses[0] || this.state.statuses.lex_st === "Не требуется" || this.state.statuses.lex_st === "")) {
                 mistakes = mistakes + 1;
                 toast.error("Ошибка в заполнении статуса Буквы-слова.");
             }
-            if ((this.state.lessons[i].phr.length + 0 === 0) && (this.state.statuses.phr_st !== statuses[0] && this.state.statuses.phr_st !== "Не требуется")) {
+            if ((this.state.lesson[i].phr.length + 0 === 0) && (this.state.statuses.phr_st !== statuses[0] && this.state.statuses.phr_st !== "Не требуется")) {
                 mistakes = mistakes + 1;
                 toast.error("Ошибка в заполнении статуса Фразы.");
             }
-            if ((this.state.lessons[i].phr.length + 0 > 0) && (this.state.statuses.phr_st === statuses[0] || this.state.statuses.phr_st === "Не требуется" || this.state.statuses.phr_st === "")) {
+            if ((this.state.lesson[i].phr.length + 0 > 0) && (this.state.statuses.phr_st === statuses[0] || this.state.statuses.phr_st === "Не требуется" || this.state.statuses.phr_st === "")) {
                 mistakes = mistakes + 1;
                 toast.error("Ошибка в заполнении статуса Фразы.");
             }
-            if ((this.state.lessons[i].dialog.length + 0 === 0) && (this.state.statuses.dialog_st !== statuses[0] && this.state.statuses.dialog_st !== "Не требуется")) {
+            if ((this.state.lesson[i].dialog.length + 0 === 0) && (this.state.statuses.dialog_st !== statuses[0] && this.state.statuses.dialog_st !== "Не требуется")) {
                 mistakes = mistakes + 1;
                 toast.error("Ошибка в заполнении статуса Диалоги.");
             }
-            if ((this.state.lessons[i].dialog.length + 0 > 0) && (this.state.statuses.dialog_st === statuses[0] || this.state.statuses.dialog_st === "Не требуется" || this.state.statuses.dialog_st === "")) {
+            if ((this.state.lesson[i].dialog.length + 0 > 0) && (this.state.statuses.dialog_st === statuses[0] || this.state.statuses.dialog_st === "Не требуется" || this.state.statuses.dialog_st === "")) {
                 mistakes = mistakes + 1;
                 toast.error("Ошибка в заполнении статуса Диалоги.");
             }
-            if ((this.state.lessons[i].rules.length + 0 === 0) && (this.state.statuses.rules_st !== statuses[0] && this.state.statuses.rules_st !== "Не требуется")) {
+            if ((this.state.lesson[i].rules.length + 0 === 0) && (this.state.statuses.rules_st !== statuses[0] && this.state.statuses.rules_st !== "Не требуется")) {
                 mistakes = mistakes + 1;
                 toast.error("Ошибка в заполнении статуса Правила.");
             }
-            if ((this.state.lessons[i].rules.length + 0 > 0) && (this.state.statuses.rules_st === statuses[0] || this.state.statuses.rules_st === "Не требуется" || this.state.statuses.rules_st === "")) {
+            if ((this.state.lesson[i].rules.length + 0 > 0) && (this.state.statuses.rules_st === statuses[0] || this.state.statuses.rules_st === "Не требуется" || this.state.statuses.rules_st === "")) {
                 mistakes = mistakes + 1;
                 toast.error("Ошибка в заполнении статуса Правила.");
             }
@@ -345,9 +451,10 @@ export default class Editing extends Component {
                             </FormGroup>
                         </Form>
                                     </div>*/}
-                    <div style={{ marginTop: "7%" }}>
-                        <button disabled class="GreyBox">Урок 1</button>
-                        {/*<div style={{ marginTop: "5%", marginLeft: "3%" }}>
+                    {this.state.lesson.map((obj, i) =>
+                        <div style={{ marginTop: "7%" }}>
+                            <button disabled class="GreyBox">Урок {this.state.id_les}</button>
+                            {/*<div style={{ marginTop: "5%", marginLeft: "3%" }}>
                             <List>
                                 <FormGroup row>
                                     <Label sm={3}>Видео</Label>
@@ -381,45 +488,46 @@ export default class Editing extends Component {
                                 </FormGroup>
                             </List>
         </div>*/}
-                        <div style={{ marginTop: "5%", marginBottom: "5%" }}>
-                            <Form row="true">
-                                <FormGroup row>
-                                    <Label sm={2}>Название урока:</Label>
-                                    <Col sm={4}>
-                                        <Input type="text" name="name_les" value={this.state.name_les} onChange={this.handleChange}></Input>
-                                    </Col>
-                                </FormGroup>
-                            </Form>
-                        </div>
-                        <div style={{ marginTop: "5%", marginLeft: "3%", width: "90%" }} >
-                            <nav>
-                                <div class="nav nav-pills" id="myTab" role="tablist">
-                                    <button class="nav-link active" id="video-tab" data-bs-toggle="tab" data-bs-target="#video" type="button" role="tab" aria-controls="video" aria-selected="true">Видео</button>
-                                    <button class="nav-link" id="letter-tab" data-bs-toggle="tab" data-bs-target="#letter" type="button" role="tab" aria-controls="letter" aria-selected="false">Буквы-слова</button>
-                                    <button class="nav-link" id="rule-tab" data-bs-toggle="tab" data-bs-target="#rule" type="button" role="tab" aria-controls="rule" aria-selected="false">Правила</button>
-                                    <button class="nav-link" id="phrase-tab" data-bs-toggle="tab" data-bs-target="#phrase" type="button" role="tab" aria-controls="phrase" aria-selected="false">Фразы</button>
-                                    <button class="nav-link" id="dialog-tab" data-bs-toggle="tab" data-bs-target="#dialog" type="button" role="tab" aria-controls="dialog" aria-selected="false">Диалоги</button>
-                                </div>
-                            </nav>
-                            <div class="tab-content" id="myTabContent">
-                                <div class="tab-pane fade show active" id="video" role="tabpanel" aria-labelledby="video-tab">
-                                    <Videos video={Object.assign(this.state.lessons[0].video)} parentCallback={this.handleCallbackVideo} />
-                                </div>
-                                <div class="tab-pane fade" id="letter" role="tabpanel" aria-labelledby="letter-tab">
-                                    <Vocabulary leks={Object.assign(this.state.lessons[0].leks)} lexemes={this.state.lexemes} parentCallback={this.handleCallbackVoc} />
-                                </div>
-                                <div class="tab-pane fade" id="rule" role="tabpanel" aria-labelledby="rule-tab">
-                                    <Rules rule={Object.assign(this.state.lessons[0].rules)} parentCallback={this.handleCallbackRule} />
-                                </div>
-                                <div class="tab-pane fade" id="phrase" role="tabpanel" aria-labelledby="phrase-tab">
-                                    <Phrases phr={Object.assign(this.state.lessons[0].phr)} parentCallback={this.handleCallbackPhr} />
-                                </div>
-                                <div class="tab-pane fade" id="dialog" role="tabpanel" aria-labelledby="dialog-tab">
-                                    <Dialogs dialog={Object.assign(this.state.lessons[0].dialog)} parentCallback={this.handleCallbackDialog} />
+                            <div style={{ marginTop: "5%", marginBottom: "5%" }}>
+                                <Form row="true">
+                                    <FormGroup row>
+                                        <Label sm={2}>Название урока:</Label>
+                                        <Col sm={4}>
+                                            <Input type="text" name="name_les" value={this.state.name_les} onChange={this.handleChange}></Input>
+                                        </Col>
+                                    </FormGroup>
+                                </Form>
+                            </div>
+                            <div style={{ marginTop: "5%", marginLeft: "3%", width: "90%" }} >
+                                <nav>
+                                    <div class="nav nav-pills" id="myTab" role="tablist">
+                                        <button class="nav-link active" id="video-tab" data-bs-toggle="tab" data-bs-target="#video" type="button" role="tab" aria-controls="video" aria-selected="true">Видео</button>
+                                        <button class="nav-link" id="letter-tab" data-bs-toggle="tab" data-bs-target="#letter" type="button" role="tab" aria-controls="letter" aria-selected="false">Буквы-слова</button>
+                                        <button class="nav-link" id="rule-tab" data-bs-toggle="tab" data-bs-target="#rule" type="button" role="tab" aria-controls="rule" aria-selected="false">Правила</button>
+                                        <button class="nav-link" id="phrase-tab" data-bs-toggle="tab" data-bs-target="#phrase" type="button" role="tab" aria-controls="phrase" aria-selected="false">Фразы</button>
+                                        <button class="nav-link" id="dialog-tab" data-bs-toggle="tab" data-bs-target="#dialog" type="button" role="tab" aria-controls="dialog" aria-selected="false">Диалоги</button>
+                                    </div>
+                                </nav>
+                                <div class="tab-content" id="myTabContent">
+                                    <div class="tab-pane fade show active" id="video" role="tabpanel" aria-labelledby="video-tab">
+                                        <Videos video={Object.assign(this.state.video)} parentCallback={this.handleCallbackVideo} />
+                                    </div>
+                                    <div class="tab-pane fade" id="letter" role="tabpanel" aria-labelledby="letter-tab">
+                                        <Vocabulary lex={Object.assign(this.state.lesson[0].lex)} lexemes={this.state.lexemes} parentCallback={this.handleCallbackVoc} />
+                                    </div>
+                                    <div class="tab-pane fade" id="rule" role="tabpanel" aria-labelledby="rule-tab">
+                                        <Rules rule={Object.assign(this.state.lesson[0].rules)} lexemes={this.state.lexemes} parentCallback={this.handleCallbackRule} />
+                                    </div>
+                                    <div class="tab-pane fade" id="phrase" role="tabpanel" aria-labelledby="phrase-tab">
+                                        <Phrases phr={Object.assign(this.state.lesson[0].phr)} lexemes={this.state.lexemes} replicas={this.state.replicas} parentCallback={this.handleCallbackPhr} />
+                                    </div>
+                                    <div class="tab-pane fade" id="dialog" role="tabpanel" aria-labelledby="dialog-tab">
+                                        <Dialogs dialog={Object.assign(this.state.lesson[0].dialog)} lexemes={this.state.lexemes} replicas={this.state.replicas} parentCallback={this.handleCallbackDialog} />
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    )}
                     <div style={{ marginTop: "5%" }}>
                         <button disabled class="GreyBox">Статусы</button>
                         <div style={{ marginTop: "5%", marginLeft: "25%" }}>

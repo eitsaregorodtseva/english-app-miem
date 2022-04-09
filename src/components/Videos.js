@@ -7,18 +7,60 @@ export default class Videos extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            video: this.props.video,
-            current_video: { id: null, video_link: "" },
-            video_link: "",
+            video: { video_link: null },
+
         }
-        this.handleChange = this.handleChange.bind(this);
-        //this.addNewVideo = this.addNewVideo.bind(this);
-        //this.showCurrentVideo = this.showCurrentVideo.bind(this);
     }
 
-    handleChange(event) {
-        let newVideo = {...this.state.current_video, [event.target.name]: event.target.value };
-        console.log(newVideo);
+    componentDidMount() {
+        //console.log(this.props);
+        //console.log("mounted");
+        if (this.props.video.video_link) {
+            let newVideo = { ...this.state.video, video_link: this.props.video.video_link };
+            //console.log(newVideo);
+            this.setState({ video: newVideo });
+        }
+        else {
+            let newVideo = { ...this.state.video, video_link: null };
+            //console.log(newVideo);
+            this.setState({ video: newVideo });
+        }
+        //prevProps = { ...this.state.video, video_link: this.props.video.video_link };
+        //console.log(this.props);
+        //console.log(this.props.video.video_link);
+    }
+    /*componentDidUpdate(prevProps, prevState) {
+        //console.log(this.props.video.video_link);
+        //console.log(prevState.video.video_link);
+        if (this.props.video.video_link !== prevState.video.video_link ) {
+            let newVideo = { video_link: null }; 
+            if (this.props.video.video_link) {
+                newVideo = { video_link: this.props.video.video_link };
+            }
+            //console.log(prevState);
+            //console.log(this.props.video);
+            
+            this.setState({
+                video: newVideo
+            });
+            console.log(newVideo);
+            this.forceUpdate();
+            /*return fetchData({
+                newVideo : { video_link: this.props.video.video_link }
+            }).then(newVideo => {
+                    this.setState({
+                    video: newVideo
+                });
+            });
+        }
+        //console.log("video:");
+        //console.log(this.props);
+        //this.setState({ video: this.props.video });
+    }*/
+    
+    handleChange = (event) => {
+        let newVideo = { ...this.state.video, video_link: event.target.value };
+        /*console.log(newVideo);
         let video = this.state.video;
         video[newVideo.id] = newVideo;
         console.log(video);
@@ -26,6 +68,10 @@ export default class Videos extends Component {
             current_video: newVideo,
             video: video,
             [event.target.name]: event.target.value
+        });*/
+        //let video = event.target.value;
+        this.setState({
+            video: newVideo,
         });
         this.passPropsToParent();
     }
@@ -80,11 +126,11 @@ export default class Videos extends Component {
                 {/*{this.state.video.length === 0 || this.state.current_video.id === null ? <div></div> :
                     <div class="col" style={{ marginTop: "1%" }}>
                 <Button color="danger" onClick={() => this.deleteElement(this.state.current_video.id)}>Удалить</Button>*/}
-                        <Form>
-                            <Label>Ссылка на видео:</Label>
-                            <Input type="textarea" rows="3" name="video_link" value={this.state.video_link} onChange={this.handleChange}></Input>
-                        </Form>
-                    {/*</div>}*/}
+                <Form>
+                    <Label>Ссылка на видео:</Label>
+                    <Input type="textarea" rows="3" name="video_link" value={this.state.video.video_link} onChange={this.handleChange}></Input>
+                </Form>
+                {/*</div>}*/}
             </div>)
     }
 }

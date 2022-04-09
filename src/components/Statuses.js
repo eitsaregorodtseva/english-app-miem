@@ -7,14 +7,14 @@ const status = ["Пусто     ", "В процессе", "Не требуетс
 
 export default function Statuses(props) {
     const [video_st, setVideoStatus] = useState(props.statuses.video_st);
-    const [leks_st, setLeksStatus] = useState(props.statuses.leks_st);
+    const [lex_st, setLexStatus] = useState(props.statuses.lex_st);
     const [phr_st, setPhrStatus] = useState(props.statuses.phr_st);
     const [dialog_st, setDialogStatus] = useState(props.statuses.dialog_st);
     const [rules_st, setRulesStatus] = useState(props.statuses.rules_st);
 
     useEffect(() => {
         props.statuses.video_st = video_st;
-        props.statuses.leks_st = leks_st;
+        props.statuses.lex_st = lex_st;
         props.statuses.phr_st = phr_st;
         props.statuses.dialog_st = dialog_st;
         props.statuses.rules_st = rules_st;
@@ -36,7 +36,7 @@ export default function Statuses(props) {
             <FormGroup row>
                     <Label sm={3}>Буквы-слова</Label>
                     <Col sm={3}>
-                        <Input type="select" data-key="leks_st" value={status.indexOf(leks_st)} onChange={(e) => setLeksStatus(status[e.target.value])}>
+                        <Input type="select" data-key="lex_st" value={status.indexOf(lex_st)} onChange={(e) => setLexStatus(status[e.target.value])}>
                             <option>Выберите статус</option>
                             {status.map((obj, i) =>
                                 <option value={i} key={i}>{status[i]}</option>

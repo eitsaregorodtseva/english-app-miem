@@ -8,48 +8,31 @@ import Editing from './Editing';
 import '../style.css';
 import axios from 'axios';
 
+const statuses = ["Пусто     ", "В процессе", "Не требуется", "Готово"];
+
 const BadgePills = {
   padding: "1% 5% 1% 5%"
 }
-const statuses = ["Пусто     ", "В процессе", "Не требуется", "Готово"];
-const getBlocksUrl = 'http://172.18.130.45:5052/api/lessonblocks/';
 
 export default class Cabinet extends Component {
   constructor() {
     super();
     this.state = {
-      blocks: null
+      blocks: [],
+      lexemes: [],
+      replicas: []
+
     }
-    this.getBlocks = this.getBlocks.bind(this);
-  };
+  }
 
   componentDidMount() {
-    fetch(getBlocksUrl)
-      .then((response) => {
-        console.log(response);
-        return response.json();
-      })
-      .then((data) => {
-        console.log(data);
-        this.setState({
-          blocks: data
-        });
-      })
-    this.intervalGetBlocks = setInterval(this.getBlocks, 5000);
-  }
-
-  async getBlocks() {
-    const response = await fetch(getBlocksUrl);
-    const blocks = await response.json();
-    console.log(blocks);
+    console.log(this.props);
     this.setState({
-      blocks: blocks
+      blocks: this.props.location.state.blocks,
+      lexemes: this.props.location.state.lexemes,
+      replicas: this.props.location.state.replicas
     });
   }
-
-  componentWillUnmount = () => {
-    clearInterval(this.intervalGetBlocks);
-  };
 
   render() {
     return (
@@ -79,9 +62,14 @@ export default class Cabinet extends Component {
                         <button disabled class="GreyBox">Урок {obj_l.id_les}: {obj_l.name_les}</button>
                         <div style={{ marginTop: "5%" }}>
                           <Link to={{
-                            pathname: "/editing",
-                            state: { id_lb: obj_b.id_lb, id_les: obj_l.id_les, blocks: this.state.blocks }
-                          }}>
+                            pathname: "/editing", state: {
+                              id_lb: obj_b.id_lb,
+                              id_les: obj_l.id_les,
+                              blocks: this.state.blocks,
+                              lexemes: this.state.lexemes,
+                              replicas: this.state.replicas
+                            }
+                          }} >
                             <button type="button" class="EditLesson">
                               Редактировать урок</button></Link>
                           <button class="ViewLesson">Предпросмотр</button>
@@ -130,9 +118,18 @@ export default class Cabinet extends Component {
         {this.state.blocks === null ? <div></div> :
           <div style={{ marginTop: "7%", marginLeft: "37%" }}>
             <a href="/new_block">
-              <button style={{ padding: "2% 9% 2% 9%", backgroundColor: "#C4C4C4", color: "#000000", border: "none", borderRadius: "4px" }}>
-                Добавить новый блок
-              </button>
+              <Link to={{
+                pathname: "/new_block",
+                state: {
+                  lexemes: this.state.lexemes,
+                  replicas: this.state.replicas,
+                  blocks: this.state.blocks
+                }
+              }}
+                style={{ textDecoration: 'none' }}>
+                <button style={{ padding: "2% 9% 2% 9%", backgroundColor: "#C4C4C4", color: "#000000", border: "none", borderRadius: "4px" }}>
+                  Добавить новый блок
+                </button></Link>
             </a>
           </div>
         }

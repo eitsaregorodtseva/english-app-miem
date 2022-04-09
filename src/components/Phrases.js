@@ -1,37 +1,57 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { React, Component } from 'react';
 import { Button, Col, Form, Input, Label, UncontrolledPopover, PopoverBody } from "reactstrap";
+import Select from 'react-select';
 import '../style.css';
 import model_phrase from "../static/tips/model_phrase.jpg";
 import model_phrase_2 from "../static/tips/model_phrase_2.jpg";
 import phrase_create_word from "../static/tips/phrase_create_word.jpg";
 import phrase_insert_words from "../static/tips/phrase_insert_words.jpg";
 
+const numbers = [
+    { value: 1, label: "1" },
+    { value: 2, label: "2" },
+    { value: 3, label: "3" },
+    { value: 4, label: "4" },
+    { value: 5, label: "5" },
+    { value: 6, label: "6" },
+    { value: 7, label: "7" },
+    { value: 8, label: "8" },
+    { value: 9, label: "9" },
+    { value: 10, label: "10" }];
+
 export default class Phrases extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            phr: this.props.phr,
-            current_phr: { id: null, phr_type: 0 },
-            word1: "",
-            words: "",
-            image1: "",
-            image2: "",
-            sound1: "",
-            scheme1: "",
-            scheme2: "",
-            letters: "",
-            phrase: "",
-            stress: "",
-            id_lexeme: "",
-            id_lexeme_2: "",
-            id_lexeme_3: "",
-            lexemes: this.props.lexemes,
+            phr: [],
+            lexemes: [],
+            replicas: [],
+            current_phr: { id: null, type_ex: 0, id_ex: 0 },
+            id_rep: "",
+            id_miss: "",
+            vl_miss: "",
+            id_var: "",
+            vl_var: "",
+            options: []
         }
         this.handleChange = this.handleChange.bind(this);
         this.addNewPhr = this.addNewPhr.bind(this);
         this.showCurrentPhr = this.showCurrentPhr.bind(this);
         this.getSelectedTypePhr = this.getSelectedTypePhr.bind(this);
+    }
+
+    componentDidMount() {
+        let options = [];
+        for (var i = 0; i < this.props.replicas.length; i++) {
+            options.push({ value: this.props.replicas[i].id_rep, label: this.props.replicas[i].lexeme.mean_lex + this.props.replicas[i].symbol })
+        }
+        this.setState({
+            phr: this.props.phr,
+            lexemes: this.props.lexemes,
+            replicas: this.props.replicas,
+            options: options
+        });
     }
 
     handleChange(event) {
@@ -46,8 +66,55 @@ export default class Phrases extends Component {
         this.passPropsToParent();
     }
 
+    handleChangeOrder = (event) => {
+        let newPhr = { ...this.state.current_phr, id_ex: event.target.value };
+        let phr = this.state.phr;
+        phr[newPhr.id] = newPhr;
+        this.setState({
+            current_phr: newPhr,
+            phr: phr,
+        });
+        this.passPropsToParent();
+    }
+
+    handleChangeMultiple = (event) => {
+        let id_var = [];
+        for (var i = 0; i < event.length; i++) {
+            id_var.push(event[i].value)
+        }
+        console.log(id_var);
+        let newPhr = { ...this.state.current_phr, id_var: id_var, vl_var: event };
+        let phr = this.state.phr;
+        phr[newPhr.id] = newPhr;
+        this.setState({
+            current_phr: newPhr,
+            phr: phr,
+            id_var: id_var,
+            vl_var: event
+        });
+        this.passPropsToParent();
+    }
+
+    handleChangeMultipleNum = (event) => {
+        let id_miss = [];
+        let vl_miss = [];
+        id_miss.push(event.value);
+        vl_miss = [event];
+        console.log(id_miss);
+        let newPhr = { ...this.state.current_phr, id_miss: id_miss, vl_miss: vl_miss };
+        let phr = this.state.phr;
+        phr[newPhr.id] = newPhr;
+        this.setState({
+            current_phr: newPhr,
+            phr: phr,
+            vl_miss: vl_miss,
+            id_miss: id_miss
+        });
+        this.passPropsToParent();
+    }
+
     addNewPhr() {
-        let newPhr = { id: this.state.phr.length, phr_type: 0 };
+        let newPhr = { id: this.state.phr.length, type_ex: 0, id_ex: 0 };
         let phr = this.state.phr;
         phr[newPhr.id] = newPhr;
         this.setState({
@@ -57,7 +124,7 @@ export default class Phrases extends Component {
     }
 
     showCurrentPhr(id) {
-        switch (this.state.phr[id].phr_type) {
+        switch (this.state.phr[id].type_ex) {
             case 0:
                 this.setState({
                     current_phr: this.state.phr[id],
@@ -66,63 +133,54 @@ export default class Phrases extends Component {
             case 4:
                 this.setState({
                     current_phr: this.state.phr[id],
-                    id_lexeme: this.state.phr[id].id_lexeme ? this.state.phr[id].id_lexeme : "",
+                    id_rep: this.state.phr[id].id_rep ? this.state.phr[id].id_rep : "",
                 });
                 break;
             case 19:
                 this.setState({
                     current_phr: this.state.phr[id],
-                    id_lexeme: this.state.phr[id].id_lexeme ? this.state.phr[id].id_lexeme : "",
-                    phrase: this.state.phr[id].phrase ? this.state.phr[id].phrase : "",
+                    id_rep: this.state.phr[id].id_rep ? this.state.phr[id].id_rep : "",
+                    id_miss: this.state.phr[id].id_miss ? this.state.phr[id].id_miss : "",
+                    vl_miss: this.state.phr[id].vl_miss ? this.state.phr[id].vl_miss : "",
                 });
                 break;
             case 20:
                 this.setState({
                     current_phr: this.state.phr[id],
-                    id_lexeme: this.state.phr[id].id_lexeme ? this.state.phr[id].id_lexeme : "",
-                    id_lexeme_2: this.state.phr[id].id_lexeme_2 ? this.state.phr[id].id_lexeme_2 : "",
-                    id_lexeme_3: this.state.phr[id].id_lexeme_3 ? this.state.phr[id].id_lexeme_3 : "",
+                    id_rep: this.state.phr[id].id_rep ? this.state.phr[id].id_rep : "",
+                    id_var: this.state.phr[id].id_var ? this.state.phr[id].id_var : "",
+                    vl_var: this.state.phr[id].vl_var ? this.state.phr[id].vl_var : "",
                 });
                 break;
         }
     }
 
     getSelectedTypePhr(event) {
-        let phr_type = parseInt(event.target.value);
-        let newPhr = { id: this.state.current_phr.id, phr_type: phr_type };
+        let type_ex = parseInt(event.target.value);
+        let newPhr = { id: this.state.current_phr.id, type_ex: type_ex, id_ex: 0 };
         let phr = this.state.phr;
         phr[newPhr.id] = newPhr;
         this.setState({
             current_phr: newPhr,
             phr: phr,
-            word1: "",
-            words: "",
-            image1: "",
-            image2: "",
-            sound1: "",
-            scheme1: "",
-            scheme2: "",
-            letters: "",
-            phrase: "",
-            stress: "",
-            id_lexeme: "",
-            id_lexeme_2: "",
-            id_lexeme_3: "",
+            id_rep: "",
+            id_miss: "",
+            vl_miss: "",
+            id_var: "",
+            vl_var: ""
         });
         this.passPropsToParent();
     }
 
-    getSelectedLexemeId = (event) => {
-        console.log(parseInt(event.target.value));
-        console.log()
-        let id_lexeme = parseInt(event.target.value);
-        let newPhr = { ...this.state.current_phr, [event.target.name]: id_lexeme };
+    getSelectedRepId = (event) => {
+        let id_rep = parseInt(event.target.value);
+        let newPhr = { ...this.state.current_phr, [event.target.name]: id_rep };
         let phr = this.state.phr;
         phr[newPhr.id] = newPhr;
         this.setState({
             current_phr: newPhr,
             phr: phr,
-            [event.target.name]: id_lexeme
+            [event.target.name]: id_rep
         });
         this.passPropsToParent();
     }
@@ -133,7 +191,7 @@ export default class Phrases extends Component {
         for (var i = 0; i < phr.length; i++) {
             phr[i].id = i;
         }
-        let newPhr = { id: null, phr_type: '0' };
+        let newPhr = { id: null, type_ex: 0, id_ex: 0 };
         this.setState({
             phr: phr,
             current_phr: newPhr,
@@ -158,15 +216,15 @@ export default class Phrases extends Component {
                 {this.state.phr.length === 0 || this.state.current_phr.id === null ? <div></div> :
                     <div class="col" style={{ marginTop: "1%", width: "500px" }}>
                         <Form>
-                            <select class="form-select" style={{ marginBottom: "20px" }} value={this.state.current_phr.phr_type} onChange={this.getSelectedTypePhr}>
+                            <select class="form-select" style={{ marginBottom: "20px" }} value={this.state.current_phr.type_ex} onChange={this.getSelectedTypePhr}>
                                 <option value={0}>Выберите тип</option>
                                 <option value={4}>Моделирование фразы</option>
                                 <option value={19}>Задание вставь буквы во фразу</option>
                                 <option value={20}>Задание вставь слова</option>
                             </select>
                             <Button color="danger" onClick={() => this.deleteElement(this.state.current_phr.id)}>Удалить</Button>
-                            {this.state.current_phr.phr_type === 0 ? <div></div> :
-                                this.state.current_phr.phr_type === 4 ?
+                            {this.state.current_phr.type_ex === 0 ? <div></div> :
+                                this.state.current_phr.type_ex === 4 ?
                                     <div>
                                         <div style={{ paddingLeft: "530px", paddingBottom: "10px" }}>
                                             <Button id="Popover10" type="button">Подсказка</Button>
@@ -177,14 +235,25 @@ export default class Phrases extends Component {
                                                 </PopoverBody>
                                             </UncontrolledPopover>
                                         </div>
-                                        <select class="form-select" style={{ marginBottom: "20px" }} name="id_lexeme" value={this.state.id_lexeme} onChange={this.getSelectedLexemeId}>
-                                            <option value={0}>Выберите лексему</option>
-                                            {this.state.lexemes.map((obj, i) =>
-                                                <option value={obj.id_lex}>{obj.mean_lex}</option>
-                                            )}
-                                        </select>
+                                        <div className="row StructureFields">
+                                            <Label sm={3}>Номер в уроке:</Label>
+                                            <Col sm={2}>
+                                                <Input type="number" name="id_ex" value={this.state.current_phr.id_ex} onChange={this.handleChangeOrder}></Input>
+                                            </Col>
+                                        </div>
+                                        <div className="row StructureFields" style={{ marginTop: "20px" }}>
+                                            <Label sm={2}>Фраза:</Label>
+                                            <Col sm={10}>
+                                                <select class="form-select" name="id_rep" value={this.state.id_rep} onChange={this.getSelectedRepId}>
+                                                    <option value={0}>Выберите лексему</option>
+                                                    {this.state.replicas.map((obj, i) =>
+                                                        <option value={obj.id_rep}>{obj.lexeme.mean_lex + obj.symbol}</option>
+                                                    )}
+                                                </select>
+                                            </Col>
+                                        </div>
                                     </div> :
-                                    this.state.current_phr.phr_type === 19 ?
+                                    this.state.current_phr.type_ex === 19 ?
                                         <div>
                                             <div style={{ paddingLeft: "530px", paddingBottom: "10px" }}>
                                                 <Button id="Popover12" type="button">Подсказка</Button>
@@ -194,20 +263,38 @@ export default class Phrases extends Component {
                                                     </PopoverBody>
                                                 </UncontrolledPopover>
                                             </div>
-                                            <select class="form-select" style={{ marginBottom: "20px" }} name="id_lexeme" value={this.state.id_lexeme} onChange={this.getSelectedLexemeId}>
-                                                <option value={0}>Выберите лексему</option>
-                                                {this.state.lexemes.map((obj, i) =>
-                                                    <option value={obj.id_lex}>{obj.mean_lex}</option>
-                                                )}
-                                            </select>
-                                            <div class="row StructureFields">
-                                                <Label sm={4}>Номер слова:</Label>
-                                                <Col sm={8}>
-                                                    <Input type="text" name="phrase" value={this.state.phrase} onChange={this.handleChange}></Input>
+                                            <div className="row StructureFields">
+                                                <Label sm={3}>Номер в уроке:</Label>
+                                                <Col sm={2}>
+                                                    <Input type="number" name="id_ex" value={this.state.current_phr.id_ex} onChange={this.handleChangeOrder}></Input>
+                                                </Col>
+                                            </div>
+                                            <div className="row StructureFields" style={{ marginTop: "20px" }}>
+                                                <Label sm={2}>Фраза:</Label>
+                                                <Col sm={10}>
+                                                    <select class="form-select" name="id_rep" value={this.state.id_rep} onChange={this.getSelectedRepId}>
+                                                        <option value={0}>Выберите лексему</option>
+                                                        {this.state.replicas.map((obj, i) =>
+                                                            <option value={obj.id_rep}>{obj.lexeme.mean_lex + obj.symbol}</option>
+                                                        )}
+                                                    </select>
+                                                </Col>
+                                            </div>
+                                            <div class="row StructureFields" style={{ marginTop: "20px" }}>
+                                                <Label sm={3}>Номер слова:</Label>
+                                                <Col sm={5}>
+                                                    <Select
+                                                        options={numbers}
+                                                        value={this.state.vl_miss}
+                                                        className="basic-multi-select"
+                                                        classNamePrefix="select"
+                                                        onChange={this.handleChangeMultipleNum}
+                                                        placeholder="Выберите номер"
+                                                    />
                                                 </Col>
                                             </div>
                                         </div> :
-                                        this.state.current_phr.phr_type === 20 ?
+                                        this.state.current_phr.type_ex === 20 ?
                                             <div>
                                                 <div style={{ paddingLeft: "530px", paddingBottom: "10px" }}>
                                                     <Button id="Popover13" type="button">Подсказка</Button>
@@ -217,43 +304,42 @@ export default class Phrases extends Component {
                                                         </PopoverBody>
                                                     </UncontrolledPopover>
                                                 </div>
-                                                <div class="row StructureFields">
-                                                    <Label sm={4}>Ответ:</Label>
-                                                    <Col sm={8}>
-                                                        <select class="form-select" style={{ marginBottom: "20px" }} name="id_lexeme" value={this.state.id_lexeme} onChange={this.getSelectedLexemeId}>
+                                                <div className="row StructureFields">
+                                                    <Label sm={3}>Номер в уроке:</Label>
+                                                    <Col sm={2}>
+                                                        <Input type="number" name="id_ex" value={this.state.current_phr.id_ex} onChange={this.handleChangeOrder}></Input>
+                                                    </Col>
+                                                </div>
+                                                <div class="row StructureFields" style={{ marginTop: "20px" }}>
+                                                    <Label sm={3}>Ответ:</Label>
+                                                    <Col sm={9}>
+                                                        <select class="form-select" name="id_rep" value={this.state.id_rep} onChange={this.getSelectedRepId}>
                                                             <option value={0}>Выберите лексему</option>
-                                                            {this.state.lexemes.map((obj, i) =>
-                                                                <option value={obj.id_lex}>{obj.mean_lex}</option>
+                                                            {this.state.replicas.map((obj, i) =>
+                                                                <option value={obj.id_rep}>{obj.lexeme.mean_lex + obj.symbol}</option>
                                                             )}
                                                         </select>
                                                     </Col>
                                                 </div>
-                                                <div class="row StructureFields">
-                                                    <Label sm={4}>Вариант 1:</Label>
-                                                    <Col sm={8}>
-                                                        <select class="form-select" style={{ marginBottom: "20px" }} name="id_lexeme_2" value={this.state.id_lexeme_2} onChange={this.getSelectedLexemeId}>
-                                                            <option value={0}>Выберите лексему</option>
-                                                            {this.state.lexemes.map((obj, i) =>
-                                                                <option value={obj.id_lex}>{obj.mean_lex}</option>
-                                                            )}
-                                                        </select>
+                                                <div class="row StructureFields" style={{ marginTop: "20px" }}>
+                                                    <Label sm={3}>Варианты:</Label>
+                                                    <Col sm={9}>
+                                                        <Select
+                                                            options={this.state.options}
+                                                            isMulti
+                                                            value={this.state.vl_var}
+                                                            className="basic-multi-select"
+                                                            classNamePrefix="select"
+                                                            onChange={this.handleChangeMultiple}
+                                                            placeholder="Выберите лексемы"
+                                                        />
                                                     </Col>
                                                 </div>
-                                                <div class="row StructureFields">
-                                                    <Label sm={4}>Вариант 2:</Label>
-                                                    <Col sm={8}>
-                                                        <select class="form-select" style={{ marginBottom: "20px" }} name="id_lexeme_3" value={this.state.id_lexeme_3} onChange={this.getSelectedLexemeId}>
-                                                            <option value={0}>Выберите лексему</option>
-                                                            {this.state.lexemes.map((obj, i) =>
-                                                                <option value={obj.id_lex}>{obj.mean_lex}</option>
-                                                            )}
-                                                        </select>
-                                                    </Col>
-                                                </div>
+
                                             </div> :
                                             <div></div>}
                         </Form>
-                    </div>}
+                    </div >}
             </div>)
     }
 }
