@@ -1,33 +1,78 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { React, Component } from 'react';
-import {  Pagination, PaginationItem, PaginationLink, Table, Spinner } from "reactstrap";
 import toast, { Toaster } from 'react-hot-toast';
+import { Spinner } from 'reactstrap';
 import CustomNavbar from './Navbar';
+import Table from './Table';
 import '../style.css';
 
-const getDataUrl = "";
 const rows = 10;
-const data = null;
-const data_1 = [{ ch_date: 1, ch_desc: 2 }, { ch_date: 1, ch_desc: 2 }, { ch_date: 1, ch_desc: 2 },
-{ ch_date: 1, ch_desc: 2 }, { ch_date: 1, ch_desc: 2 }, { ch_date: 1, ch_desc: 2 },
-{ ch_date: 1, ch_desc: 2 }, { ch_date: 1, ch_desc: 2 }, { ch_date: 1, ch_desc: 2 },
-{ ch_date: 1, ch_desc: 2 }, { ch_date: 1, ch_desc: 2 }, { ch_date: 1, ch_desc: 2 },
-{ ch_date: 1, ch_desc: 2 }, { ch_date: 1, ch_desc: 2 }, { ch_date: 1, ch_desc: 2 },
-{ ch_date: 1, ch_desc: 2 }, { ch_date: 1, ch_desc: 2 }, { ch_date: 1, ch_desc: 2 },
-{ ch_date: 1, ch_desc: 2 }, { ch_date: 1, ch_desc: 2 }, { ch_date: 1, ch_desc: 2 }];
+const tableData_0 = [{ first_name: "Lhfhfs", last_name: 22, country: 167, progress: 23 },
+{ first_name: "fdsf", last_name: 24, progress: 1, country: 2 },
+{ first_name: 1, last_name: 2, progress: 61, country: 2 },
+{ first_name: 1, last_name: 2, progress: 1, country: 2 },
+{ first_name: 17, last_name: 2, progress: 1, country: 2 },
+{ first_name: 1, last_name: 2, progress: 1, country: 2 },
+{ first_name: 1, last_name: 2, progress: 1, country: 2 },
+{ first_name: 12, last_name: 2, progress: 1, country: 2 },
+{ first_name: 1, last_name: 2, progress: 13, country: 2 },
+{ first_name: 1, last_name: 2, progress: 1, country: 2 },
+{ first_name: 1, last_name: 2, country: 1, progress: 2 },
+{ first_name: 17, last_name: 24, progress: 1, country: 2 },
+{ first_name: 1, last_name: 2, progress: 61, country: 2 },
+{ first_name: 1, last_name: 2, progress: 1, country: 2 },
+{ first_name: 17, last_name: 2, progress: 1, country: 2 },
+{ first_name: 1, last_name: 2, progress: 1, country: 2 },
+{ first_name: 1, last_name: 2, progress: 1, country: 2 },
+{ first_name: 12, last_name: 2, progress: 1, country: 2 },
+{ first_name: 1, last_name: 2, progress: 13, country: 2 },
+{ first_name: 1, last_name: 2, progress: 1, country: 2 }];
 
+const tableData_1 = [{ first_name: 0, last_name: 22, country: 167, progress: 23 },
+{ first_name: 17, last_name: 24, progress: 1, country: 2 },
+{ first_name: 1, last_name: 2, progress: 61, country: 2 },
+{ first_name: 1, last_name: 2, progress: 1, country: 2 },
+{ first_name: 17, last_name: 2, progress: 1, country: 2 },
+{ first_name: 1, last_name: 2, progress: 1, country: 2 },
+{ first_name: 1, last_name: 2, progress: 1, country: 2 },
+{ first_name: 12, last_name: 2, progress: 1, country: 2 },
+{ first_name: 1, last_name: 2, progress: 13, country: 2 },
+{ first_name: 1, last_name: 2, progress: 1, country: 2 },
+{ first_name: 1, last_name: 2, country: 1, progress: 2 },
+{ first_name: 17, last_name: 24, progress: 1, country: 2 },
+{ first_name: 1, last_name: 2, progress: 61, country: 2 },
+{ first_name: 1, last_name: 2, progress: 1, country: 2 },
+{ first_name: 17, last_name: 2, progress: 1, country: 2 },
+{ first_name: 1, last_name: 2, progress: 1, country: 2 },
+{ first_name: 1, last_name: 2, progress: 1, country: 2 },
+{ first_name: 12, last_name: 2, progress: 1, country: 2 },
+{ first_name: 1, last_name: 2, progress: 13, country: 2 },
+{ first_name: 1, last_name: 2, progress: 1, country: 2 },
+{ first_name: 1, last_name: 2, country: 1, progress: 2 },
+{ first_name: 17, last_name: 24, progress: 1, country: 2 },
+{ first_name: 1, last_name: 2, progress: 61, country: 2 },
+{ first_name: 1, last_name: 2, progress: 1, country: 2 },
+{ first_name: 17, last_name: 2, progress: 1, country: 2 },
+{ first_name: 1, last_name: 2, progress: 1, country: 2 },
+{ first_name: 1, last_name: 2, progress: 1, country: 2 },
+{ first_name: 12, last_name: 2, progress: 1, country: 2 },
+{ first_name: 1, last_name: 2, progress: 13, country: 2 },
+{ first_name: 1, last_name: 2, progress: 1, country: 2 }];
+
+const columns = [
+    { label: "Имя", accessor: "first_name", sortable: true },
+    { label: "Фамилия", accessor: "last_name", sortable: true },
+    { label: "Страна", accessor: "country", sortable: true },
+    { label: "Прогресс", accessor: "progress", sortable: true },
+];
 export default class Statisctics extends Component {
     constructor() {
         super();
         this.state = {
-            data: null,
+            tableData: null,
             data_part: null,
-            page: null,
-            count: null,
-            firstButton: true,
-            prevButton: true,
-            nextButton: false,
-            lastButton: false
+            columns: null,
+            count: 0
         }
         this.getData = this.getData.bind(this);
     };
@@ -44,26 +89,39 @@ export default class Statisctics extends Component {
                     data: data
                 });
             })*/
-        this.setState({ data: data });
+        /*this.setState({ data: data });*/
+        let data_part = tableData_0 === null ? 0 : tableData_0.slice(0, rows);
+        let count = tableData_0 === null ? 0 : Math.ceil(tableData_0.length / rows);
+        this.setState({
+            tableData: tableData_0,
+            data_part: data_part,
+            count: count
+            //page: 0,
+            //count: count,
+            //firstButton: true,
+            //prevButton: true,
+            //nextButton: false,
+            //lastButton: false
+        });
+        /*this.setState({
+            tableData: tableData_0,
+            columns: columns,
+        });*/
         toast.success("Данные получены.");
         this.intervalGetData = setInterval(this.getData, 10000);
     }
+
 
     async getData() {
         /*const response = await fetch(getDataUrl);
         const data = await response.json();
         console.log(data);*/
-        let data_part = data_1.slice(0, rows);
-        let count = Math.ceil(data_1.length/rows);
+        let data_part = tableData_1 === null ? null : tableData_1.slice(0, rows);
+        let count = tableData_1 === null ? 0 : Math.ceil(tableData_1.length / rows);
         this.setState({
-            data: data_1,
+            tableData: tableData_1,
             data_part: data_part,
-            page: 0,
-            count: count,
-            firstButton: true,
-            prevButton: true,
-            nextButton: false,
-            lastButton: false
+            count: count
         });
         toast.success("Данные получены.");
     }
@@ -71,66 +129,6 @@ export default class Statisctics extends Component {
     componentWillUnmount = () => {
         clearInterval(this.intervalGetData);
     };
-
-    firstPage = () => {
-        let data_part = this.state.data.slice(0, rows);
-        this.setState({
-            data_part: data_part,
-            page: 0,
-            firstButton: true,
-            prevButton: true,
-            nextButton: false,
-            lastButton: false
-        });
-    }
-
-    previousPage = () => {
-        let data_part = this.state.data.slice((this.state.page - 1) * rows, (this.state.page - 1) * rows + rows);
-        let page = this.state.page - 1;
-        let firstState = page === 0 ? true : false;
-        this.setState({
-            data_part: data_part,
-            page: page,
-            firstButton: firstState,
-            prevButton: firstState,
-            nextButton: false,
-            lastButton: false
-        });
-    }
-
-    nextPage = () => {
-        let data_part = this.state.data.slice((this.state.page + 1) * rows, (this.state.page + 1) * rows + rows);
-        let page = this.state.page + 1;
-        let lastState = this.state.count === page + 1 ? true : false;
-        this.setState({
-            data_part: data_part,
-            page: page,
-            firstButton: false,
-            prevButton: false,
-            nextButton: lastState,
-            lastButton: lastState
-        });
-    }
-
-    lastPage = () => {
-        let pages = this.state.data.length % rows;
-        if (pages === 0) {
-            pages = -rows;
-        }
-        else {
-            pages = -pages;
-        }
-        let data_part = this.state.data.slice(pages);
-        let count = this.state.count;
-        this.setState({
-            data_part: data_part,
-            page: count,
-            firstButton: false,
-            prevButton: false,
-            nextButton: true,
-            lastButton: true
-        });
-    }
 
     render() {
         return (
@@ -144,61 +142,11 @@ export default class Statisctics extends Component {
                         </ol>
                     </nav>
                 </div>
-                <div style={{ marginTop: "5%", textAlign: "center" }}>
-                    {this.state.data === null ? <div class="CenterContainer"><Spinner color="secondary" /></div> :
-                        this.state.data.length === 0 ? <div>Нет данных</div> :
+                <div>
+                    {this.state.tableData === null ? <div class="CenterContainer"><Spinner color="secondary" /></div> :
+                        this.state.tableData.length === 0 ? <div>Нет данных</div> :
                             <div>
-                                <Table hover responsive bordered>
-                                    <thead>
-                                        <tr>
-                                            <th>
-                                                Имя
-                                            </th>
-                                            <th>
-                                                Фамилия
-                                            </th>
-                                            <th>
-                                                Страна
-                                            </th>
-                                            <th>
-                                                Прогресс
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {this.state.data_part.map((obj, i) =>
-                                            <tr>
-                                                <td>
-                                                    {obj.ch_date}
-                                                </td>
-                                                <td>
-                                                    {obj.ch_desc}
-                                                </td>
-                                                <td>
-                                                    {obj.ch_date}
-                                                </td>
-                                                <td>
-                                                    {obj.ch_desc}
-                                                </td>
-                                            </tr>
-                                        )}
-                                    </tbody>
-                                </Table>
-                                <Pagination>
-                                    <PaginationItem disabled={this.state.firstButton}>
-                                        <PaginationLink first onClick={this.firstPage} />
-                                    </PaginationItem>
-                                    <PaginationItem disabled={this.state.prevButton} >
-                                        <PaginationLink previous onClick={this.previousPage} />
-                                    </PaginationItem>
-                                    <PaginationItem disabled={this.state.lastButton}>
-                                        <PaginationLink next onClick={this.nextPage} />
-                                    </PaginationItem>
-                                    <PaginationItem disabled={this.state.lastButton}>
-                                        <PaginationLink last onClick={this.lastPage} />
-                                    </PaginationItem>
-                                    <div>Страница {this.state.page + 1 } из {this.state.count}</div>
-                                </Pagination>
+                                <Table data={this.state.tableData} data_part={this.state.data_part} count={this.state.count} columns={columns} />
                             </div>
                     }
                 </div>
@@ -206,4 +154,5 @@ export default class Statisctics extends Component {
             </div>
         )
     }
+
 }

@@ -38,8 +38,8 @@ export default class Vocabulary extends Component {
             vl_lex: "",
             id_miss: "",
             vl_miss: "",
-            id_variant: "",
-            vl_variant: "",
+            id_var: "",
+            vl_var: "",
             options: [],
             options_letters: []
         }
@@ -131,19 +131,19 @@ export default class Vocabulary extends Component {
     }
 
     handleChangeMultipleVar = (event) => {
-        let id_variant = [];
+        let id_var = [];
         for (var i = 0; i < event.length; i++) {
-            id_variant.push(event[i].value)
+            id_var.push(event[i].value)
         }
-        console.log(id_variant);
-        let newLex = { ...this.state.current_lex, id_variant: id_variant, vl_variant: event };
+        console.log(id_var);
+        let newLex = { ...this.state.current_lex, id_var: id_var, vl_var: event };
         let lex = this.state.lex;
         lex[newLex.id] = newLex;
         this.setState({
             current_lex: newLex,
             lex: lex,
-            vl_variant: event,
-            id_variant: id_variant
+            vl_var: event,
+            id_var: id_var
         });
         this.passPropsToParent();
     }
@@ -188,8 +188,8 @@ export default class Vocabulary extends Component {
                     id_lex: this.state.lex[id].id_lex ? this.state.lex[id].id_lex : "",
                     id_miss: this.state.lex[id].id_miss ? this.state.lex[id].id_miss : "",
                     vl_miss: this.state.lex[id].vl_miss ? this.state.lex[id].vl_miss : "",
-                    id_variant: this.state.lex[id].id_variant ? this.state.lex[id].id_variant : "",
-                    vl_variant: this.state.lex[id].vl_variant ? this.state.lex[id].vl_variant : "",
+                    id_var: this.state.lex[id].id_var ? this.state.lex[id].id_var : "",
+                    vl_var: this.state.lex[id].vl_var ? this.state.lex[id].vl_var : "",
                 });
                 break;
             case 15:
@@ -198,16 +198,16 @@ export default class Vocabulary extends Component {
                     id_lex: this.state.lex[id].id_lex ? this.state.lex[id].id_lex : "",
                     id_miss: this.state.lex[id].id_miss ? this.state.lex[id].id_miss : "",
                     vl_miss: this.state.lex[id].vl_miss ? this.state.lex[id].vl_miss : "",
-                    id_variant: this.state.lex[id].id_variant ? this.state.lex[id].id_variant : "",
-                    vl_variant: this.state.lex[id].vl_variant ? this.state.lex[id].vl_variant : "",
+                    id_var: this.state.lex[id].id_var ? this.state.lex[id].id_var : "",
+                    vl_var: this.state.lex[id].vl_var ? this.state.lex[id].vl_var : "",
                 });
                 break;
             case 6:
                 this.setState({
                     current_lex: this.state.lex[id],
                     id_lex: this.state.lex[id].id_lex ? this.state.lex[id].id_lex : "",
-                    id_variant: this.state.lex[id].id_variant ? this.state.lex[id].id_variant : "",
-                    vl_variant: this.state.lex[id].vl_variant ? this.state.lex[id].vl_variant : "",
+                    id_var: this.state.lex[id].id_var ? this.state.lex[id].id_var : "",
+                    vl_var: this.state.lex[id].vl_var ? this.state.lex[id].vl_var : "",
                 });
                 break;
         }
@@ -223,8 +223,8 @@ export default class Vocabulary extends Component {
             lex: lex,
             id_miss: "",
             vl_miss: "",
-            id_variant: "",
-            vl_variant: "",
+            id_var: "",
+            vl_var: "",
             id_lex: "",
             vl_lex: ""
         });
@@ -510,7 +510,7 @@ export default class Vocabulary extends Component {
                                                                 {/*<div className="row StructureFields" style={{ marginTop: "20px" }}>
                                                                     <Label sm={3}>Варианты:</Label>
                                                                     <Col sm={9}>
-                                                                        <Input type="text" name="variant" value={this.state.variant} onChange={this.handleChange}></Input>
+                                                                        <Input type="text" name="var" value={this.state.var} onChange={this.handleChange}></Input>
                                                                     </Col>
                                                                             </div>*/}
                                                                 <div className="row StructureFields" style={{ marginTop: "20px" }}>
@@ -520,7 +520,7 @@ export default class Vocabulary extends Component {
                                                                             options={this.state.options_letters}
                                                                             isMulti
                                                                             name="colors"
-                                                                            value={this.state.vl_variant}
+                                                                            value={this.state.vl_var}
                                                                             className="basic-multi-select"
                                                                             classNamePrefix="select"
                                                                             onChange={this.handleChangeMultipleVar}
@@ -578,7 +578,7 @@ export default class Vocabulary extends Component {
                                                                                 options={this.state.options_letters}
                                                                                 isMulti
                                                                                 name="colors"
-                                                                                value={this.state.vl_variant}
+                                                                                value={this.state.vl_var}
                                                                                 className="basic-multi-select"
                                                                                 classNamePrefix="select"
                                                                                 onChange={this.handleChangeMultipleVar}
@@ -621,7 +621,7 @@ export default class Vocabulary extends Component {
                                                                                     options={this.state.options_letters}
                                                                                     isMulti
                                                                                     name="colors"
-                                                                                    value={this.state.vl_variant}
+                                                                                    value={this.state.vl_var}
                                                                                     className="basic-multi-select"
                                                                                     classNamePrefix="select"
                                                                                     onChange={this.handleChangeMultipleVar}

@@ -225,12 +225,12 @@ export default class Menu extends Component {
                             id_lex = this.findIdArrays(lex_split, "lex");
                             let nums = data[i].miss.replaceAll(',', '').split(' ');
                             nums = this.findIdArrays(nums, "num");
-                            lex[lex.length - 1] = { ...lex[lex.length - 1], id_variant: id_lex[0], vl_variant: id_lex[1], id_miss: nums[0], vl_miss: nums[1] };
+                            lex[lex.length - 1] = { ...lex[lex.length - 1], id_var: id_lex[0], vl_var: id_lex[1], id_miss: nums[0], vl_miss: nums[1] };
                             break;
                         case 6:
                             lex_split = data[i].variant.replaceAll(',', '').split(' ');
                             id_lex = this.findIdArrays(lex_split, "lex");
-                            lex[lex.length - 1] = { ...lex[lex.length - 1], id_variant: id_lex[0], vl_variant: id_lex[1] };
+                            lex[lex.length - 1] = { ...lex[lex.length - 1], id_var: id_lex[0], vl_var: id_lex[1] };
                             break;
                     }
                 }

@@ -3,7 +3,6 @@ import { React, Component } from 'react';
 import { Col, Form, FormGroup, Label, Button } from "reactstrap";
 import CustomNavbar from './Navbar';
 import '../style.css';
-import axios from 'axios';
 
 const basic_actions = ["Идти", "Бежать", "Смотреть"];
 
@@ -31,8 +30,9 @@ export default class MakeVideo extends Component {
     }
 
     handleSubmit(event) {
+        event.preventDefault();
         let actions = this.state.selectors;
-        console.log(this.state.selectors);
+        console.log(actions);
         /*axios.post('', { actions },
             {
                 headers: {
