@@ -1,0 +1,9 @@
+version: '3'
+services:
+  frontend:
+    hostname: frontend
+    image: unolingua_frontend:latest
+    container_name: unolingua_frontend
+    restart: unless-stopped
+    ports:
+      - "3100:3100"
