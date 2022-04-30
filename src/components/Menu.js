@@ -12,13 +12,13 @@ import edit from '../static/icons/edit.svg';
 import new_admin from '../static/icons/new_admin.svg';
 import '../style.css';
 
-const getBlocksUrl = 'http://172.18.130.45:5052/api/lessonblocks/';
-const getPhrasesUrl = 'http://172.18.130.45:5052/api/showinfoaboutphrase/';
-const getTypesUrl = 'http://172.18.130.45:5052/api/typesex/';
-const getLexemesUrl = 'http://172.18.130.45:5052/api/lexemes/';
-const getReplicasUrl = 'http://172.18.130.45:5052/api/replicas/';
-const getWordsLettersUrl = 'http://172.18.130.45:5052/api/showinfoaboutwordsletters/';
-const getRulesUrl = 'http://172.18.130.45:5052/api/showinfoaboutrules';
+const getBlocksUrl = 'https://api.unolingua.flareon.ru/lessonblocks/';
+const getPhrasesUrl = 'https://api.unolingua.flareon.ru/showinfoaboutphrase/';
+const getTypesUrl = 'https://api.unolingua.flareon.ru/typesex/';
+const getLexemesUrl = 'https://api.unolingua.flareon.ru/lexemes/';
+const getReplicasUrl = 'https://api.unolingua.flareon.ru/replicas/';
+const getWordsLettersUrl = 'https://api.unolingua.flareon.ru/showinfoaboutwordsletters/';
+const getRulesUrl = 'https://api.unolingua.flareon.ru/showinfoaboutrules';
 
 const MenuContainer = {
     justifyContent: 'center',
@@ -51,11 +51,16 @@ export default class Menu extends Component {
             })
             .then((data) => {
                 console.log(data);
-                for (var i = 0; i < data.length; i++) {
-                    for (var j = 0; j < data[i].lesson_info.length; j++) {
-                        data[i].lesson_info[j].lesson = { lex: [], rules: [], phr: [], dialog: [] }
+                if (data.length !== null) {
+                    for (var i = 0; i < data.length; i++) {
+                        if (data[i].lesson_info) {
+                            for (var j = 0; j < data[i].lesson_info.length; j++) {
+                                data[i].lesson_info[j].lesson = { lex: [], rules: [], phr: [], dialog: [] }
+                            }
+                        }
                     }
                 }
+
                 this.setState({ blocks: data });
             });
         fetch(getTypesUrl)
@@ -381,7 +386,7 @@ export default class Menu extends Component {
                 vl_words.push({ value: parseInt(words[0]), label: words[0] });
                 for (var i = 1; i < words.length; i++) {
                     id_words.push(parseInt(words[i].replace(' ', '')));
-                    vl_words.push({ value: parseInt(words[i].replace(' ', '')), label: words[i].replace(' ', '')});
+                    vl_words.push({ value: parseInt(words[i].replace(' ', '')), label: words[i].replace(' ', '') });
                 }
                 return [id_words, vl_words];
             }

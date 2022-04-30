@@ -535,7 +535,6 @@ export default class Editing extends Component {
                         </div>
                     </div>
                     <div style={{ marginTop: "5%" }}>
-                        <button type="button" class="ViewLesson" disabled>Предпросмотр</button>
                         <button type="button" class="DeleteLesson" onClick={this.deleteLesson} disabled>Удалить урок</button>
                     </div>
                     <div style={{ marginTop: "5%" }}>

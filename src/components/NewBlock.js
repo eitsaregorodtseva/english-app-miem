@@ -298,7 +298,6 @@ export default class NewBlock extends Component {
                             </div>
                         </div>
                         <div style={{ marginTop: "5%" }}>
-                            <button className="ViewLesson">Предпросмотр</button>
                             <button className="DeleteLesson" onClick={() => this.deleteLesson(obj.id)}>Удалить урок</button>
                         </div>
                     </div>

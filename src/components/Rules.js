@@ -215,12 +215,12 @@ export default class Rules extends Component {
                                                 </PopoverBody>
                                             </UncontrolledPopover>
                                         </div>
-                                        <div className="row StructureFields" style={{ marginBottom: "20px" }}>
+                                        {/*<div className="row StructureFields" style={{ marginBottom: "20px" }}>
                                             <Label sm={3}>Номер в уроке:</Label>
                                             <Col sm={2}>
                                                 <Input type="number" name="id_ex" value={this.state.current_rule.id_ex} onChange={this.handleChangeOrder}></Input>
                                             </Col>
-                                        </div>
+                                        </div>*/}
                                         <div className="row StructureFields" style={{ marginTop: "20px", marginBottom: "20px" }}>
                                             <Label sm={3}>Лексемы:</Label>
                                             <Col sm={8}>

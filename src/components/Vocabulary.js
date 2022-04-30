@@ -621,7 +621,7 @@ export default class Vocabulary extends Component {
                                                                                     options={this.state.options_letters}
                                                                                     isMulti
                                                                                     name="colors"
-                                                                                    value={this.state.vl_var}
+                                                                                    value={this.state.vl_varо}
                                                                                     className="basic-multi-select"
                                                                                     classNamePrefix="select"
                                                                                     onChange={this.handleChangeMultipleVar}
