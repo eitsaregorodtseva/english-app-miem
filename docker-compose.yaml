@@ -6,4 +6,4 @@ services:
     container_name: unolingua_frontend
     restart: unless-stopped
     ports:
-      - "3100:3100"
+      - "3220:3220"
