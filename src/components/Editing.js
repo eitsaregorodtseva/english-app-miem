@@ -16,7 +16,7 @@ import '../style.css';
 const BadgePills = {
     padding: "1% 5% 1% 5%"
 }
-const statuses = ["Пусто     ", "В процессе", "Не требуется", "Готово"];
+const statuses = ["Пусто     ", "В процессе", "Не требуется", "Готово    "];
 const getBlocksUrl = 'http://172.18.130.45:5052/api/lessonblocks/';
 const getLexemesUrl = 'http://172.18.130.45:5052/api/lexemes/';
 const postLessonUrl = 'http://172.18.130.45:5052/api/lessons/';
@@ -323,14 +323,14 @@ export default class Editing extends Component {
         console.log(this.state.dialogs);
         let mistakes = 0;
         for (var i = 0; i < this.state.lesson.length; i++) {
-            /*if (this.state.lessons[i].video.length + 0 === 0 && this.state.statuses.video_st !== statuses[0] && this.state.statuses.video_st !== "Не требуется") {
+            if ((this.state.video.video_link === null || this.state.video.video_link === "" ) && this.state.statuses.video_st !== statuses[0] && this.state.statuses.video_st !== "Не требуется") {
                 mistakes = mistakes + 1;
                 toast.error("Ошибка в заполнении статуса Видео.");
             }
-            if ((this.state.lessons[i].video.length + 0 > 0) && (this.state.statuses.video_st === statuses[0] || this.state.statuses.video_st === "Не требуется" || this.state.statuses.video_st === "")) {
+            if ((this.state.video.video_link !== null && this.state.video.video_link !== "") && (this.state.statuses.video_st === statuses[0] || this.state.statuses.video_st === "Не требуется" || this.state.statuses.video_st === "")) {
                 mistakes = mistakes + 1;
                 toast.error("Ошибка в заполнении статуса Видео.");
-            }*/
+            }
             if ((this.state.lesson[i].lex.length + 0 === 0) && (this.state.statuses.lex_st !== statuses[0] && this.state.statuses.lex_st !== "Не требуется")) {
                 mistakes = mistakes + 1;
                 toast.error("Ошибка в заполнении статуса Буквы-слова.");

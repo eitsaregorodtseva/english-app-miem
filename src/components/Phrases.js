@@ -27,7 +27,7 @@ export default class Phrases extends Component {
             phr: [],
             lexemes: [],
             replicas: [],
-            current_phr: { id: null, type_ex: 0, id_ex: 0 },
+            current_phr: { id: null, type_ex: 0, num_ex: 0 },
             id_rep: "",
             id_miss: "",
             vl_miss: "",
@@ -67,7 +67,7 @@ export default class Phrases extends Component {
     }
 
     handleChangeOrder = (event) => {
-        let newPhr = { ...this.state.current_phr, id_ex: event.target.value };
+        let newPhr = { ...this.state.current_phr, num_ex: event.target.value };
         let phr = this.state.phr;
         phr[newPhr.id] = newPhr;
         this.setState({
@@ -114,7 +114,7 @@ export default class Phrases extends Component {
     }
 
     addNewPhr() {
-        let newPhr = { id: this.state.phr.length, type_ex: 0, id_ex: 0 };
+        let newPhr = { id: this.state.phr.length, type_ex: 0, num_ex: 0 };
         let phr = this.state.phr;
         phr[newPhr.id] = newPhr;
         this.setState({
@@ -157,7 +157,7 @@ export default class Phrases extends Component {
 
     getSelectedTypePhr(event) {
         let type_ex = parseInt(event.target.value);
-        let newPhr = { id: this.state.current_phr.id, type_ex: type_ex, id_ex: 0 };
+        let newPhr = { id: this.state.current_phr.id, type_ex: type_ex, num_ex: 0 };
         let phr = this.state.phr;
         phr[newPhr.id] = newPhr;
         this.setState({
@@ -191,7 +191,7 @@ export default class Phrases extends Component {
         for (var i = 0; i < phr.length; i++) {
             phr[i].id = i;
         }
-        let newPhr = { id: null, type_ex: 0, id_ex: 0 };
+        let newPhr = { id: null, type_ex: 0, num_ex: 0 };
         this.setState({
             phr: phr,
             current_phr: newPhr,
@@ -238,7 +238,7 @@ export default class Phrases extends Component {
                                         <div className="row StructureFields">
                                             <Label sm={3}>Номер в уроке:</Label>
                                             <Col sm={2}>
-                                                <Input type="number" name="id_ex" value={this.state.current_phr.id_ex} onChange={this.handleChangeOrder}></Input>
+                                                <Input type="number" name="num_ex" value={this.state.current_phr.num_ex} onChange={this.handleChangeOrder}></Input>
                                             </Col>
                                         </div>
                                         <div className="row StructureFields" style={{ marginTop: "20px" }}>
@@ -266,7 +266,7 @@ export default class Phrases extends Component {
                                             <div className="row StructureFields">
                                                 <Label sm={3}>Номер в уроке:</Label>
                                                 <Col sm={2}>
-                                                    <Input type="number" name="id_ex" value={this.state.current_phr.id_ex} onChange={this.handleChangeOrder}></Input>
+                                                    <Input type="number" name="num_ex" value={this.state.current_phr.num_ex} onChange={this.handleChangeOrder}></Input>
                                                 </Col>
                                             </div>
                                             <div className="row StructureFields" style={{ marginTop: "20px" }}>
@@ -307,7 +307,7 @@ export default class Phrases extends Component {
                                                 <div className="row StructureFields">
                                                     <Label sm={3}>Номер в уроке:</Label>
                                                     <Col sm={2}>
-                                                        <Input type="number" name="id_ex" value={this.state.current_phr.id_ex} onChange={this.handleChangeOrder}></Input>
+                                                        <Input type="number" name="num_ex" value={this.state.current_phr.num_ex} onChange={this.handleChangeOrder}></Input>
                                                     </Col>
                                                 </div>
                                                 <div class="row StructureFields" style={{ marginTop: "20px" }}>

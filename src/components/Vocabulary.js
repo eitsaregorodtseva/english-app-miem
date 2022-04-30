@@ -33,7 +33,7 @@ export default class Vocabulary extends Component {
         this.state = {
             lex: [],
             lexemes: [],
-            current_lex: { id: null, type_ex: 0, id_ex: 0 },
+            current_lex: { id: null, type_ex: 0, num_ex: 0 },
             id_lex: "",
             vl_lex: "",
             id_miss: "",
@@ -76,7 +76,7 @@ export default class Vocabulary extends Component {
     }
 
     handleChangeOrder = (event) => {
-        let newLex = { ...this.state.current_lex, id_ex: event.target.value };
+        let newLex = { ...this.state.current_lex, num_ex: event.target.value };
         let lex = this.state.lex;
         lex[newLex.id] = newLex;
         this.setState({
@@ -149,7 +149,7 @@ export default class Vocabulary extends Component {
     }
 
     addNewLex = () => {
-        let newLex = { id: this.state.lex.length, type_ex: 0, id_ex: 0 };
+        let newLex = { id: this.state.lex.length, type_ex: 0, num_ex: 0 };
         let lex = this.state.lex;
         lex[newLex.id] = newLex;
         this.setState({
@@ -215,7 +215,7 @@ export default class Vocabulary extends Component {
 
     getSelectedTypeLex = (event) => {
         let type_ex = parseInt(event.target.value);
-        let newLex = { id: this.state.current_lex.id, type_ex: type_ex, id_ex: 0 };
+        let newLex = { id: this.state.current_lex.id, type_ex: type_ex, num_ex: 0 };
         let lex = this.state.lex;
         lex[newLex.id] = newLex;
         this.setState({
@@ -250,7 +250,7 @@ export default class Vocabulary extends Component {
         for (var i = 0; i < lex.length; i++) {
             lex[i].id = i;
         }
-        let newLex = { id: null, type_ex: 0, id_ex: 0 };
+        let newLex = { id: null, type_ex: 0, num_ex: 0 };
         this.setState({
             lex: lex,
             current_lex: newLex
@@ -303,7 +303,7 @@ export default class Vocabulary extends Component {
                                         <div className="row StructureFields">
                                             <Label sm={3}>Номер в уроке:</Label>
                                             <Col sm={2}>
-                                                <Input type="number" name="id_ex" value={this.state.current_lex.id_ex} onChange={this.handleChangeOrder}></Input>
+                                                <Input type="number" name="num_ex" value={this.state.current_lex.num_ex} onChange={this.handleChangeOrder}></Input>
                                             </Col>
                                         </div>
                                         <div className="row StructureFields" style={{ marginTop: "20px" }}>
@@ -331,7 +331,7 @@ export default class Vocabulary extends Component {
                                             <div className="row StructureFields">
                                                 <Label sm={3}>Номер в уроке:</Label>
                                                 <Col sm={2}>
-                                                    <Input type="number" name="id_ex" value={this.state.current_lex.id_ex} onChange={this.handleChangeOrder}></Input>
+                                                    <Input type="number" name="num_ex" value={this.state.current_lex.num_ex} onChange={this.handleChangeOrder}></Input>
                                                 </Col>
                                             </div>
                                             <div className="row StructureFields" style={{ marginTop: "20px" }}>
@@ -359,7 +359,7 @@ export default class Vocabulary extends Component {
                                                 <div className="row StructureFields">
                                                     <Label sm={3}>Номер в уроке:</Label>
                                                     <Col sm={2}>
-                                                        <Input type="number" name="id_ex" value={this.state.current_lex.id_ex} onChange={this.handleChangeOrder}></Input>
+                                                        <Input type="number" name="num_ex" value={this.state.current_lex.num_ex} onChange={this.handleChangeOrder}></Input>
                                                     </Col>
                                                 </div>
                                                 <div className="row StructureFields" style={{ marginTop: "20px" }}>
@@ -391,7 +391,7 @@ export default class Vocabulary extends Component {
                                                     <div className="row StructureFields">
                                                         <Label sm={3}>Номер в уроке:</Label>
                                                         <Col sm={2}>
-                                                            <Input type="number" name="id_ex" value={this.state.current_lex.id_ex} onChange={this.handleChangeOrder}></Input>
+                                                            <Input type="number" name="num_ex" value={this.state.current_lex.num_ex} onChange={this.handleChangeOrder}></Input>
                                                         </Col>
                                                     </div>
                                                     <div className="row StructureFields" style={{ marginTop: "20px" }}>
@@ -419,7 +419,7 @@ export default class Vocabulary extends Component {
                                                         <div className="row StructureFields">
                                                             <Label sm={3}>Номер в уроке:</Label>
                                                             <Col sm={2}>
-                                                                <Input type="number" name="id_ex" value={this.state.current_lex.id_ex} onChange={this.handleChangeOrder}></Input>
+                                                                <Input type="number" name="num_ex" value={this.state.current_lex.num_ex} onChange={this.handleChangeOrder}></Input>
                                                             </Col>
                                                         </div>
                                                         <div className="row StructureFields" style={{ marginTop: "20px" }}>
@@ -447,7 +447,7 @@ export default class Vocabulary extends Component {
                                                             <div className="row StructureFields">
                                                                 <Label sm={3}>Номер в уроке:</Label>
                                                                 <Col sm={2}>
-                                                                    <Input type="number" name="id_ex" value={this.state.current_lex.id_ex} onChange={this.handleChangeOrder}></Input>
+                                                                    <Input type="number" name="num_ex" value={this.state.current_lex.num_ex} onChange={this.handleChangeOrder}></Input>
                                                                 </Col>
                                                             </div>
                                                             <div className="row StructureFields" style={{ marginTop: "20px" }}>
@@ -479,7 +479,7 @@ export default class Vocabulary extends Component {
                                                                 <div className="row StructureFields">
                                                                     <Label sm={3}>Номер в уроке:</Label>
                                                                     <Col sm={2}>
-                                                                        <Input type="number" name="id_ex" value={this.state.current_lex.id_ex} onChange={this.handleChangeOrder}></Input>
+                                                                        <Input type="number" name="num_ex" value={this.state.current_lex.num_ex} onChange={this.handleChangeOrder}></Input>
                                                                     </Col>
                                                                 </div>
                                                                 <div className="row StructureFields" style={{ marginTop: "20px" }}>
@@ -542,7 +542,7 @@ export default class Vocabulary extends Component {
                                                                     <div className="row StructureFields">
                                                                         <Label sm={3}>Номер в уроке:</Label>
                                                                         <Col sm={2}>
-                                                                            <Input type="number" name="id_ex" value={this.state.current_lex.id_ex} onChange={this.handleChangeOrder}></Input>
+                                                                            <Input type="number" name="num_ex" value={this.state.current_lex.num_ex} onChange={this.handleChangeOrder}></Input>
                                                                         </Col>
                                                                     </div>
                                                                     <div className="row StructureFields" style={{ marginTop: "20px" }}>
@@ -600,7 +600,7 @@ export default class Vocabulary extends Component {
                                                                         <div className="row StructureFields">
                                                                             <Label sm={3}>Номер в уроке:</Label>
                                                                             <Col sm={2}>
-                                                                                <Input type="number" name="id_ex" value={this.state.current_lex.id_ex} onChange={this.handleChangeOrder}></Input>
+                                                                                <Input type="number" name="num_ex" value={this.state.current_lex.num_ex} onChange={this.handleChangeOrder}></Input>
                                                                             </Col>
                                                                         </div>
                                                                         <div className="row StructureFields" style={{ marginTop: "20px" }}>
@@ -621,7 +621,7 @@ export default class Vocabulary extends Component {
                                                                                     options={this.state.options_letters}
                                                                                     isMulti
                                                                                     name="colors"
-                                                                                    value={this.state.vl_varо}
+                                                                                    value={this.state.vl_var}
                                                                                     className="basic-multi-select"
                                                                                     classNamePrefix="select"
                                                                                     onChange={this.handleChangeMultipleVar}

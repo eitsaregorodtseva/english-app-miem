@@ -117,7 +117,7 @@ export default class Menu extends Component {
                                 id: phrases.length,
                                 name_les: data[i].name_les,
                                 type_ex: type_ex,
-                                id_ex: data[i].id_ex,
+                                num_ex: data[i].id_ex,
                                 id_rep: this.findId(data[i].replica, "rep")
                             };
                             break;
@@ -127,7 +127,7 @@ export default class Menu extends Component {
                                 id: phrases.length,
                                 name_les: data[i].name_les,
                                 type_ex: type_ex,
-                                id_ex: data[i].id_ex,
+                                num_ex: data[i].id_ex,
                                 id_rep: this.findId(data[i].replica, "rep"),
                                 id_miss: num[0],
                                 vl_miss: num[1]
@@ -140,7 +140,7 @@ export default class Menu extends Component {
                                 id: phrases.length,
                                 name_les: data[i].name_les,
                                 type_ex: type_ex,
-                                id_ex: data[i].id_ex,
+                                num_ex: data[i].id_ex,
                                 id_rep: this.findId(data[i].replica, "rep"),
                                 id_var: variant[0],
                                 vl_var: variant[1]
@@ -152,7 +152,7 @@ export default class Menu extends Component {
                                 id: dialogs.length,
                                 name_les: data[i].name_les,
                                 type_ex: type_ex,
-                                id_ex: data[i].id_ex,
+                                num_ex: data[i].id_ex,
                                 id_rep: id_rep,
                                 pic_video: data[i].pic_video
                             };
@@ -165,7 +165,7 @@ export default class Menu extends Component {
                                 id: dialogs.length,
                                 name_les: data[i].name_les,
                                 type_ex: type_ex,
-                                id_ex: data[i].id_ex,
+                                num_ex: data[i].id_ex,
                                 id_rep: reps[0],
                                 vl_rep: reps[1],
                                 id_miss: nums[0],
@@ -208,7 +208,7 @@ export default class Menu extends Component {
                         id: i,
                         name_les: data[i].name_les,
                         type_ex: type_ex,
-                        id_ex: data[i].id_ex,
+                        num_ex: data[i].id_ex,
                         id_lex: id_lex
                     };
                     let lex_split = "";
@@ -276,7 +276,7 @@ export default class Menu extends Component {
                                 id: i,
                                 name_les: data[i].name_les,
                                 type_ex: type_ex,
-                                id_ex: data[i].id_ex,
+                                num_ex: data[i].id_ex,
                                 id_var: var_lex[0],
                                 vl_var: var_lex[1],
                                 side: data[i].side,
@@ -292,7 +292,7 @@ export default class Menu extends Component {
                                 id: i,
                                 name_les: data[i].name_les,
                                 type_ex: type_ex,
-                                id_ex: data[i].id_ex,
+                                num_ex: data[i].id_ex,
                                 id_lex: id_lex,
                                 id_var: var_lex[0],
                                 vl_var: var_lex[1],
@@ -432,14 +432,14 @@ export default class Menu extends Component {
                                 Уроки
                             </ListGroupItem>
                         </Link>
-                        <ListGroupItem
+                        {/*<ListGroupItem
                             action
                             href=""
                             tag="a"
                             style={MenuItems}>
                             <img src={screen} alt="" />
                             Банк экранов
-                        </ListGroupItem>
+                    </ListGroupItem>*/}
                         <Link to={{
                             pathname: "/editing",
                             state: {

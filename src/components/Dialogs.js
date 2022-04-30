@@ -25,7 +25,7 @@ export default class Dialogs extends Component {
             dialog: [],
             lexemes: [],
             replicas: [],
-            current_dialog: { id: null, type_ex: 0, id_ex: 0 },
+            current_dialog: { id: null, type_ex: 0, num_ex: 0 },
             id_rep: "",
             vl_rep: "",
             pic_video: "",
@@ -61,7 +61,7 @@ export default class Dialogs extends Component {
     }
 
     handleChangeOrder = (event) => {
-        let newDialog = { ...this.state.current_dialog, id_ex: event.target.value };
+        let newDialog = { ...this.state.current_dialog, num_ex: event.target.value };
         let dialog = this.state.dialog;
         dialog[newDialog.id] = newDialog;
         this.setState({
@@ -116,7 +116,7 @@ export default class Dialogs extends Component {
     }
 
     addNewDialog = () => {
-        let newDialog = { id: this.state.dialog.length, type_ex: 0, id_ex: 0 };
+        let newDialog = { id: this.state.dialog.length, type_ex: 0, num_ex: 0 };
         let dialog = this.state.dialog;
         dialog[newDialog.id] = newDialog;
         this.setState({
@@ -153,7 +153,7 @@ export default class Dialogs extends Component {
 
     getSelectedTypeDialog = (event) => {
         let type_ex = parseInt(event.target.value);
-        let newDialog = { id: this.state.current_dialog.id, type_ex: type_ex, id_ex: 0 };
+        let newDialog = { id: this.state.current_dialog.id, type_ex: type_ex, num_ex: 0 };
         let dialog = this.state.dialog;
         dialog[newDialog.id] = newDialog;
         this.setState({
@@ -187,7 +187,7 @@ export default class Dialogs extends Component {
         for (var i = 0; i < dialog.length; i++) {
             dialog[i].id = i;
         }
-        let newDialog = { id: null, type_ex: 0, id_ex: 0 };
+        let newDialog = { id: null, type_ex: 0, num_ex: 0 };
         this.setState({
             dialog: dialog,
             current_dialog: newDialog,
@@ -233,7 +233,7 @@ export default class Dialogs extends Component {
                                         <div className="row StructureFields">
                                             <Label sm={3}>Номер в уроке:</Label>
                                             <Col sm={2}>
-                                                <Input type="number" name="id_ex" value={this.state.current_dialog.id_ex} onChange={this.handleChangeOrder}></Input>
+                                                <Input type="number" name="num_ex" value={this.state.current_dialog.num_ex} onChange={this.handleChangeOrder}></Input>
                                             </Col>
                                         </div>
                                         <div className="row StructureFields" style={{ marginTop: "20px" }}>
@@ -267,7 +267,7 @@ export default class Dialogs extends Component {
                                             <div className="row StructureFields">
                                                 <Label sm={3}>Номер в уроке:</Label>
                                                 <Col sm={2}>
-                                                    <Input type="number" name="id_ex" value={this.state.current_dialog.id_ex} onChange={this.handleChangeOrder}></Input>
+                                                    <Input type="number" name="num_ex" value={this.state.current_dialog.num_ex} onChange={this.handleChangeOrder}></Input>
                                                 </Col>
                                             </div>
                                             <div className="row StructureFields" style={{ marginTop: "20px" }}>

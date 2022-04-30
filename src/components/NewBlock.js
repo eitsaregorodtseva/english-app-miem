@@ -12,7 +12,7 @@ import Dialogs from './Dialogs';
 import Statuses from './Statuses';
 import '../style.css';
 
-const statuses = ["Пусто     ", "В процессе", "Не требуется", "Готово"];
+const statuses = ["Пусто     ", "В процессе", "Не требуется", "Готово    "];
 
 export default class NewBlock extends Component {
     constructor() {
@@ -80,14 +80,14 @@ export default class NewBlock extends Component {
         console.log(this.state.dialogs);
         let mistakes = 0;
         for (var i = 0; i < this.state.lesson.length; i++) {
-            /*if (this.state.lesson[i].video.length + 0 === 0 && this.state.statuses.video_st !== statuses[0] && this.state.statuses.video_st !== "Не требуется") {
+            if ((this.state.video.video_link === null || this.state.video.video_link === "" ) && this.state.statuses.video_st !== statuses[0] && this.state.statuses.video_st !== "Не требуется") {
                 mistakes = mistakes + 1;
                 toast.error("Ошибка в заполнении статуса Видео.");
             }
-            if ((this.state.lesson[i].video.length + 0 > 0) && (this.state.statuses.video_st === statuses[0] || this.state.statuses.video_st === "Не требуется" || this.state.statuses.video_st === "")) {
+            if ((this.state.video.video_link !== null && this.state.video.video_link !== "") && (this.state.statuses.video_st === statuses[0] || this.state.statuses.video_st === "Не требуется" || this.state.statuses.video_st === "")) {
                 mistakes = mistakes + 1;
                 toast.error("Ошибка в заполнении статуса Видео.");
-            }*/
+            }
             if ((this.state.lesson[i].lex.length + 0 === 0) && (this.state.statuses.lex_st !== statuses[0] && this.state.statuses.lex_st !== "Не требуется")) {
                 mistakes = mistakes + 1;
                 toast.error("Ошибка в заполнении статуса Буквы-слова.");
@@ -214,7 +214,7 @@ export default class NewBlock extends Component {
 
     cancellingAllChanges = () => {
         this.setState({
-            id_lb: "",
+            /*id_lb: "",*/
             lesson: [],
             video: { video_link: null },
             statuses: {},

@@ -14,7 +14,7 @@ export default class Rules extends Component {
         this.state = {
             rule: [],
             lexemes: [],
-            current_rule: { id: null, type_ex: 0, id_ex: 0 },
+            current_rule: { id: null, type_ex: 0, num_ex: 0 },
             id_lex: null,
             id_var: "",
             vl_var: "",
@@ -54,7 +54,7 @@ export default class Rules extends Component {
     }
 
     handleChangeOrder = (event) => {
-        let newRule = { ...this.state.current_rule, id_ex: event.target.value };
+        let newRule = { ...this.state.current_rule, num_ex: event.target.value };
         let rule = this.state.rule;
         rule[newRule.id] = newRule;
         this.setState({
@@ -83,7 +83,7 @@ export default class Rules extends Component {
     }
 
     addNewRule() {
-        let newRule = { id: this.state.rule.length, type_ex: 0, id_ex: 0 };
+        let newRule = { id: this.state.rule.length, type_ex: 0, num_ex: 0 };
         let rule = this.state.rule;
         rule[newRule.id] = newRule;
         this.setState({
@@ -125,7 +125,7 @@ export default class Rules extends Component {
 
     getSelectedTypeRule(event) {
         let type_ex = parseInt(event.target.value);
-        let newRule = { id: this.state.current_rule.id, type_ex: type_ex, id_ex: 0 };
+        let newRule = { id: this.state.current_rule.id, type_ex: type_ex, num_ex: 0 };
         let rule = this.state.rule;
         rule[newRule.id] = newRule;
         this.setState({
@@ -172,7 +172,7 @@ export default class Rules extends Component {
         for (var i = 0; i < rule.length; i++) {
             rule[i].id = i;
         }
-        let newRule = { id: null, type_ex: 0, id_ex: 0 };
+        let newRule = { id: null, type_ex: 0, num_ex: 0 };
         this.setState({
             rule: rule,
             current_rule: newRule,
@@ -218,7 +218,7 @@ export default class Rules extends Component {
                                         {/*<div className="row StructureFields" style={{ marginBottom: "20px" }}>
                                             <Label sm={3}>Номер в уроке:</Label>
                                             <Col sm={2}>
-                                                <Input type="number" name="id_ex" value={this.state.current_rule.id_ex} onChange={this.handleChangeOrder}></Input>
+                                                <Input type="number" name="num_ex" value={this.state.current_rule.num_ex} onChange={this.handleChangeOrder}></Input>
                                             </Col>
                                         </div>*/}
                                         <div className="row StructureFields" style={{ marginTop: "20px", marginBottom: "20px" }}>
@@ -271,7 +271,7 @@ export default class Rules extends Component {
                                             <div className="row StructureFields">
                                                 <Label sm={3}>Номер в уроке:</Label>
                                                 <Col sm={2}>
-                                                    <Input type="number" name="id_ex" value={this.state.current_rule.id_ex} onChange={this.handleChangeOrder}></Input>
+                                                    <Input type="number" name="num_ex" value={this.state.current_rule.num_ex} onChange={this.handleChangeOrder}></Input>
                                                 </Col>
                                             </div>
                                             <div className="row StructureFields" style={{ marginTop: "20px"}}>
