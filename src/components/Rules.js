@@ -54,7 +54,8 @@ export default class Rules extends Component {
     }
 
     handleChangeOrder = (event) => {
-        let newRule = { ...this.state.current_rule, num_ex: event.target.value };
+        let num_ex = parseInt(event.target.value);
+        let newRule = { ...this.state.current_rule, num_ex: num_ex };
         let rule = this.state.rule;
         rule[newRule.id] = newRule;
         this.setState({

@@ -76,7 +76,8 @@ export default class Vocabulary extends Component {
     }
 
     handleChangeOrder = (event) => {
-        let newLex = { ...this.state.current_lex, num_ex: event.target.value };
+        let num_ex = parseInt(event.target.value);
+        let newLex = { ...this.state.current_lex, num_ex: num_ex };
         let lex = this.state.lex;
         lex[newLex.id] = newLex;
         this.setState({
@@ -232,7 +233,8 @@ export default class Vocabulary extends Component {
     }
 
     getSelectedLexemeId = (event) => {
-        let id_lex = parseInt(event.target.value);
+        let id_lex = [];
+        id_lex.push(parseInt(event.target.value));
         let newLex = { ...this.state.current_lex, [event.target.name]: id_lex };
         let lex = this.state.lex;
         lex[newLex.id] = newLex;

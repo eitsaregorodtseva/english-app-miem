@@ -67,7 +67,8 @@ export default class Phrases extends Component {
     }
 
     handleChangeOrder = (event) => {
-        let newPhr = { ...this.state.current_phr, num_ex: event.target.value };
+        let num_ex = parseInt(event.target.value);
+        let newPhr = { ...this.state.current_phr, num_ex: num_ex };
         let phr = this.state.phr;
         phr[newPhr.id] = newPhr;
         this.setState({
@@ -286,11 +287,22 @@ export default class Phrases extends Component {
                                                     <Select
                                                         options={numbers}
                                                         value={this.state.vl_miss}
-                                                        className="basic-multi-select"
+                                                        className="basic-single"
                                                         classNamePrefix="select"
                                                         onChange={this.handleChangeMultipleNum}
                                                         placeholder="Выберите номер"
                                                     />
+                                                </Col>
+                                            </div>
+                                            <div className="row StructureFields" style={{ marginTop: "20px" }}>
+                                                <Label sm={2}>Номер слова:</Label>
+                                                <Col sm={10}>
+                                                    <select class="form-select" name="id_rep" value={this.state.id_rep} onChange={this.getSelectedRepId}>
+                                                        <option value={0}>Выберите номер</option>
+                                                        {this.state.replicas.map((obj, i) =>
+                                                            <option value={obj.id_rep}>{obj.lexeme.mean_lex + obj.symbol}</option>
+                                                        )}
+                                                    </select>
                                                 </Col>
                                             </div>
                                         </div> :

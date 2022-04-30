@@ -117,7 +117,7 @@ export default class Menu extends Component {
                                 id: phrases.length,
                                 name_les: data[i].name_les,
                                 type_ex: type_ex,
-                                num_ex: data[i].id_ex,
+                                num_ex: parseInt(data[i].id_ex),
                                 id_rep: this.findId(data[i].replica, "rep")
                             };
                             break;
@@ -127,7 +127,7 @@ export default class Menu extends Component {
                                 id: phrases.length,
                                 name_les: data[i].name_les,
                                 type_ex: type_ex,
-                                num_ex: data[i].id_ex,
+                                num_ex: parseInt(data[i].id_ex),
                                 id_rep: this.findId(data[i].replica, "rep"),
                                 id_miss: num[0],
                                 vl_miss: num[1]
@@ -140,7 +140,7 @@ export default class Menu extends Component {
                                 id: phrases.length,
                                 name_les: data[i].name_les,
                                 type_ex: type_ex,
-                                num_ex: data[i].id_ex,
+                                num_ex: parseInt(data[i].id_ex),
                                 id_rep: this.findId(data[i].replica, "rep"),
                                 id_var: variant[0],
                                 vl_var: variant[1]
@@ -152,8 +152,8 @@ export default class Menu extends Component {
                                 id: dialogs.length,
                                 name_les: data[i].name_les,
                                 type_ex: type_ex,
-                                num_ex: data[i].id_ex,
-                                id_rep: id_rep,
+                                num_ex: parseInt(data[i].id_ex),
+                                id_rep: [id_rep],
                                 pic_video: data[i].pic_video
                             };
                             break;
@@ -165,7 +165,7 @@ export default class Menu extends Component {
                                 id: dialogs.length,
                                 name_les: data[i].name_les,
                                 type_ex: type_ex,
-                                num_ex: data[i].id_ex,
+                                num_ex: parseInt(data[i].id_ex),
                                 id_rep: reps[0],
                                 vl_rep: reps[1],
                                 id_miss: nums[0],
@@ -203,12 +203,13 @@ export default class Menu extends Component {
                 let lex = [];
                 for (var i = 0; i < data.length; i++) {
                     let type_ex = this.findTypeEx(data[i]);
-                    let id_lex = this.findId(data[i].mean_lex1, "lex");
+                    let id_lex = [];
+                    id_lex.push(this.findId(data[i].mean_lex1, "lex"));
                     lex[lex.length] = {
                         id: i,
                         name_les: data[i].name_les,
                         type_ex: type_ex,
-                        num_ex: data[i].id_ex,
+                        num_ex: parseInt(data[i].id_ex),
                         id_lex: id_lex
                     };
                     let lex_split = "";
@@ -276,7 +277,7 @@ export default class Menu extends Component {
                                 id: i,
                                 name_les: data[i].name_les,
                                 type_ex: type_ex,
-                                num_ex: data[i].id_ex,
+                                num_ex: parseInt(data[i].id_ex),
                                 id_var: var_lex[0],
                                 vl_var: var_lex[1],
                                 side: data[i].side,
@@ -287,12 +288,13 @@ export default class Menu extends Component {
                         case 17:
                             lex_split = data[i].var_lex.split(',');
                             var_lex = this.findIdArrays(lex_split, "lex");
-                            let id_lex = this.findId(data[i].mean_lex, "lex");
+                            let id_lex = [];
+                            id_lex.push(this.findId(data[i].mean_lex, "lex"));
                             rules[rules.length] = {
                                 id: i,
                                 name_les: data[i].name_les,
                                 type_ex: type_ex,
-                                num_ex: data[i].id_ex,
+                                num_ex: parseInt(data[i].id_ex),
                                 id_lex: id_lex,
                                 id_var: var_lex[0],
                                 vl_var: var_lex[1],

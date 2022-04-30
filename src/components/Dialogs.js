@@ -61,7 +61,8 @@ export default class Dialogs extends Component {
     }
 
     handleChangeOrder = (event) => {
-        let newDialog = { ...this.state.current_dialog, num_ex: event.target.value };
+        let num_ex = parseInt(event.target.value);
+        let newDialog = { ...this.state.current_dialog, num_ex: num_ex };
         let dialog = this.state.dialog;
         dialog[newDialog.id] = newDialog;
         this.setState({
@@ -72,11 +73,13 @@ export default class Dialogs extends Component {
     }
 
     handleChangeMultiple = (event) => {
+        console.log(event);
         let id_rep = [];
         for (var i = 0; i < event.length; i++) {
             id_rep.push(event[i].value)
         }
         console.log(id_rep);
+        console.log(this.state.options.filter(this.filterOptions, id_rep));
         let newDialog = { ...this.state.current_dialog, id_rep: id_rep, vl_rep: event };
         let dialog = this.state.dialog;
         dialog[newDialog.id] = newDialog;
@@ -169,7 +172,8 @@ export default class Dialogs extends Component {
     }
 
     getSelectedRepId = (event) => {
-        let id_rep = parseInt(event.target.value);
+        let id_rep = [];
+        id_rep.push(parseInt(event.target.value));
         let newDialog = { ...this.state.current_dialog, [event.target.name]: id_rep };
         let dialog = this.state.dialog;
         dialog[newDialog.id] = newDialog;
@@ -193,6 +197,10 @@ export default class Dialogs extends Component {
             current_dialog: newDialog,
         });
         this.passPropsToParent();
+    }
+
+    filterOptions(vl) {
+        return this.includes(vl.value)
     }
 
     passPropsToParent() {
@@ -239,7 +247,7 @@ export default class Dialogs extends Component {
                                         <div className="row StructureFields" style={{ marginTop: "20px" }}>
                                             <Label sm={2}>Диалог:</Label>
                                             <Col sm={10}>
-                                                <select class="form-select" style={{ marginBottom: "20px" }} name="id_rep" value={this.state.id_rep} onChange={this.getSelectedrepid}>
+                                                <select class="form-select" style={{ marginBottom: "20px" }} name="id_rep" value={this.state.id_rep} onChange={this.getSelectedRepId}>
                                                     <option value={0}>Выберите лексему</option>
                                                     {this.state.lexemes.map((obj, i) =>
                                                         <option value={obj.id_lex}>{obj.mean_lex}</option>
@@ -276,7 +284,7 @@ export default class Dialogs extends Component {
                                                     <Select
                                                         options={this.state.options}
                                                         isMulti
-                                                        value={this.state.vl_rep}
+                                                        value={this.state.options.filter(this.filterOptions, this.state.id_rep)}
                                                         className="basic-multi-select"
                                                         classNamePrefix="select"
                                                         onChange={this.handleChangeMultiple}
