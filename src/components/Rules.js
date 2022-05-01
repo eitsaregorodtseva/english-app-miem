@@ -17,7 +17,6 @@ export default class Rules extends Component {
             current_rule: { id: null, type_ex: 0, num_ex: 0 },
             id_lex: null,
             id_var: "",
-            vl_var: "",
             side: "",
             picture: "",
             sound_rule: "",
@@ -71,14 +70,13 @@ export default class Rules extends Component {
             id_var.push(event[i].value)
         }
         console.log(id_var);
-        let newRule = { ...this.state.current_rule, id_var: id_var, vl_var: event };
+        let newRule = { ...this.state.current_rule, id_var: id_var };
         let rule = this.state.rule;
         rule[newRule.id] = newRule;
         this.setState({
             current_rule: newRule,
             rule: rule,
-            id_var: id_var,
-            vl_var: event
+            id_var: id_var
         });
         this.passPropsToParent();
     }
@@ -104,7 +102,6 @@ export default class Rules extends Component {
                 this.setState({
                     current_rule: this.state.rule[id],
                     id_var: this.state.rule[id].id_var ? this.state.rule[id].id_var : "",
-                    vl_var: this.state.rule[id].vl_var ? this.state.rule[id].vl_var : "",
                     side: this.state.rule[id].side ? this.state.rule[id].side : "",
                     picture: this.state.rule[id].picture ? this.state.rule[id].picture : "",
                     sound_rule: this.state.rule[id].sound_rule ? this.state.rule[id].sound_rule : "",
@@ -115,7 +112,6 @@ export default class Rules extends Component {
                     current_rule: this.state.rule[id],
                     id_lex: this.state.rule[id].id_lex ? this.state.rule[id].id_lex : "",
                     id_var: this.state.rule[id].id_var ? this.state.rule[id].id_var : "",
-                    vl_var: this.state.rule[id].vl_var ? this.state.rule[id].vl_var : "",
                     picture: this.state.rule[id].picture ? this.state.rule[id].picture : "",
                     sound_rule: this.state.rule[id].sound_rule ? this.state.rule[id].sound_rule : "",
                 });
@@ -134,7 +130,6 @@ export default class Rules extends Component {
             rule: rule,
             id_lex: "",
             id_var: "",
-            vl_var: "",
             side: "",
             picture: "",
             sound_rule: "",
@@ -143,7 +138,8 @@ export default class Rules extends Component {
     }
 
     getSelectedLexemeId = (event) => {
-        let id_lex = parseInt(event.target.value);
+        let id_lex = [];
+        id_lex.push(parseInt(event.target.value));
         let newRule = { ...this.state.current_rule, [event.target.name]: id_lex };
         let rule = this.state.rule;
         rule[newRule.id] = newRule;
@@ -179,6 +175,11 @@ export default class Rules extends Component {
             current_rule: newRule,
         });
         this.passPropsToParent();
+    }
+
+    filterOptions(vl) {
+        //console.log(vl);
+        return this.includes(vl.value)
     }
 
     passPropsToParent() {
@@ -228,7 +229,7 @@ export default class Rules extends Component {
                                                 <Select
                                                     options={this.state.options}
                                                     isMulti
-                                                    value={this.state.vl_var}
+                                                    value={this.state.options.filter(this.filterOptions, this.state.id_var)}
                                                     className="basic-multi-select"
                                                     classNamePrefix="select"
                                                     onChange={this.handleChangeMultiple}
@@ -292,7 +293,7 @@ export default class Rules extends Component {
                                                     <Select
                                                         options={this.state.options}
                                                         isMulti
-                                                        value={this.state.vl_var}
+                                                        value={this.state.options.filter(this.filterOptions, this.state.id_var)}
                                                         className="basic-multi-select"
                                                         classNamePrefix="select"
                                                         onChange={this.handleChangeMultiple}

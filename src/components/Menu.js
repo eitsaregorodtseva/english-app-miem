@@ -118,7 +118,7 @@ export default class Menu extends Component {
                                 name_les: data[i].name_les,
                                 type_ex: type_ex,
                                 num_ex: parseInt(data[i].id_ex),
-                                id_rep: this.findId(data[i].replica, "rep")
+                                id_rep: [this.findId(data[i].replica, "rep")]
                             };
                             break;
                         case 19:
@@ -128,9 +128,8 @@ export default class Menu extends Component {
                                 name_les: data[i].name_les,
                                 type_ex: type_ex,
                                 num_ex: parseInt(data[i].id_ex),
-                                id_rep: this.findId(data[i].replica, "rep"),
-                                id_miss: num[0],
-                                vl_miss: num[1]
+                                id_rep: [this.findId(data[i].replica, "rep")],
+                                id_miss: num
                             };
                             break;
                         case 20:
@@ -141,9 +140,8 @@ export default class Menu extends Component {
                                 name_les: data[i].name_les,
                                 type_ex: type_ex,
                                 num_ex: parseInt(data[i].id_ex),
-                                id_rep: this.findId(data[i].replica, "rep"),
-                                id_var: variant[0],
-                                vl_var: variant[1]
+                                id_rep: [this.findId(data[i].replica, "rep")],
+                                id_var: variant
                             };
                             break;
                         case 21:
@@ -166,10 +164,8 @@ export default class Menu extends Component {
                                 name_les: data[i].name_les,
                                 type_ex: type_ex,
                                 num_ex: parseInt(data[i].id_ex),
-                                id_rep: reps[0],
-                                vl_rep: reps[1],
-                                id_miss: nums[0],
-                                vl_miss: nums[1]
+                                id_rep: reps,
+                                id_miss: nums
                             };
                             break;
                     }
@@ -217,13 +213,13 @@ export default class Menu extends Component {
                         case 2:
                             id_lex = [data[i].mean_lex1, data[i].mean_lex2];
                             id_lex = this.findIdArrays(id_lex, "lex");
-                            lex[lex.length - 1] = { ...lex[lex.length - 1], id_lex: id_lex[0], vl_lex: id_lex[1] };
+                            lex[lex.length - 1] = { ...lex[lex.length - 1], id_lex: id_lex };
                             break;
                         case 7:
                             lex_split = data[i].mean_lex1.replaceAll(',', '').split(' ');
                             id_lex = [lex_split[0], lex_split[4], lex_split[8], lex_split[12]];
                             id_lex = this.findIdArrays(id_lex, "lex");
-                            lex[lex.length - 1] = { ...lex[lex.length - 1], id_lex: id_lex[0], vl_lex: id_lex[1] };
+                            lex[lex.length - 1] = { ...lex[lex.length - 1], id_lex: id_lex };
                             break;
                         case 5:
                         case 15:
@@ -231,12 +227,12 @@ export default class Menu extends Component {
                             id_lex = this.findIdArrays(lex_split, "lex");
                             let nums = data[i].miss.replaceAll(',', '').split(' ');
                             nums = this.findIdArrays(nums, "num");
-                            lex[lex.length - 1] = { ...lex[lex.length - 1], id_var: id_lex[0], vl_var: id_lex[1], id_miss: nums[0], vl_miss: nums[1] };
+                            lex[lex.length - 1] = { ...lex[lex.length - 1], id_var: id_lex, id_miss: nums };
                             break;
                         case 6:
                             lex_split = data[i].variant.replaceAll(',', '').split(' ');
                             id_lex = this.findIdArrays(lex_split, "lex");
-                            lex[lex.length - 1] = { ...lex[lex.length - 1], id_var: id_lex[0], vl_var: id_lex[1] };
+                            lex[lex.length - 1] = { ...lex[lex.length - 1], id_var: id_lex };
                             break;
                     }
                 }
@@ -278,8 +274,7 @@ export default class Menu extends Component {
                                 name_les: data[i].name_les,
                                 type_ex: type_ex,
                                 num_ex: parseInt(data[i].id_ex),
-                                id_var: var_lex[0],
-                                vl_var: var_lex[1],
+                                id_var: var_lex,
                                 side: data[i].side,
                                 picture: data[i].picture,
                                 sound_rule: data[i].sound_rule
@@ -296,8 +291,7 @@ export default class Menu extends Component {
                                 type_ex: type_ex,
                                 num_ex: parseInt(data[i].id_ex),
                                 id_lex: id_lex,
-                                id_var: var_lex[0],
-                                vl_var: var_lex[1],
+                                id_var: var_lex,
                                 picture: data[i].picture,
                                 sound_rule: data[i].sound_rule
                             };
@@ -363,34 +357,27 @@ export default class Menu extends Component {
 
     findIdArrays = (words, word_type) => {
         let id_words = [];
-        let vl_words = [];
         if (word_type === "lex") {
             id_words.push(this.findId(words[0], "lex"));
-            vl_words.push({ value: this.findId(words[0], "lex"), label: words[0] });
             for (var i = 1; i < words.length; i++) {
-                id_words.push(this.findId(words[i].replace(' ', ''), "lex"));
-                vl_words.push({ value: this.findId(words[i].replace(' ', ''), "lex"), label: words[i].replace(' ', '') });
+                id_words.push(this.findId(words[i].replace(' ', ''), "lex"))
             }
-            return [id_words, vl_words];
+            return id_words;
         }
         else {
             if (word_type === "rep") {
                 id_words.push(this.findId(words[0], "rep"));
-                vl_words.push({ value: this.findId(words[0], "rep"), label: words[0] });
                 for (var i = 1; i < words.length; i++) {
                     id_words.push(this.findId(words[i].replace(' ', ''), "rep"));
-                    vl_words.push({ value: this.findId(words[i].replace(' ', ''), "rep"), label: words[i].replace(' ', '') });
                 }
-                return [id_words, vl_words];
+                return id_words;
             }
             else {
                 id_words.push(parseInt(words[0]));
-                vl_words.push({ value: parseInt(words[0]), label: words[0] });
                 for (var i = 1; i < words.length; i++) {
                     id_words.push(parseInt(words[i].replace(' ', '')));
-                    vl_words.push({ value: parseInt(words[i].replace(' ', '')), label: words[i].replace(' ', '') });
                 }
-                return [id_words, vl_words];
+                return id_words;
             }
         }
 

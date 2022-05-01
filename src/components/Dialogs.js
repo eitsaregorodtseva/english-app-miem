@@ -27,10 +27,8 @@ export default class Dialogs extends Component {
             replicas: [],
             current_dialog: { id: null, type_ex: 0, num_ex: 0 },
             id_rep: "",
-            vl_rep: "",
             pic_video: "",
             id_miss: "",
-            vl_miss: "",
             options: []
         }
     }
@@ -80,39 +78,34 @@ export default class Dialogs extends Component {
         }
         console.log(id_rep);
         console.log(this.state.options.filter(this.filterOptions, id_rep));
-        let newDialog = { ...this.state.current_dialog, id_rep: id_rep, vl_rep: event };
+        let newDialog = { ...this.state.current_dialog, id_rep: id_rep };
         let dialog = this.state.dialog;
         dialog[newDialog.id] = newDialog;
         this.setState({
             current_dialog: newDialog,
             dialog: dialog,
-            id_rep: id_rep,
-            vl_rep: event
+            id_rep: id_rep
         });
         this.passPropsToParent();
     }
 
     handleChangeMultipleNum = (event) => {
         let id_miss = [];
-        let vl_miss = [];
         if (typeof (event.value) === "number") {
-            id_miss.push(event.value);
-            vl_miss = [event];
+            id_miss.push(event.value)
         }
         else {
             for (var i = 0; i < event.length; i++) {
-                id_miss.push(event[i].value);
-                vl_miss.push(event[i]);
+                id_miss.push(event[i].value)
             }
         }
         console.log(id_miss);
-        let newDialog = { ...this.state.current_dialog, id_miss: id_miss, vl_miss: vl_miss };
+        let newDialog = { ...this.state.current_dialog, id_miss: id_miss};
         let dialog = this.state.dialog;
         dialog[newDialog.id] = newDialog;
         this.setState({
             current_dialog: newDialog,
             dialog: dialog,
-            vl_miss: vl_miss,
             id_miss: id_miss
         });
         this.passPropsToParent();
@@ -146,9 +139,7 @@ export default class Dialogs extends Component {
                 this.setState({
                     current_dialog: this.state.dialog[id],
                     id_rep: this.state.dialog[id].id_rep ? this.state.dialog[id].id_rep : "",
-                    vl_rep: this.state.dialog[id].vl_rep ? this.state.dialog[id].vl_rep : "",
-                    id_miss: this.state.dialog[id].id_miss ? this.state.dialog[id].id_miss : "",
-                    vl_miss: this.state.dialog[id].vl_miss ? this.state.dialog[id].vl_miss : ""
+                    id_miss: this.state.dialog[id].id_miss ? this.state.dialog[id].id_miss : ""
                 });
                 break;
         }
@@ -164,9 +155,7 @@ export default class Dialogs extends Component {
             dialog: dialog,
             id_rep: "",
             pic_video: "",
-            vl_rep: "",
-            id_miss: "",
-            vl_miss: ""
+            id_miss: ""
         });
         this.passPropsToParent();
     }
@@ -299,7 +288,7 @@ export default class Dialogs extends Component {
                                                         options={numbers}
                                                         isMulti
                                                         name="colors"
-                                                        value={this.state.vl_miss}
+                                                        value={numbers.filter(this.filterOptions, this.state.id_miss)}
                                                         className="basic-multi-select"
                                                         classNamePrefix="select"
                                                         onChange={this.handleChangeMultipleNum}

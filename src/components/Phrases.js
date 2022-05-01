@@ -30,9 +30,7 @@ export default class Phrases extends Component {
             current_phr: { id: null, type_ex: 0, num_ex: 0 },
             id_rep: "",
             id_miss: "",
-            vl_miss: "",
             id_var: "",
-            vl_var: "",
             options: []
         }
         this.handleChange = this.handleChange.bind(this);
@@ -43,9 +41,10 @@ export default class Phrases extends Component {
 
     componentDidMount() {
         let options = [];
-        for (var i = 0; i < this.props.replicas.length; i++) {
-            options.push({ value: this.props.replicas[i].id_rep, label: this.props.replicas[i].lexeme.mean_lex + this.props.replicas[i].symbol })
+        for (var i = 0; i < this.props.lexemes.length; i++) {
+            options.push({ value: this.props.lexemes[i].id_lex, label: this.props.lexemes[i].mean_lex })
         }
+        console.log(options);
         this.setState({
             phr: this.props.phr,
             lexemes: this.props.lexemes,
@@ -84,31 +83,27 @@ export default class Phrases extends Component {
             id_var.push(event[i].value)
         }
         console.log(id_var);
-        let newPhr = { ...this.state.current_phr, id_var: id_var, vl_var: event };
+        let newPhr = { ...this.state.current_phr, id_var: id_var };
         let phr = this.state.phr;
         phr[newPhr.id] = newPhr;
         this.setState({
             current_phr: newPhr,
             phr: phr,
-            id_var: id_var,
-            vl_var: event
+            id_var: id_var
         });
         this.passPropsToParent();
     }
 
     handleChangeMultipleNum = (event) => {
         let id_miss = [];
-        let vl_miss = [];
         id_miss.push(event.value);
-        vl_miss = [event];
         console.log(id_miss);
-        let newPhr = { ...this.state.current_phr, id_miss: id_miss, vl_miss: vl_miss };
+        let newPhr = { ...this.state.current_phr, id_miss: id_miss };
         let phr = this.state.phr;
         phr[newPhr.id] = newPhr;
         this.setState({
             current_phr: newPhr,
             phr: phr,
-            vl_miss: vl_miss,
             id_miss: id_miss
         });
         this.passPropsToParent();
@@ -142,7 +137,6 @@ export default class Phrases extends Component {
                     current_phr: this.state.phr[id],
                     id_rep: this.state.phr[id].id_rep ? this.state.phr[id].id_rep : "",
                     id_miss: this.state.phr[id].id_miss ? this.state.phr[id].id_miss : "",
-                    vl_miss: this.state.phr[id].vl_miss ? this.state.phr[id].vl_miss : "",
                 });
                 break;
             case 20:
@@ -150,10 +144,10 @@ export default class Phrases extends Component {
                     current_phr: this.state.phr[id],
                     id_rep: this.state.phr[id].id_rep ? this.state.phr[id].id_rep : "",
                     id_var: this.state.phr[id].id_var ? this.state.phr[id].id_var : "",
-                    vl_var: this.state.phr[id].vl_var ? this.state.phr[id].vl_var : "",
                 });
                 break;
         }
+        console.log(this.state.id_var)
     }
 
     getSelectedTypePhr(event) {
@@ -166,15 +160,14 @@ export default class Phrases extends Component {
             phr: phr,
             id_rep: "",
             id_miss: "",
-            vl_miss: "",
             id_var: "",
-            vl_var: ""
         });
         this.passPropsToParent();
     }
 
     getSelectedRepId = (event) => {
-        let id_rep = parseInt(event.target.value);
+        let id_rep = [];
+        id_rep.push(parseInt(event.target.value));
         let newPhr = { ...this.state.current_phr, [event.target.name]: id_rep };
         let phr = this.state.phr;
         phr[newPhr.id] = newPhr;
@@ -198,6 +191,11 @@ export default class Phrases extends Component {
             current_phr: newPhr,
         });
         this.passPropsToParent();
+    }
+
+    filterOptions(vl) {
+        //console.log(vl);
+        return this.includes(vl.value)
     }
 
     passPropsToParent() {
@@ -286,23 +284,12 @@ export default class Phrases extends Component {
                                                 <Col sm={5}>
                                                     <Select
                                                         options={numbers}
-                                                        value={this.state.vl_miss}
+                                                        value={numbers.filter(this.filterOptions, this.state.id_miss)}
                                                         className="basic-single"
                                                         classNamePrefix="select"
                                                         onChange={this.handleChangeMultipleNum}
                                                         placeholder="Выберите номер"
                                                     />
-                                                </Col>
-                                            </div>
-                                            <div className="row StructureFields" style={{ marginTop: "20px" }}>
-                                                <Label sm={2}>Номер слова:</Label>
-                                                <Col sm={10}>
-                                                    <select class="form-select" name="id_rep" value={this.state.id_rep} onChange={this.getSelectedRepId}>
-                                                        <option value={0}>Выберите номер</option>
-                                                        {this.state.replicas.map((obj, i) =>
-                                                            <option value={obj.id_rep}>{obj.lexeme.mean_lex + obj.symbol}</option>
-                                                        )}
-                                                    </select>
                                                 </Col>
                                             </div>
                                         </div> :
@@ -339,7 +326,7 @@ export default class Phrases extends Component {
                                                         <Select
                                                             options={this.state.options}
                                                             isMulti
-                                                            value={this.state.vl_var}
+                                                            value={this.state.options.filter(this.filterOptions, this.state.id_var)}
                                                             className="basic-multi-select"
                                                             classNamePrefix="select"
                                                             onChange={this.handleChangeMultiple}
