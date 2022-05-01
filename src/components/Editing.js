@@ -196,12 +196,6 @@ export default class Editing extends Component {
         clearInterval(this.intervalGetBlocks);
     };
 
-    handleCallbackVideo = (props) => {
-        //let newLessons = this.state.lesson;
-        //newLessons[0].video = propsVideos;
-        this.setState({ video: props });
-    }
-
     handleCallbackVoc = (propsVocabulary) => {
         let newLessons = this.state.lesson;
         newLessons[0].lex = propsVocabulary;
@@ -510,7 +504,7 @@ export default class Editing extends Component {
                                 </nav>
                                 <div class="tab-content" id="myTabContent">
                                     <div class="tab-pane fade show active" id="video" role="tabpanel" aria-labelledby="video-tab">
-                                        <Videos video={Object.assign(this.state.video)} parentCallback={this.handleCallbackVideo} />
+                                        <Videos video={Object.assign(this.state.video)} />
                                     </div>
                                     <div class="tab-pane fade" id="letter" role="tabpanel" aria-labelledby="letter-tab">
                                         <Vocabulary lex={Object.assign(this.state.lesson[0].lex)} lexemes={this.state.lexemes} parentCallback={this.handleCallbackVoc} />

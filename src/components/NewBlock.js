@@ -42,12 +42,6 @@ export default class NewBlock extends Component {
         });
     }
 
-    handleCallbackVideo = (props) => {
-        //let newLessons = this.state.lessons;
-        //newLessons[0].video = props;
-        this.setState({ video: props });
-    }
-
     handleCallbackVoc = (props) => {
         let newLesson = this.state.lesson;
         newLesson[0].lex = props;
@@ -77,14 +71,15 @@ export default class NewBlock extends Component {
     }
 
     checkStatuses = () => {
-        console.log(this.state.dialogs);
+        console.log(this.state.statuses.video_st);
+        console.log(this.state.video);
         let mistakes = 0;
         for (var i = 0; i < this.state.lesson.length; i++) {
             if ((this.state.video.video_link === null || this.state.video.video_link === "" ) && this.state.statuses.video_st !== statuses[0] && this.state.statuses.video_st !== "Не требуется") {
                 mistakes = mistakes + 1;
                 toast.error("Ошибка в заполнении статуса Видео.");
             }
-            if ((this.state.video.video_link !== null && this.state.video.video_link !== "") && (this.state.statuses.video_st === statuses[0] || this.state.statuses.video_st === "Не требуется" || this.state.statuses.video_st === "")) {
+            if ((this.state.video.video_link !== null && this.state.video.video_link !== "" ) && (this.state.statuses.video_st === statuses[0] || this.state.statuses.video_st === "Не требуется" || this.state.statuses.video_st === "")) {
                 mistakes = mistakes + 1;
                 toast.error("Ошибка в заполнении статуса Видео.");
             }
@@ -123,10 +118,6 @@ export default class NewBlock extends Component {
         }
         if (mistakes === 0) {
             this.handleSubmit();
-        }
-        else {
-            console.log(this.state.statuses.video_st);
-            //toast.error("Ошибки в заполнении статусов.");
         }
     }
 
@@ -274,7 +265,7 @@ export default class NewBlock extends Component {
                                 </nav>
                                 <div className="tab-content" id="myTabContent">
                                     <div className="tab-pane fade show active" id="video" role="tabpanel" aria-labelledby="video-tab">
-                                        <Videos video={this.state.video} parentCallback={this.handleCallbackVideo} />
+                                        <Videos video={this.state.video} />
                                     </div>
                                     <div className="tab-pane fade" id="letter" role="tabpanel" aria-labelledby="letter-tab">
                                         <Vocabulary lex={Object.assign(this.state.lesson[0].lex)} lexemes={this.state.lexemes} parentCallback={this.handleCallbackVoc} />
