@@ -64,6 +64,27 @@ export default class Rules extends Component {
         this.passPropsToParent();
     }
 
+    handleChangeSingle = (event) => {
+        let id_lex = [];
+        if (typeof (event.value) === "number") {
+            id_lex.push(event.value)
+        }
+        else {
+            for (var i = 0; i < event.length; i++) {
+                id_lex.push(event[i].value)
+            }
+        }
+        let newRule = { ...this.state.current_rule, id_lex: id_lex };
+        let rule = this.state.rule;
+        rule[newRule.id] = newRule;
+        this.setState({
+            current_rule: newRule,
+            rule: rule,
+            id_lex: id_lex
+        });
+        this.passPropsToParent();
+    }
+
     handleChangeMultiple = (event) => {
         let id_var = [];
         for (var i = 0; i < event.length; i++) {
@@ -276,7 +297,20 @@ export default class Rules extends Component {
                                                     <Input type="number" name="num_ex" value={this.state.current_rule.num_ex} onChange={this.handleChangeOrder}></Input>
                                                 </Col>
                                             </div>
-                                            <div className="row StructureFields" style={{ marginTop: "20px"}}>
+                                            <div className="row StructureFields" style={{ marginTop: "20px" }}>
+                                                <Label sm={3}>Ответ:</Label>
+                                                <Col sm={9}>
+                                                    <Select
+                                                        options={this.state.options}
+                                                        value={this.state.options.filter(this.filterOptions, this.state.id_lex)}
+                                                        className="basic-single"
+                                                        classNamePrefix="select"
+                                                        onChange={this.handleChangeSingle}
+                                                        placeholder="Выберите лексему"
+                                                    />
+                                                </Col>
+                                            </div>
+                                            {/*<div className="row StructureFields" style={{ marginTop: "20px"}}>
                                                 <Label sm={3}>Ответ:</Label>
                                                 <Col sm={8}>
                                                     <select className="form-select" data-mdb-clear-button="true"  name="id_lex" value={this.state.id_lex} onChange={this.getSelectedLexemeId}>
@@ -286,7 +320,7 @@ export default class Rules extends Component {
                                                         )}
                                                     </select>
                                                 </Col>
-                                            </div>
+                                            </div>*/}
                                             <div className="row StructureFields" style={{ marginTop: "20px", marginBottom: "20px" }}>
                                                 <Label sm={3}>Варианты:</Label>
                                                 <Col sm={8}>

@@ -86,8 +86,13 @@ export default class Vocabulary extends Component {
 
     handleChangeMultiple = (event) => {
         let id_lex = [];
-        for (var i = 0; i < event.length; i++) {
-            id_lex.push(event[i].value)
+        if (typeof (event.value) === "number") {
+            id_lex.push(event.value)
+        }
+        else {
+            for (var i = 0; i < event.length; i++) {
+                id_lex.push(event[i].value)
+            }
         }
         console.log(id_lex);
         let newLex = { ...this.state.current_lex, id_lex: id_lex };
@@ -298,12 +303,15 @@ export default class Vocabulary extends Component {
                                         <div className="row StructureFields" style={{ marginTop: "20px" }}>
                                             <Label sm={2}>Лексема:</Label>
                                             <Col sm={10}>
-                                                <select className="form-select" name="id_lex" value={this.state.id_lex} onChange={this.getSelectedLexemeId}>
-                                                    <option value={0}>Выберите лексему</option>
-                                                    {this.state.lexemes.map((obj, i) =>
-                                                        <option value={obj.id_lex}>{obj.mean_lex}</option>
-                                                    )}
-                                                </select>
+                                                <Select
+                                                    options={this.state.options}
+                                                    name="colors"
+                                                    value={this.state.options.filter(this.filterOptions, this.state.id_lex)}
+                                                    className="basic-single"
+                                                    classNamePrefix="select"
+                                                    onChange={this.handleChangeMultiple}
+                                                    placeholder="Выберите лексему"
+                                                />
                                             </Col>
                                         </div>
                                     </div> :
@@ -326,12 +334,15 @@ export default class Vocabulary extends Component {
                                             <div className="row StructureFields" style={{ marginTop: "20px" }}>
                                                 <Label sm={2}>Лексема:</Label>
                                                 <Col sm={10}>
-                                                    <select className="form-select" name="id_lex" value={this.state.id_lex} onChange={this.getSelectedLexemeId}>
-                                                        <option value={0}>Выберите лексему</option>
-                                                        {this.state.lexemes.map((obj, i) =>
-                                                            <option value={obj.id_lex}>{obj.mean_lex}</option>
-                                                        )}
-                                                    </select>
+                                                    <Select
+                                                        options={this.state.options}
+                                                        name="colors"
+                                                        value={this.state.options.filter(this.filterOptions, this.state.id_lex)}
+                                                        className="basic-single"
+                                                        classNamePrefix="select"
+                                                        onChange={this.handleChangeMultiple}
+                                                        placeholder="Выберите лексему"
+                                                    />
                                                 </Col>
                                             </div>
                                         </div> :
@@ -386,12 +397,15 @@ export default class Vocabulary extends Component {
                                                     <div className="row StructureFields" style={{ marginTop: "20px" }}>
                                                         <Label sm={2}>Лексема:</Label>
                                                         <Col sm={10}>
-                                                            <select className="form-select" name="id_lex" value={this.state.id_lex} onChange={this.getSelectedLexemeId}>
-                                                                <option value={0}>Выберите лексему</option>
-                                                                {this.state.lexemes.map((obj, i) =>
-                                                                    <option value={obj.id_lex}>{obj.mean_lex}</option>
-                                                                )}
-                                                            </select>
+                                                            <Select
+                                                                options={this.state.options}
+                                                                name="colors"
+                                                                value={this.state.options.filter(this.filterOptions, this.state.id_lex)}
+                                                                className="basic-single"
+                                                                classNamePrefix="select"
+                                                                onChange={this.handleChangeMultiple}
+                                                                placeholder="Выберите лексему"
+                                                            />
                                                         </Col>
                                                     </div>
                                                 </div> :
@@ -414,12 +428,15 @@ export default class Vocabulary extends Component {
                                                         <div className="row StructureFields" style={{ marginTop: "20px" }}>
                                                             <Label sm={2}>Лексема:</Label>
                                                             <Col sm={10}>
-                                                                <select className="form-select" name="id_lex" value={this.state.id_lex} onChange={this.getSelectedLexemeId}>
-                                                                    <option value={0}>Выберите лексему</option>
-                                                                    {this.state.lexemes.map((obj, i) =>
-                                                                        <option value={obj.id_lex}>{obj.mean_lex}</option>
-                                                                    )}
-                                                                </select>
+                                                                <Select
+                                                                    options={this.state.options}
+                                                                    name="colors"
+                                                                    value={this.state.options.filter(this.filterOptions, this.state.id_lex)}
+                                                                    className="basic-single"
+                                                                    classNamePrefix="select"
+                                                                    onChange={this.handleChangeMultiple}
+                                                                    placeholder="Выберите лексему"
+                                                                />
                                                             </Col>
                                                         </div>
                                                     </div> :
@@ -474,12 +491,15 @@ export default class Vocabulary extends Component {
                                                                 <div className="row StructureFields" style={{ marginTop: "20px" }}>
                                                                     <Label sm={2}>Лексема:</Label>
                                                                     <Col sm={10}>
-                                                                        <select className="form-select" name="id_lex" value={this.state.id_lex} onChange={this.getSelectedLexemeId}>
-                                                                            <option value={0}>Выберите лексему</option>
-                                                                            {this.state.lexemes.map((obj, i) =>
-                                                                                <option value={obj.id_lex}>{obj.mean_lex}</option>
-                                                                            )}
-                                                                        </select>
+                                                                        <Select
+                                                                            options={this.state.options}
+                                                                            name="colors"
+                                                                            value={this.state.options.filter(this.filterOptions, this.state.id_lex)}
+                                                                            className="basic-single"
+                                                                            classNamePrefix="select"
+                                                                            onChange={this.handleChangeMultiple}
+                                                                            placeholder="Выберите лексему"
+                                                                        />
                                                                     </Col>
                                                                 </div>
                                                                 <div className="row StructureFields" style={{ marginTop: "20px" }}>
@@ -489,7 +509,7 @@ export default class Vocabulary extends Component {
                                                                             options={numbers}
                                                                             name="colors"
                                                                             value={numbers.filter(this.filterOptions, this.state.id_miss)}
-                                                                            className="basic-multi-select"
+                                                                            className="basic-single"
                                                                             classNamePrefix="select"
                                                                             onChange={this.handleChangeMultipleNum}
                                                                             placeholder="Выберите номер буквы"
@@ -536,13 +556,16 @@ export default class Vocabulary extends Component {
                                                                     </div>
                                                                     <div className="row StructureFields" style={{ marginTop: "20px" }}>
                                                                         <Label sm={2}>Лексема:</Label>
-                                                                        <Col sm={10}>
-                                                                            <select className="form-select" name="id_lex" value={this.state.id_lex} onChange={this.getSelectedLexemeId}>
-                                                                                <option value={0}>Выберите лексему</option>
-                                                                                {this.state.lexemes.map((obj, i) =>
-                                                                                    <option value={obj.id_lex}>{obj.mean_lex}</option>
-                                                                                )}
-                                                                            </select>
+                                                                          <Col sm={10}>
+                                                                            <Select
+                                                                                options={this.state.options}
+                                                                                name="colors"
+                                                                                value={this.state.options.filter(this.filterOptions, this.state.id_lex)}
+                                                                                className="basic-single"
+                                                                                classNamePrefix="select"
+                                                                                onChange={this.handleChangeMultiple}
+                                                                                placeholder="Выберите лексему"
+                                                                            />
                                                                         </Col>
                                                                     </div>
                                                                     <div className="row StructureFields" style={{ marginTop: "20px" }}>
@@ -595,12 +618,15 @@ export default class Vocabulary extends Component {
                                                                         <div className="row StructureFields" style={{ marginTop: "20px" }}>
                                                                             <Label sm={2}>Лексема:</Label>
                                                                             <Col sm={10}>
-                                                                                <select className="form-select" name="id_lex" value={this.state.id_lex} onChange={this.getSelectedLexemeId}>
-                                                                                    <option value={0}>Выберите лексему</option>
-                                                                                    {this.state.lexemes.map((obj, i) =>
-                                                                                        <option value={obj.id_lex}>{obj.mean_lex}</option>
-                                                                                    )}
-                                                                                </select>
+                                                                                <Select
+                                                                                    options={this.state.options}
+                                                                                    name="colors"
+                                                                                    value={this.state.options.filter(this.filterOptions, this.state.id_lex)}
+                                                                                    className="basic-single"
+                                                                                    classNamePrefix="select"
+                                                                                    onChange={this.handleChangeMultiple}
+                                                                                    placeholder="Выберите лексему"
+                                                                                />
                                                                             </Col>
                                                                         </div>
                                                                         <div className="row StructureFields" style={{ marginTop: "20px" }}>

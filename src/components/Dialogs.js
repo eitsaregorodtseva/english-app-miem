@@ -29,7 +29,8 @@ export default class Dialogs extends Component {
             id_rep: "",
             pic_video: "",
             id_miss: "",
-            options: []
+            options: [],
+            options_dialogs: []
         }
     }
 
@@ -38,11 +39,18 @@ export default class Dialogs extends Component {
         for (var i = 0; i < this.props.replicas.length; i++) {
             options.push({ value: this.props.replicas[i].id_rep, label: this.props.replicas[i].lexeme.mean_lex + this.props.replicas[i].symbol })
         }
+        let options_dialogs = [];
+        for (var i = 0; i < this.props.lexemes.length; i++) {
+            if (this.props.lexemes[i].type === "диалог") {
+                options_dialogs.push({ value: this.props.lexemes[i].id_lex, label: this.props.lexemes[i].mean_lex })
+            }
+        }
         this.setState({
             dialog: this.props.dialog,
             lexemes: this.props.lexemes,
             replicas: this.props.replicas,
-            options: options
+            options: options,
+            options_dialogs: options_dialogs
         });
     }
 
@@ -71,13 +79,15 @@ export default class Dialogs extends Component {
     }
 
     handleChangeMultiple = (event) => {
-        console.log(event);
         let id_rep = [];
-        for (var i = 0; i < event.length; i++) {
-            id_rep.push(event[i].value)
+        if (typeof (event.value) === "number") {
+            id_rep.push(event.value)
         }
-        console.log(id_rep);
-        console.log(this.state.options.filter(this.filterOptions, id_rep));
+        else {
+            for (var i = 0; i < event.length; i++) {
+                id_rep.push(event[i].value)
+            }
+        }
         let newDialog = { ...this.state.current_dialog, id_rep: id_rep };
         let dialog = this.state.dialog;
         dialog[newDialog.id] = newDialog;
@@ -99,7 +109,6 @@ export default class Dialogs extends Component {
                 id_miss.push(event[i].value)
             }
         }
-        console.log(id_miss);
         let newDialog = { ...this.state.current_dialog, id_miss: id_miss};
         let dialog = this.state.dialog;
         dialog[newDialog.id] = newDialog;
@@ -233,7 +242,7 @@ export default class Dialogs extends Component {
                                                 <Input type="number" name="num_ex" value={this.state.current_dialog.num_ex} onChange={this.handleChangeOrder}></Input>
                                             </Col>
                                         </div>
-                                        <div className="row StructureFields" style={{ marginTop: "20px" }}>
+                                        {/*<div className="row StructureFields" style={{ marginTop: "20px" }}>
                                             <Label sm={2}>Диалог:</Label>
                                             <Col sm={10}>
                                                 <select class="form-select" style={{ marginBottom: "20px" }} name="id_rep" value={this.state.id_rep} onChange={this.getSelectedRepId}>
@@ -243,7 +252,20 @@ export default class Dialogs extends Component {
                                                     )}
                                                 </select>
                                             </Col>
-                                        </div>
+                                                    </div>8*/}
+                                        <div className="row StructureFields" style={{ marginTop: "20px" }}>
+                                                <Label sm={3}>Диалог:</Label>
+                                                <Col sm={9}>
+                                                    <Select
+                                                        options={this.state.options_dialogs}
+                                                        value={this.state.options_dialogs.filter(this.filterOptions, this.state.id_rep)}
+                                                        className="basic-single"
+                                                        classNamePrefix="select"
+                                                        onChange={this.handleChangeMultiple}
+                                                        placeholder="Выберите лексему"
+                                                    />
+                                                </Col>
+                                            </div>
                                         <div class="row StructureFields">
                                             <Label sm={2}>Видео:</Label>
                                             <Col sm={10}>
@@ -272,9 +294,8 @@ export default class Dialogs extends Component {
                                                 <Col sm={9}>
                                                     <Select
                                                         options={this.state.options}
-                                                        isMulti
                                                         value={this.state.options.filter(this.filterOptions, this.state.id_rep)}
-                                                        className="basic-multi-select"
+                                                        className="basic-single"
                                                         classNamePrefix="select"
                                                         onChange={this.handleChangeMultiple}
                                                         placeholder="Выберите реплики"
