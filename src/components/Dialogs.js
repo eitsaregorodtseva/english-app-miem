@@ -27,7 +27,7 @@ export default class Dialogs extends Component {
             replicas: [],
             current_dialog: { id: null, type_ex: 0, num_ex: 0 },
             id_rep: "",
-            pic_video: "",
+            //pic_video: "",
             id_miss: "",
             options: [],
             options_dialogs: []
@@ -141,7 +141,7 @@ export default class Dialogs extends Component {
                 this.setState({
                     current_dialog: this.state.dialog[id],
                     id_rep: this.state.dialog[id].id_rep ? this.state.dialog[id].id_rep : "",
-                    pic_video: this.state.dialog[id].pic_video ? this.state.dialog[id].pic_video : ""
+                    //pic_video: this.state.dialog[id].pic_video ? this.state.dialog[id].pic_video : ""
                 });
                 break;
             case 22:
@@ -163,7 +163,7 @@ export default class Dialogs extends Component {
             current_dialog: newDialog,
             dialog: dialog,
             id_rep: "",
-            pic_video: "",
+            //pic_video: "",
             id_miss: ""
         });
         this.passPropsToParent();
@@ -266,12 +266,12 @@ export default class Dialogs extends Component {
                                                     />
                                                 </Col>
                                             </div>
-                                        <div class="row StructureFields">
+                                        {/*<div class="row StructureFields">
                                             <Label sm={2}>Видео:</Label>
                                             <Col sm={10}>
                                                 <Input type="textarea" rows="2" name="pic_video" value={this.state.pic_video} onChange={this.handleChange}></Input>
                                             </Col>
-                                        </div>
+                                                </div>*/}
                                     </div> :
                                     this.state.current_dialog.type_ex === 22 ?
                                         <div>

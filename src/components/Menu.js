@@ -106,9 +106,10 @@ export default class Menu extends Component {
                 return response.json();
             })
             .then((data) => {
-                //console.log(data);
+                console.log(data);
                 let phrases = [];
                 let dialogs = [];
+                let num = [];
                 for (var i = 0; i < data.length; i++) {
                     let type_ex = this.findTypeEx(data[i]);
                     switch (type_ex) {
@@ -122,7 +123,7 @@ export default class Menu extends Component {
                             };
                             break;
                         case 19:
-                            let num = this.findIdArrays(data[i].miss, "num");
+                            num = this.findIdArrays(data[i].miss, "num");
                             phrases[phrases.length] = {
                                 id: phrases.length,
                                 name_les: data[i].name_les,
@@ -135,13 +136,15 @@ export default class Menu extends Component {
                         case 20:
                             let variant_split = data[i].variant.replaceAll(',', '').split(' ');
                             let variant = this.findIdArrays(variant_split, "lex");
+                            num = this.findIdArrays(data[i].miss.replaceAll(',', '').split(' '), "num");
                             phrases[phrases.length] = {
                                 id: phrases.length,
                                 name_les: data[i].name_les,
                                 type_ex: type_ex,
                                 num_ex: parseInt(data[i].id_ex),
                                 id_rep: [this.findId(data[i].replica, "rep")],
-                                id_var: variant
+                                id_var: variant,
+                                id_miss: num
                             };
                             break;
                         case 21:
@@ -152,7 +155,7 @@ export default class Menu extends Component {
                                 type_ex: type_ex,
                                 num_ex: parseInt(data[i].id_ex),
                                 id_rep: [id_rep],
-                                pic_video: data[i].pic_video
+                                //pic_video: data[i].pic_video
                             };
                             break;
                         case 22:

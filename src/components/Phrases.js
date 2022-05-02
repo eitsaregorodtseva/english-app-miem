@@ -123,7 +123,14 @@ export default class Phrases extends Component {
 
     handleChangeMultipleNum = (event) => {
         let id_miss = [];
-        id_miss.push(event.value);
+        if (typeof (event.value) === "number") {
+            id_miss.push(event.value)
+        }
+        else {
+            for (var i = 0; i < event.length; i++) {
+                id_miss.push(event[i].value)
+            }
+        }
         console.log(id_miss);
         let newPhr = { ...this.state.current_phr, id_miss: id_miss };
         let phr = this.state.phr;
@@ -171,6 +178,7 @@ export default class Phrases extends Component {
                     current_phr: this.state.phr[id],
                     id_rep: this.state.phr[id].id_rep ? this.state.phr[id].id_rep : "",
                     id_var: this.state.phr[id].id_var ? this.state.phr[id].id_var : "",
+                    id_miss: this.state.phr[id].id_miss ? this.state.phr[id].id_miss : ""
                 });
                 break;
         }
@@ -386,6 +394,20 @@ export default class Phrases extends Component {
                                                         />
                                                     </Col>
                                                 </div>
+                                                <div class="row StructureFields" style={{ marginTop: "20px" }}>
+                                                <Label sm={3}>Пропустить слова:</Label>
+                                                <Col sm={5}>
+                                                    <Select
+                                                        options={numbers}
+                                                        isMulti
+                                                        value={numbers.filter(this.filterOptions, this.state.id_miss)}
+                                                        className="basic-multi-select"
+                                                        classNamePrefix="select"
+                                                        onChange={this.handleChangeMultipleNum}
+                                                        placeholder="Выберите номер"
+                                                    />
+                                                </Col>
+                                            </div>
                                                 <div class="row StructureFields" style={{ marginTop: "20px" }}>
                                                     <Label sm={3}>Варианты:</Label>
                                                     <Col sm={9}>
