@@ -1,4 +1,4 @@
-import { useEffect, useState, usePrevious } from "react";
+import { useEffect, useState } from "react";
 import { Pagination, PaginationItem, PaginationLink } from "reactstrap";
 import TableBody from "./TableBody";
 import TableHead from "./TableHead";

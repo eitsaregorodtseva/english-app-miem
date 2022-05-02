@@ -54,6 +54,15 @@ export default class Dialogs extends Component {
         });
     }
 
+    componentDidUpdate(prevProps, prevState) {
+        if (this.props.dialog !== this.state.dialog) {
+            this.setState({
+                dialog: this.props.dialog,
+                current_dialog: { id: null, type_ex: 0, num_ex: 0 }
+            })
+        }
+    }
+
     handleChange = (event) => {
         let newDialog = { ...this.state.current_dialog, [event.target.name]: event.target.value };
         let dialog = this.state.dialog;
@@ -213,7 +222,7 @@ export default class Dialogs extends Component {
                     <Col sm={12}>
                         <Button style={{ width: "190px" }} onClick={() => this.addNewDialog()}>Добавить</Button>
                         {this.state.dialog.map((obj, i) =>
-                            <Button style={{ width: "190px" }} color={this.state.current_dialog.id === i ? "primary" : "secondary"} onClick={() => this.showCurrentDialog(i)}>Диалог {i + 1}</Button>)}
+                            <Button style={{ width: "190px" }} key={obj.id} color={this.state.current_dialog.id === i ? "primary" : "secondary"} onClick={() => this.showCurrentDialog(i)}>Диалог {i + 1}</Button>)}
                     </Col>
                 </div>
                 {this.state.dialog.length === 0 || this.state.current_dialog.id === null ? <div></div> :
@@ -242,17 +251,6 @@ export default class Dialogs extends Component {
                                                 <Input type="number" name="num_ex" value={this.state.current_dialog.num_ex} onChange={this.handleChangeOrder}></Input>
                                             </Col>
                                         </div>
-                                        {/*<div className="row StructureFields" style={{ marginTop: "20px" }}>
-                                            <Label sm={2}>Диалог:</Label>
-                                            <Col sm={10}>
-                                                <select class="form-select" style={{ marginBottom: "20px" }} name="id_rep" value={this.state.id_rep} onChange={this.getSelectedRepId}>
-                                                    <option value={0}>Выберите лексему</option>
-                                                    {this.state.lexemes.map((obj, i) =>
-                                                        <option value={obj.id_lex}>{obj.mean_lex}</option>
-                                                    )}
-                                                </select>
-                                            </Col>
-                                                    </div>8*/}
                                         <div className="row StructureFields" style={{ marginTop: "20px" }}>
                                                 <Label sm={3}>Диалог:</Label>
                                                 <Col sm={9}>
@@ -262,16 +260,10 @@ export default class Dialogs extends Component {
                                                         className="basic-single"
                                                         classNamePrefix="select"
                                                         onChange={this.handleChangeMultiple}
-                                                        placeholder="Выберите лексему"
+                                                        placeholder="Выберите диалог"
                                                     />
                                                 </Col>
                                             </div>
-                                        {/*<div class="row StructureFields">
-                                            <Label sm={2}>Видео:</Label>
-                                            <Col sm={10}>
-                                                <Input type="textarea" rows="2" name="pic_video" value={this.state.pic_video} onChange={this.handleChange}></Input>
-                                            </Col>
-                                                </div>*/}
                                     </div> :
                                     this.state.current_dialog.type_ex === 22 ?
                                         <div>
@@ -298,12 +290,12 @@ export default class Dialogs extends Component {
                                                         className="basic-single"
                                                         classNamePrefix="select"
                                                         onChange={this.handleChangeMultiple}
-                                                        placeholder="Выберите реплики"
+                                                        placeholder="Выберите реплики для диалога"
                                                     />
                                                 </Col>
                                             </div>
                                             <div className="row StructureFields" style={{ marginTop: "20px" }}>
-                                                <Label sm={3}>Номера реплик:</Label>
+                                                <Label sm={3}>Пропущенные реплики:</Label>
                                                 <Col sm={9}>
                                                     <Select
                                                         options={numbers}

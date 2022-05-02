@@ -38,17 +38,28 @@ export default class Vocabulary extends Component {
             id_miss: "",
             id_var: "",
             options: [],
-            options_letters: []
+            options_letters: [],
+            options_syllables: [],
+            options_words: []
         }
     }
 
     componentDidMount() {
+        console.log(this.props.nam);
         let options = [];
         let options_letters = [];
+        let options_syllables = [];
+        let options_words = [];
         for (var i = 0; i < this.props.lexemes.length; i++) {
             options.push({ value: this.props.lexemes[i].id_lex, label: this.props.lexemes[i].mean_lex });
             if (this.props.lexemes[i].type === "буква") {
                 options_letters.push({ value: this.props.lexemes[i].id_lex, label: this.props.lexemes[i].mean_lex })
+            }
+            if (this.props.lexemes[i].type === "слог") {
+                options_syllables.push({ value: this.props.lexemes[i].id_lex, label: this.props.lexemes[i].mean_lex })
+            }
+            if (this.props.lexemes[i].type === "слово") {
+                options_words.push({ value: this.props.lexemes[i].id_lex, label: this.props.lexemes[i].mean_lex })
             }
         }
 
@@ -56,8 +67,19 @@ export default class Vocabulary extends Component {
             lex: this.props.lex,
             lexemes: this.props.lexemes,
             options: options,
-            options_letters: options_letters
+            options_letters: options_letters,
+            options_syllables: options_syllables,
+            options_words: options_words
         });
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (this.props.lex !== this.state.lex) {
+            this.setState({
+                lex: this.props.lex,
+                current_lex: { id: null, type_ex: 0, num_ex: 0 }
+            })
+        }
     }
 
     handleChange = (event) => {
@@ -248,7 +270,6 @@ export default class Vocabulary extends Component {
     }
 
     filterOptions(vl) {
-        //console.log(vl);
         return this.includes(vl.value)
     }
 
@@ -263,7 +284,7 @@ export default class Vocabulary extends Component {
                     <Col sm={12}>
                         <Button style={{ width: "190px" }} onClick={this.addNewLex}>Добавить</Button>
                         {this.state.lex.map((obj, i) =>
-                            <Button style={{ width: "190px" }} key={i} color={this.state.current_lex.id === i ? "primary" : "secondary"} onClick={() => this.showCurrentLex(i)}>Буквы-слова {i + 1}</Button>)}
+                            <Button style={{ width: "190px" }} key={obj.id} color={this.state.current_lex.id === i ? "primary" : "secondary"} onClick={() => this.showCurrentLex(i)}>Буквы-слова {i + 1}</Button>)}
                     </Col>
                 </div>
                 {this.state.lex.length === 0 || this.state.current_lex.id === null ? <div></div> :
@@ -301,16 +322,16 @@ export default class Vocabulary extends Component {
                                             </Col>
                                         </div>
                                         <div className="row StructureFields" style={{ marginTop: "20px" }}>
-                                            <Label sm={2}>Лексема:</Label>
+                                            <Label sm={2}>Буква:</Label>
                                             <Col sm={10}>
                                                 <Select
-                                                    options={this.state.options}
+                                                    options={this.state.options_letters}
                                                     name="colors"
-                                                    value={this.state.options.filter(this.filterOptions, this.state.id_lex)}
+                                                    value={this.state.options_letters.filter(this.filterOptions, this.state.id_lex)}
                                                     className="basic-single"
                                                     classNamePrefix="select"
                                                     onChange={this.handleChangeMultiple}
-                                                    placeholder="Выберите лексему"
+                                                    placeholder="Выберите гласную букву"
                                                 />
                                             </Col>
                                         </div>
@@ -332,16 +353,16 @@ export default class Vocabulary extends Component {
                                                 </Col>
                                             </div>
                                             <div className="row StructureFields" style={{ marginTop: "20px" }}>
-                                                <Label sm={2}>Лексема:</Label>
+                                                <Label sm={2}>Буква:</Label>
                                                 <Col sm={10}>
                                                     <Select
-                                                        options={this.state.options}
+                                                        options={this.state.options_letters}
                                                         name="colors"
-                                                        value={this.state.options.filter(this.filterOptions, this.state.id_lex)}
+                                                        value={this.state.options_letters.filter(this.filterOptions, this.state.id_lex)}
                                                         className="basic-single"
                                                         classNamePrefix="select"
                                                         onChange={this.handleChangeMultiple}
-                                                        placeholder="Выберите лексему"
+                                                        placeholder="Выберите согласную букву"
                                                     />
                                                 </Col>
                                             </div>
@@ -363,17 +384,17 @@ export default class Vocabulary extends Component {
                                                     </Col>
                                                 </div>
                                                 <div className="row StructureFields" style={{ marginTop: "20px" }}>
-                                                    <Label sm={2}>Лексемы:</Label>
+                                                    <Label sm={2}>Слоги:</Label>
                                                     <Col sm={10}>
                                                         <Select
-                                                            options={this.state.options}
+                                                            options={this.state.options_syllables}
                                                             isMulti
                                                             name="colors"
-                                                            value={this.state.options.filter(this.filterOptions, this.state.id_lex)}
+                                                            value={this.state.options_syllables.filter(this.filterOptions, this.state.id_lex)}
                                                             className="basic-multi-select"
                                                             classNamePrefix="select"
                                                             onChange={this.handleChangeMultiple}
-                                                            placeholder="Выберите лексемы"
+                                                            placeholder="Выберите 2 слога"
                                                         />
                                                     </Col>
                                                 </div>
@@ -395,16 +416,16 @@ export default class Vocabulary extends Component {
                                                         </Col>
                                                     </div>
                                                     <div className="row StructureFields" style={{ marginTop: "20px" }}>
-                                                        <Label sm={2}>Лексема:</Label>
+                                                        <Label sm={2}>Слово:</Label>
                                                         <Col sm={10}>
                                                             <Select
-                                                                options={this.state.options}
+                                                                options={this.state.options_words}
                                                                 name="colors"
-                                                                value={this.state.options.filter(this.filterOptions, this.state.id_lex)}
+                                                                value={this.state.options_words.filter(this.filterOptions, this.state.id_lex)}
                                                                 className="basic-single"
                                                                 classNamePrefix="select"
                                                                 onChange={this.handleChangeMultiple}
-                                                                placeholder="Выберите лексему"
+                                                                placeholder="Выберите слово"
                                                             />
                                                         </Col>
                                                     </div>
@@ -426,16 +447,16 @@ export default class Vocabulary extends Component {
                                                             </Col>
                                                         </div>
                                                         <div className="row StructureFields" style={{ marginTop: "20px" }}>
-                                                            <Label sm={2}>Лексема:</Label>
+                                                            <Label sm={2}>Слово:</Label>
                                                             <Col sm={10}>
                                                                 <Select
-                                                                    options={this.state.options}
+                                                                    options={this.state.options_words}
                                                                     name="colors"
-                                                                    value={this.state.options.filter(this.filterOptions, this.state.id_lex)}
+                                                                    value={this.state.options_words.filter(this.filterOptions, this.state.id_lex)}
                                                                     className="basic-single"
                                                                     classNamePrefix="select"
                                                                     onChange={this.handleChangeMultiple}
-                                                                    placeholder="Выберите лексему"
+                                                                    placeholder="Выберите слово"
                                                                 />
                                                             </Col>
                                                         </div>
@@ -457,17 +478,17 @@ export default class Vocabulary extends Component {
                                                                 </Col>
                                                             </div>
                                                             <div className="row StructureFields" style={{ marginTop: "20px" }}>
-                                                                <Label sm={2}>Лексемы:</Label>
+                                                                <Label sm={2}>Слоги:</Label>
                                                                 <Col sm={10}>
                                                                     <Select
-                                                                        options={this.state.options}
+                                                                        options={this.state.options_syllables}
                                                                         isMulti
                                                                         name="colors"
-                                                                        value={this.state.options.filter(this.filterOptions, this.state.id_lex)}
+                                                                        value={this.state.options_syllables.filter(this.filterOptions, this.state.id_lex)}
                                                                         className="basic-multi-select"
                                                                         classNamePrefix="select"
                                                                         onChange={this.handleChangeMultiple}
-                                                                        placeholder="Выберите лексемы"
+                                                                        placeholder="Выберите 4 слога"
                                                                     />
                                                                 </Col>
                                                             </div>
@@ -489,21 +510,21 @@ export default class Vocabulary extends Component {
                                                                     </Col>
                                                                 </div>
                                                                 <div className="row StructureFields" style={{ marginTop: "20px" }}>
-                                                                    <Label sm={2}>Лексема:</Label>
+                                                                    <Label sm={2}>Слово:</Label>
                                                                     <Col sm={10}>
                                                                         <Select
-                                                                            options={this.state.options}
+                                                                            options={this.state.options_words}
                                                                             name="colors"
-                                                                            value={this.state.options.filter(this.filterOptions, this.state.id_lex)}
+                                                                            value={this.state.options_words.filter(this.filterOptions, this.state.id_lex)}
                                                                             className="basic-single"
                                                                             classNamePrefix="select"
                                                                             onChange={this.handleChangeMultiple}
-                                                                            placeholder="Выберите лексему"
+                                                                            placeholder="Выберите слово"
                                                                         />
                                                                     </Col>
                                                                 </div>
                                                                 <div className="row StructureFields" style={{ marginTop: "20px" }}>
-                                                                    <Label sm={3}>Номер буквы:</Label>
+                                                                    <Label sm={3}>Пропущенная буква:</Label>
                                                                     <Col sm={9}>
                                                                         <Select
                                                                             options={numbers}
@@ -516,12 +537,6 @@ export default class Vocabulary extends Component {
                                                                         />
                                                                     </Col>
                                                                 </div>
-                                                                {/*<div className="row StructureFields" style={{ marginTop: "20px" }}>
-                                                                    <Label sm={3}>Варианты:</Label>
-                                                                    <Col sm={9}>
-                                                                        <Input type="text" name="var" value={this.state.var} onChange={this.handleChange}></Input>
-                                                                    </Col>
-                                                                            </div>*/}
                                                                 <div className="row StructureFields" style={{ marginTop: "20px" }}>
                                                                     <Label sm={2}>Буквы:</Label>
                                                                     <Col sm={10}>
@@ -533,7 +548,7 @@ export default class Vocabulary extends Component {
                                                                             className="basic-multi-select"
                                                                             classNamePrefix="select"
                                                                             onChange={this.handleChangeMultipleVar}
-                                                                            placeholder="Выберите буквы"
+                                                                            placeholder="Выберите варианты букв"
                                                                         />
                                                                     </Col>
                                                                 </div>
@@ -555,21 +570,21 @@ export default class Vocabulary extends Component {
                                                                         </Col>
                                                                     </div>
                                                                     <div className="row StructureFields" style={{ marginTop: "20px" }}>
-                                                                        <Label sm={2}>Лексема:</Label>
-                                                                          <Col sm={10}>
+                                                                        <Label sm={2}>Слово:</Label>
+                                                                        <Col sm={10}>
                                                                             <Select
-                                                                                options={this.state.options}
+                                                                                options={this.state.options_words}
                                                                                 name="colors"
-                                                                                value={this.state.options.filter(this.filterOptions, this.state.id_lex)}
+                                                                                value={this.state.options_words.filter(this.filterOptions, this.state.id_lex)}
                                                                                 className="basic-single"
                                                                                 classNamePrefix="select"
                                                                                 onChange={this.handleChangeMultiple}
-                                                                                placeholder="Выберите лексему"
+                                                                                placeholder="Выберите слово"
                                                                             />
                                                                         </Col>
                                                                     </div>
                                                                     <div className="row StructureFields" style={{ marginTop: "20px" }}>
-                                                                        <Label sm={3}>Номера букв:</Label>
+                                                                        <Label sm={3}>Пропущенные буквы:</Label>
                                                                         <Col sm={9}>
                                                                             <Select
                                                                                 options={numbers}
@@ -594,7 +609,7 @@ export default class Vocabulary extends Component {
                                                                                 className="basic-multi-select"
                                                                                 classNamePrefix="select"
                                                                                 onChange={this.handleChangeMultipleVar}
-                                                                                placeholder="Выберите буквы"
+                                                                                placeholder="Выберите варианты букв"
                                                                             />
                                                                         </Col>
                                                                     </div>
@@ -616,16 +631,16 @@ export default class Vocabulary extends Component {
                                                                             </Col>
                                                                         </div>
                                                                         <div className="row StructureFields" style={{ marginTop: "20px" }}>
-                                                                            <Label sm={2}>Лексема:</Label>
+                                                                            <Label sm={2}>Слово:</Label>
                                                                             <Col sm={10}>
                                                                                 <Select
-                                                                                    options={this.state.options}
+                                                                                    options={this.state.options_words}
                                                                                     name="colors"
-                                                                                    value={this.state.options.filter(this.filterOptions, this.state.id_lex)}
+                                                                                    value={this.state.options_words.filter(this.filterOptions, this.state.id_lex)}
                                                                                     className="basic-single"
                                                                                     classNamePrefix="select"
                                                                                     onChange={this.handleChangeMultiple}
-                                                                                    placeholder="Выберите лексему"
+                                                                                    placeholder="Выберите слово"
                                                                                 />
                                                                             </Col>
                                                                         </div>
@@ -640,7 +655,7 @@ export default class Vocabulary extends Component {
                                                                                     className="basic-multi-select"
                                                                                     classNamePrefix="select"
                                                                                     onChange={this.handleChangeMultipleVar}
-                                                                                    placeholder="Выберите буквы"
+                                                                                    placeholder="Выберите варианты букв"
                                                                                 />
                                                                             </Col>
                                                                         </div>

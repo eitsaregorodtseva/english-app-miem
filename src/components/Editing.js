@@ -300,7 +300,6 @@ export default class Editing extends Component {
         }
         let name_les = current_lesson.name_les;
         let video = { video_link: current_lesson.video };
-        console.log(video);
         this.setState({
             lesson: [current_lesson.lesson],
             id_les: id_les,
@@ -310,7 +309,6 @@ export default class Editing extends Component {
             current_lesson: current_lesson,
         });
         console.log(current_lesson);
-        this.forceUpdate();
     }
 
     checkStatuses = () => {
@@ -504,19 +502,19 @@ export default class Editing extends Component {
                                 </nav>
                                 <div class="tab-content" id="myTabContent">
                                     <div class="tab-pane fade show active" id="video" role="tabpanel" aria-labelledby="video-tab">
-                                        <Videos video={Object.assign(this.state.video)} />
+                                        <Videos key={1} video={Object.assign(this.state.video)} />
                                     </div>
                                     <div class="tab-pane fade" id="letter" role="tabpanel" aria-labelledby="letter-tab">
-                                        <Vocabulary lex={Object.assign(this.state.lesson[0].lex)} lexemes={this.state.lexemes} parentCallback={this.handleCallbackVoc} />
+                                        <Vocabulary nam={this.state.name_les} key={2} lex={Object.assign(this.state.lesson[0].lex)} lexemes={this.state.lexemes} parentCallback={this.handleCallbackVoc} />
                                     </div>
                                     <div class="tab-pane fade" id="rule" role="tabpanel" aria-labelledby="rule-tab">
-                                        <Rules rule={Object.assign(this.state.lesson[0].rules)} lexemes={this.state.lexemes} parentCallback={this.handleCallbackRule} />
+                                        <Rules key={3} rule={Object.assign(this.state.lesson[0].rules)} lexemes={this.state.lexemes} parentCallback={this.handleCallbackRule} />
                                     </div>
                                     <div class="tab-pane fade" id="phrase" role="tabpanel" aria-labelledby="phrase-tab">
-                                        <Phrases phr={Object.assign(this.state.lesson[0].phr)} lexemes={this.state.lexemes} replicas={this.state.replicas} parentCallback={this.handleCallbackPhr} />
+                                        <Phrases key={4} phr={Object.assign(this.state.lesson[0].phr)} lexemes={this.state.lexemes} replicas={this.state.replicas} parentCallback={this.handleCallbackPhr} />
                                     </div>
                                     <div class="tab-pane fade" id="dialog" role="tabpanel" aria-labelledby="dialog-tab">
-                                        <Dialogs dialog={Object.assign(this.state.lesson[0].dialog)} lexemes={this.state.lexemes} replicas={this.state.replicas} parentCallback={this.handleCallbackDialog} />
+                                        <Dialogs key={5} dialog={Object.assign(this.state.lesson[0].dialog)} lexemes={this.state.lexemes} replicas={this.state.replicas} parentCallback={this.handleCallbackDialog} />
                                     </div>
                                 </div>
                             </div>

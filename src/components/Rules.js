@@ -20,7 +20,8 @@ export default class Rules extends Component {
             side: "",
             picture: "",
             sound_rule: "",
-            options: []
+            options: [],
+            options_words: []
         }
         this.handleChange = this.handleChange.bind(this);
         this.addNewRule = this.addNewRule.bind(this);
@@ -30,14 +31,28 @@ export default class Rules extends Component {
 
     componentDidMount() {
         let options = [];
+        let options_words = [];
         for (var i = 0; i < this.props.lexemes.length; i++) {
-            options.push({ value: this.props.lexemes[i].id_lex, label: this.props.lexemes[i].mean_lex })
+            options.push({ value: this.props.lexemes[i].id_lex, label: this.props.lexemes[i].mean_lex });
+            if (this.props.lexemes[i].type === "слово") {
+                options_words.push({ value: this.props.lexemes[i].id_lex, label: this.props.lexemes[i].mean_lex })
+            }
         }
         this.setState({
             rule: this.props.rule,
             lexemes: this.props.lexemes,
-            options: options
+            options: options,
+            options_words: options_words
         });
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (this.props.rule !== this.state.rule) {
+            this.setState({
+                rule: this.props.rule,
+                current_rule: { id: null, type_ex: 0, num_ex: 0 }
+            })
+        }
     }
 
     handleChange(event) {
@@ -215,7 +230,7 @@ export default class Rules extends Component {
                     <Col sm={12}>
                         <Button style={{ width: "190px" }} onClick={() => this.addNewRule()}>Добавить</Button>
                         {this.state.rule.map((obj, i) =>
-                            <Button style={{ width: "190px" }} color={this.state.current_rule.id === i ? "primary" : "secondary"} onClick={() => this.showCurrentRule(i)}>Правило {i + 1}</Button>)}
+                            <Button style={{ width: "190px" }} key={obj.id} color={this.state.current_rule.id === i ? "primary" : "secondary"} onClick={() => this.showCurrentRule(i)}>Правило {i + 1}</Button>)}
                     </Col>
                 </div>
                 {this.state.rule.length === 0 || this.state.current_rule.id === null ? <div></div> :
@@ -238,12 +253,6 @@ export default class Rules extends Component {
                                                 </PopoverBody>
                                             </UncontrolledPopover>
                                         </div>
-                                        {/*<div className="row StructureFields" style={{ marginBottom: "20px" }}>
-                                            <Label sm={3}>Номер в уроке:</Label>
-                                            <Col sm={2}>
-                                                <Input type="number" name="num_ex" value={this.state.current_rule.num_ex} onChange={this.handleChangeOrder}></Input>
-                                            </Col>
-                                        </div>*/}
                                         <div className="row StructureFields" style={{ marginTop: "20px", marginBottom: "20px" }}>
                                             <Label sm={3}>Лексемы:</Label>
                                             <Col sm={8}>
@@ -301,37 +310,26 @@ export default class Rules extends Component {
                                                 <Label sm={3}>Ответ:</Label>
                                                 <Col sm={9}>
                                                     <Select
-                                                        options={this.state.options}
-                                                        value={this.state.options.filter(this.filterOptions, this.state.id_lex)}
+                                                        options={this.state.options_words}
+                                                        value={this.state.options_words.filter(this.filterOptions, this.state.id_lex)}
                                                         className="basic-single"
                                                         classNamePrefix="select"
                                                         onChange={this.handleChangeSingle}
-                                                        placeholder="Выберите лексему"
+                                                        placeholder="Выберите слово"
                                                     />
                                                 </Col>
                                             </div>
-                                            {/*<div className="row StructureFields" style={{ marginTop: "20px"}}>
-                                                <Label sm={3}>Ответ:</Label>
-                                                <Col sm={8}>
-                                                    <select className="form-select" data-mdb-clear-button="true"  name="id_lex" value={this.state.id_lex} onChange={this.getSelectedLexemeId}>
-                                                        <option value={0}>Выберите лексему</option>
-                                                        {this.state.lexemes.map((obj, i) =>
-                                                            <option value={obj.id_lex}>{obj.mean_lex}</option>
-                                                        )}
-                                                    </select>
-                                                </Col>
-                                            </div>*/}
                                             <div className="row StructureFields" style={{ marginTop: "20px", marginBottom: "20px" }}>
                                                 <Label sm={3}>Варианты:</Label>
                                                 <Col sm={8}>
                                                     <Select
-                                                        options={this.state.options}
+                                                        options={this.state.options_words}
                                                         isMulti
-                                                        value={this.state.options.filter(this.filterOptions, this.state.id_var)}
+                                                        value={this.state.options_words.filter(this.filterOptions, this.state.id_var)}
                                                         className="basic-multi-select"
                                                         classNamePrefix="select"
                                                         onChange={this.handleChangeMultiple}
-                                                        placeholder="Выберите лексемы"
+                                                        placeholder="Выберите слова"
                                                     />
                                                 </Col>
                                             </div>

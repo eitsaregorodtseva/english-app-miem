@@ -32,7 +32,8 @@ export default class Phrases extends Component {
             id_miss: "",
             id_var: "",
             options: [],
-            options_phrases: []
+            options_phrases: [],
+            options_words: []
         }
         this.handleChange = this.handleChange.bind(this);
         this.addNewPhr = this.addNewPhr.bind(this);
@@ -42,21 +43,35 @@ export default class Phrases extends Component {
 
     componentDidMount() {
         let options = [];
+        let options_words = [];
         for (var i = 0; i < this.props.lexemes.length; i++) {
-            options.push({ value: this.props.lexemes[i].id_lex, label: this.props.lexemes[i].mean_lex })
+            options.push({ value: this.props.lexemes[i].id_lex, label: this.props.lexemes[i].mean_lex });
+            if (this.props.lexemes[i].type === "буква" || this.props.lexemes[i].type === "слово") {
+                options_words.push({ value: this.props.lexemes[i].id_lex, label: this.props.lexemes[i].mean_lex })
+            }
         }
         let options_phrases = [];
         for (var i = 0; i < this.props.replicas.length; i++) {
             options_phrases.push({ value: this.props.replicas[i].id_rep, label: this.props.replicas[i].lexeme.mean_lex + this.props.replicas[i].symbol})
         }
-        console.log(options_phrases);
+        console.log(options_words);
         this.setState({
             phr: this.props.phr,
             lexemes: this.props.lexemes,
             replicas: this.props.replicas,
             options: options,
-            options_phrases: options_phrases
+            options_phrases: options_phrases,
+            options_words: options_words
         });
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (this.props.phr !== this.state.phr) {
+            this.setState({
+                phr: this.props.phr,
+                current_phr: { id: null, type_ex: 0, num_ex: 0 }
+            })
+        }
     }
 
     handleChange(event) {
@@ -229,7 +244,6 @@ export default class Phrases extends Component {
     }
 
     filterOptions(vl) {
-        //console.log(vl);
         return this.includes(vl.value)
     }
 
@@ -244,7 +258,7 @@ export default class Phrases extends Component {
                     <Col sm={12}>
                         <Button style={{ width: "190px" }} onClick={() => this.addNewPhr()}>Добавить</Button>
                         {this.state.phr.map((obj, i) =>
-                            <Button style={{ width: "190px" }} color={this.state.current_phr.id === i ? "primary" : "secondary"} onClick={() => this.showCurrentPhr(i)}>Фраза {i + 1}</Button>)}
+                            <Button style={{ width: "190px" }} key={obj.id} color={this.state.current_phr.id === i ? "primary" : "secondary"} onClick={() => this.showCurrentPhr(i)}>Фраза {i + 1}</Button>)}
                     </Col>
                 </div>
                 {this.state.phr.length === 0 || this.state.current_phr.id === null ? <div></div> :
@@ -275,17 +289,6 @@ export default class Phrases extends Component {
                                                 <Input type="number" name="num_ex" value={this.state.current_phr.num_ex} onChange={this.handleChangeOrder}></Input>
                                             </Col>
                                         </div>
-                                        {/*<div className="row StructureFields" style={{ marginTop: "20px" }}>
-                                            <Label sm={2}>Фраза:</Label>
-                                            <Col sm={10}>
-                                                <select class="form-select" name="id_rep" value={this.state.id_rep} onChange={this.getSelectedRepId}>
-                                                    <option value={0}>Выберите лексему</option>
-                                                    {this.state.replicas.map((obj, i) =>
-                                                        <option value={obj.id_rep}>{obj.lexeme.mean_lex + obj.symbol}</option>
-                                                    )}
-                                                </select>
-                                            </Col>
-                                                    </div>*/}
                                         <div className="row StructureFields" style={{ marginTop: "20px" }}>
                                             <Label sm={3}>Фраза:</Label>
                                             <Col sm={9}>
@@ -295,7 +298,7 @@ export default class Phrases extends Component {
                                                     className="basic-single"
                                                     classNamePrefix="select"
                                                     onChange={this.handleChangeSingle}
-                                                    placeholder="Выберите лексему"
+                                                    placeholder="Выберите фразу"
                                                 />
                                             </Col>
                                         </div>
@@ -316,17 +319,6 @@ export default class Phrases extends Component {
                                                     <Input type="number" name="num_ex" value={this.state.current_phr.num_ex} onChange={this.handleChangeOrder}></Input>
                                                 </Col>
                                             </div>
-                                            {/*<div className="row StructureFields" style={{ marginTop: "20px" }}>
-                                                <Label sm={2}>Фраза:</Label>
-                                                <Col sm={10}>
-                                                    <select class="form-select" name="id_rep" value={this.state.id_rep} onChange={this.getSelectedRepId}>
-                                                        <option value={0}>Выберите лексему</option>
-                                                        {this.state.replicas.map((obj, i) =>
-                                                            <option value={obj.id_rep}>{obj.lexeme.mean_lex + obj.symbol}</option>
-                                                        )}
-                                                    </select>
-                                                </Col>
-                                                        </div>*/}
                                             <div className="row StructureFields" style={{ marginTop: "20px" }}>
                                                 <Label sm={3}>Фраза:</Label>
                                                 <Col sm={9}>
@@ -336,12 +328,12 @@ export default class Phrases extends Component {
                                                         className="basic-single"
                                                         classNamePrefix="select"
                                                         onChange={this.handleChangeSingle}
-                                                        placeholder="Выберите лексему"
+                                                        placeholder="Выберите фразу"
                                                     />
                                                 </Col>
                                             </div>
                                             <div class="row StructureFields" style={{ marginTop: "20px" }}>
-                                                <Label sm={3}>Номер слова:</Label>
+                                                <Label sm={3}>Слово для упражнения:</Label>
                                                 <Col sm={5}>
                                                     <Select
                                                         options={numbers}
@@ -349,7 +341,7 @@ export default class Phrases extends Component {
                                                         className="basic-single"
                                                         classNamePrefix="select"
                                                         onChange={this.handleChangeMultipleNum}
-                                                        placeholder="Выберите номер"
+                                                        placeholder="Выберите номер слова"
                                                     />
                                                 </Col>
                                             </div>
@@ -370,17 +362,6 @@ export default class Phrases extends Component {
                                                         <Input type="number" name="num_ex" value={this.state.current_phr.num_ex} onChange={this.handleChangeOrder}></Input>
                                                     </Col>
                                                 </div>
-                                                {/*<div class="row StructureFields" style={{ marginTop: "20px" }}>
-                                                    <Label sm={3}>Ответ:</Label>
-                                                    <Col sm={9}>
-                                                        <select class="form-select" name="id_rep" value={this.state.id_rep} onChange={this.getSelectedRepId}>
-                                                            <option value={0}>Выберите лексему</option>
-                                                            {this.state.replicas.map((obj, i) =>
-                                                                <option value={obj.id_rep}>{obj.lexeme.mean_lex + obj.symbol}</option>
-                                                            )}
-                                                        </select>
-                                                    </Col>
-                                                            </div>*/}
                                                 <div className="row StructureFields" style={{ marginTop: "20px" }}>
                                                     <Label sm={3}>Ответ:</Label>
                                                     <Col sm={9}>
@@ -390,12 +371,12 @@ export default class Phrases extends Component {
                                                             className="basic-single"
                                                             classNamePrefix="select"
                                                             onChange={this.handleChangeSingle}
-                                                            placeholder="Выберите лексему"
+                                                            placeholder="Выберите фразу"
                                                         />
                                                     </Col>
                                                 </div>
                                                 <div class="row StructureFields" style={{ marginTop: "20px" }}>
-                                                <Label sm={3}>Пропустить слова:</Label>
+                                                <Label sm={3}>Пропущенные слова:</Label>
                                                 <Col sm={5}>
                                                     <Select
                                                         options={numbers}
@@ -404,7 +385,7 @@ export default class Phrases extends Component {
                                                         className="basic-multi-select"
                                                         classNamePrefix="select"
                                                         onChange={this.handleChangeMultipleNum}
-                                                        placeholder="Выберите номер"
+                                                        placeholder="Выберите номера слов"
                                                     />
                                                 </Col>
                                             </div>
@@ -412,13 +393,13 @@ export default class Phrases extends Component {
                                                     <Label sm={3}>Варианты:</Label>
                                                     <Col sm={9}>
                                                         <Select
-                                                            options={this.state.options}
+                                                            options={this.state.options_words}
                                                             isMulti
-                                                            value={this.state.options.filter(this.filterOptions, this.state.id_var)}
+                                                            value={this.state.options_words.filter(this.filterOptions, this.state.id_var)}
                                                             className="basic-multi-select"
                                                             classNamePrefix="select"
                                                             onChange={this.handleChangeMultiple}
-                                                            placeholder="Выберите лексемы"
+                                                            placeholder="Выберите варианты слов"
                                                         />
                                                     </Col>
                                                 </div>

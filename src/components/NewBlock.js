@@ -222,6 +222,7 @@ export default class NewBlock extends Component {
                     <nav aria-label="breadcrumb">
                         <ol className="breadcrumb">
                             <li className="breadcrumb-item"><a href="/menu">Меню</a></li>
+                            <li className="breadcrumb-item"><a href="/cabinet">Уроки</a></li>
                             <li className="breadcrumb-item active" aria-current="page">Новый блок</li>
                         </ol>
                     </nav>
@@ -263,7 +264,7 @@ export default class NewBlock extends Component {
                                         <button className="nav-link" id="dialog-tab" data-bs-toggle="tab" data-bs-target="#dialog" type="button" role="tab" aria-controls="dialog" aria-selected="false">Диалоги</button>
                                     </div>
                                 </nav>
-                                <div className="tab-content" id="myTabContent">
+                                <div className="tab-content" id="myTabContent" style={{ display: 'flex', flexDirection: 'column' }} >
                                     <div className="tab-pane fade show active" id="video" role="tabpanel" aria-labelledby="video-tab">
                                         <Videos video={this.state.video} />
                                     </div>

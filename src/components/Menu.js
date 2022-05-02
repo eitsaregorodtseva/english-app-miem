@@ -1,9 +1,9 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { React, Component } from 'react';
+import toast, { Toaster } from 'react-hot-toast';
 import { ListGroup, ListGroupItem } from "reactstrap";
 import { Link, Redirect } from 'react-router-dom';
 import CustomNavbar from './Navbar';
-import screen from '../static/icons/screen.svg';
 import tasks from '../static/icons/tasks.svg';
 import profile from '../static/icons/profile.svg';
 import analytics from '../static/icons/analytics.svg';
@@ -25,7 +25,8 @@ const MenuContainer = {
     alignItems: 'center',
     display: 'flex',
     flexDirection: 'column',
-    marginTop: '150px'
+    marginTop: '150px',
+    cursor: 'pointer'
 }
 
 const MenuItems = {
@@ -39,7 +40,8 @@ export default class Menu extends Component {
             blocks: [],
             types_ex: [],
             lexemes: [],
-            replicas: []
+            replicas: [],
+            flag: false
         }
     }
 
@@ -99,6 +101,21 @@ export default class Menu extends Component {
         setTimeout(this.getLessonsInfo, 2500);
     }
 
+    handleRedirect = (route) => {
+        if (this.state.flag === false) {
+            toast("Идет обработка данных, повторите действие.");
+        }
+        else {
+            this.props.history.push({
+                pathname: route, 
+                state: {
+                lexemes: this.state.lexemes,
+                replicas: this.state.replicas,
+                blocks: this.state.blocks
+            }});
+        }
+    }
+
     getLessonsInfo = () => {
         fetch(getPhrasesUrl)
             .then((response) => {
@@ -154,8 +171,7 @@ export default class Menu extends Component {
                                 name_les: data[i].name_les,
                                 type_ex: type_ex,
                                 num_ex: parseInt(data[i].id_ex),
-                                id_rep: [id_rep],
-                                //pic_video: data[i].pic_video
+                                id_rep: [id_rep]
                             };
                             break;
                         case 22:
@@ -311,7 +327,7 @@ export default class Menu extends Component {
                     block.lesson_info[place[1]].lesson = lesson;
                     blocks[place[0]] = block;
                 }
-                this.setState({ blocks: blocks });
+                this.setState({ blocks: blocks, flag: true });
                 console.log(blocks);
             });
     }
@@ -406,33 +422,14 @@ export default class Menu extends Component {
                             }}>
                             Меню
                         </ListGroupItem>
-                        <Link to={{
-                            pathname: "/cabinet",
-                            state: {
-                                lexemes: this.state.lexemes,
-                                replicas: this.state.replicas,
-                                blocks: this.state.blocks
-                            }
-                        }}
-                            style={{ textDecoration: 'none' }}>
-                            <ListGroupItem
-                                action
-                                href="/cabinet"
-                                tag="a"
-                                style={MenuItems}>
-                                <img src={tasks} alt="" />
-                                Уроки
-                            </ListGroupItem>
-                        </Link>
-                        {/*<ListGroupItem
+                        <ListGroupItem
                             action
-                            href=""
-                            tag="a"
-                            style={MenuItems}>
-                            <img src={screen} alt="" />
-                            Банк экранов
-                    </ListGroupItem>*/}
-                        <Link to={{
+                            style={MenuItems}
+                            onClick={() => this.handleRedirect("/cabinet")}>
+                            <img src={tasks} alt="" />
+                            Уроки
+                        </ListGroupItem>
+                        {/*<Link to={{
                             pathname: "/editing",
                             state: {
                                 lexemes: this.state.lexemes,
@@ -440,16 +437,15 @@ export default class Menu extends Component {
                                 blocks: this.state.blocks
                             }
                         }}
-                            style={{ textDecoration: 'none' }}>
-                            <ListGroupItem
-                                action
-                                href="/editing"
-                                tag="a"
-                                style={MenuItems}>
-                                <img src={edit} alt="" />
-                                Редактирование
-                            </ListGroupItem>
-                        </Link>
+                    style={{ textDecoration: 'none' }}>*/}
+                        <ListGroupItem
+                            action
+                            style={MenuItems}
+                            onClick={() => this.handleRedirect("/editing")}>
+                            <img src={edit} alt="" />
+                            Редактирование
+                        </ListGroupItem>
+                        {/*</Link>*/}
                         <ListGroupItem
                             action
                             href="/statistics"
@@ -485,6 +481,7 @@ export default class Menu extends Component {
                         </ListGroupItem>
                     </ListGroup>
                 </div>
+                <Toaster position="bottom-right" />
             </div>
         )
     }

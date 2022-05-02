@@ -5,7 +5,7 @@ export default function TableBody(props) {
 
   useEffect(() => {
     setTableData(props.data);
-  })
+  }, [props.data])
 
   return (
     <tbody>

@@ -53,7 +53,8 @@ export default class Cabinet extends Component {
           <div class="CenterContainer"><Spinner color="secondary" /></div> :
           <div class="accordion" style={{marginTop: "5%"}}>
             {this.state.blocks.map((obj, i) => (
-              <Accordion header={obj.id_lb}
+              <Accordion key={i} 
+                header={obj.id_lb}
                 content={obj.lesson_info}
                 blocks={this.state.blocks}
                 lexemes={this.state.lexemes}
@@ -125,8 +126,7 @@ export default class Cabinet extends Component {
         }
         {this.state.blocks === null ? <div></div> :
           <div style={{ marginTop: "7%", marginLeft: "37%" }}>
-            <a href="/new_block">
-              <Link to={{
+            <Link to={{
                 pathname: "/new_block",
                 state: {
                   lexemes: this.state.lexemes,
@@ -138,7 +138,6 @@ export default class Cabinet extends Component {
                 <button style={{ padding: "2% 9% 2% 9%", backgroundColor: "#C4C4C4", color: "#000000", border: "none", borderRadius: "4px" }}>
                   Добавить новый блок
                 </button></Link>
-            </a>
           </div>
         }
       </div >
