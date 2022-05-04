@@ -3,7 +3,7 @@ import { React, useState, useEffect } from 'react';
 import { Col, Form, FormGroup, Input, Label } from "reactstrap";
 import '../style.css';
 
-const status = ["Пусто     ", "В процессе", "Не требуется", "Готово    "];
+const status = ["Пусто     ", "В процессе", "Готов     "];
 
 export default function Statuses(props) {
     const [video_st, setVideoStatus] = useState(props.statuses.video_st);

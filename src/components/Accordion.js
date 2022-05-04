@@ -5,7 +5,7 @@ import { FormGroup, Badge, Col, List, Label } from "reactstrap";
 import { Link } from 'react-router-dom';
 import '../style.css';
 
-const statuses = ["Пусто     ", "В процессе", "Не требуется", "Готово    "];
+const statuses = ["Пусто     ", "В процессе", "Готов     "];
 
 const BadgePills = {
     padding: "1% 5% 1% 5%"

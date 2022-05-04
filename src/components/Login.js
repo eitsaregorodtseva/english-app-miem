@@ -6,8 +6,7 @@ import { Col, Form, FormGroup, Input } from "reactstrap";
 import NavbarLogin from './NavbarLogin';
 import '../style.css';
 
-const authError = "Неверный логин или пароль!";
-const baseAPIUrl = "https://tractor-factory-interface.herokuapp.com/api";
+const loginUrl = 'https://api.unolingua.flareon.ru/auth/users/login/';
 
 export default function LoginForm() {
   const history = useHistory();
@@ -30,27 +29,27 @@ export default function LoginForm() {
     axios.defaults.xsrfHeaderName = 'X-CSRFToken';
     axios.defaults.withCredentials = true;
 
-    axios.post(baseAPIUrl + '/users/login/', { user }, {
+    axios.post(loginUrl, JSON.stringify({ user }), {
       headers: {
         'Content-Type': 'application/json'
       },
     })
       .then(res => {
-        const token = res.data.user.token;
-        const email = res.data.user.email;
-        const group = res.data.user.group;
+        console.log(res);
+        console.log(res.data);
+        const token = res.data.token;
+        const email = res.data.email;
+        const username = res.data.username;
         localStorage.setItem('token', token);
         localStorage.setItem('email', email);
-        localStorage.setItem('group', group);
+        localStorage.setItem('username', username);
         history.push("/menu");
-        //console.log(res);
-        //console.log(res.user.token);
-        //console.log(res.user.group);
 
       })
       .catch((error) => {
+        console.log(error);
         console.log(error.response.data.errors.error[0]);
-        setErrorMessage(authError);
+        setErrorMessage("Такого пользователя не существует!");
       })
   }
 
@@ -89,7 +88,7 @@ export default function LoginForm() {
               />
             </Col>
           </FormGroup>
-          {/*<p style={{marginTop: "7%", marginBottom: "-2%", color: "red"}}>{authError}</p>*/}
+          <p style={{marginTop: "7%", marginBottom: "-2%", color: "red"}}>{errorMessage}</p>
           <button class="LoginButtonStyle" type="submit">
             Войти
           </button>

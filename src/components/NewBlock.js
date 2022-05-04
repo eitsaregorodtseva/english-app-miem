@@ -12,7 +12,7 @@ import Dialogs from './Dialogs';
 import Statuses from './Statuses';
 import '../style.css';
 
-const statuses = ["Пусто     ", "В процессе", "Не требуется", "Готово    "];
+const statuses = ["Пусто     ", "В процессе", "Готов     "];
 const postLesson = 'https://api.unolingua.flareon.ru/forlessonsdto/';
 
 export default class NewBlock extends Component {
@@ -173,43 +173,43 @@ export default class NewBlock extends Component {
         mistakes = mistakes + this.checkTypes();
         mistakes = mistakes + this.checkOrder();
         console.log(mistakes);
-        if ((this.state.video.id_video === null || this.state.video.id_video === "") && this.state.statuses.video_st !== statuses[0] && this.state.statuses.video_st !== "Не требуется") {
+        if ((this.state.video.id_video === null || this.state.video.id_video === "") && this.state.statuses.video_st !== statuses[0]) {
                 mistakes = mistakes + 1;
                 toast.error("Ошибка в заполнении статуса Видео.");
             }
-            if ((this.state.video.id_video !== null && this.state.video.id_video !== "") && (this.state.statuses.video_st === statuses[0] || this.state.statuses.video_st === "Не требуется" || this.state.statuses.video_st === "")) {
+            if ((this.state.video.id_video !== null && this.state.video.id_video !== "") && (this.state.statuses.video_st === statuses[0] || this.state.statuses.video_st === "")) {
                 mistakes = mistakes + 1;
                 toast.error("Ошибка в заполнении статуса Видео.");
             }
-            if ((this.state.lesson.lex.length + 0 === 0) && (this.state.statuses.lex_st !== statuses[0] && this.state.statuses.lex_st !== "Не требуется")) {
+            if ((this.state.lesson.lex.length + 0 === 0) && (this.state.statuses.lex_st !== statuses[0])) {
                 mistakes = mistakes + 1;
                 toast.error("Ошибка в заполнении статуса Буквы-слова.");
             }
-            if ((this.state.lesson.lex.length + 0 > 0) && (this.state.statuses.lex_st === statuses[0] || this.state.statuses.lex_st === "Не требуется" || this.state.statuses.lex_st === "")) {
+            if ((this.state.lesson.lex.length + 0 > 0) && (this.state.statuses.lex_st === statuses[0] || this.state.statuses.lex_st === "")) {
                 mistakes = mistakes + 1;
                 toast.error("Ошибка в заполнении статуса Буквы-слова.");
             }
-            if ((this.state.lesson.phr.length + 0 === 0) && (this.state.statuses.phr_st !== statuses[0] && this.state.statuses.phr_st !== "Не требуется")) {
+            if ((this.state.lesson.phr.length + 0 === 0) && (this.state.statuses.phr_st !== statuses[0])) {
                 mistakes = mistakes + 1;
                 toast.error("Ошибка в заполнении статуса Фразы.");
             }
-            if ((this.state.lesson.phr.length + 0 > 0) && (this.state.statuses.phr_st === statuses[0] || this.state.statuses.phr_st === "Не требуется" || this.state.statuses.phr_st === "")) {
+            if ((this.state.lesson.phr.length + 0 > 0) && (this.state.statuses.phr_st === statuses[0] || this.state.statuses.phr_st === "")) {
                 mistakes = mistakes + 1;
                 toast.error("Ошибка в заполнении статуса Фразы.");
             }
-            if ((this.state.lesson.dialog.length + 0 === 0) && (this.state.statuses.dialog_st !== statuses[0] && this.state.statuses.dialog_st !== "Не требуется")) {
+            if ((this.state.lesson.dialog.length + 0 === 0) && (this.state.statuses.dialog_st !== statuses[0])) {
                 mistakes = mistakes + 1;
                 toast.error("Ошибка в заполнении статуса Диалоги.");
             }
-            if ((this.state.lesson.dialog.length + 0 > 0) && (this.state.statuses.dialog_st === statuses[0] || this.state.statuses.dialog_st === "Не требуется" || this.state.statuses.dialog_st === "")) {
+            if ((this.state.lesson.dialog.length + 0 > 0) && (this.state.statuses.dialog_st === statuses[0] || this.state.statuses.dialog_st === "")) {
                 mistakes = mistakes + 1;
                 toast.error("Ошибка в заполнении статуса Диалоги.");
             }
-            if ((this.state.lesson.rules.length + 0 === 0) && (this.state.statuses.rules_st !== statuses[0] && this.state.statuses.rules_st !== "Не требуется")) {
+            if ((this.state.lesson.rules.length + 0 === 0) && (this.state.statuses.rules_st !== statuses[0])) {
                 mistakes = mistakes + 1;
                 toast.error("Ошибка в заполнении статуса Правила.");
             }
-            if ((this.state.lesson.rules.length + 0 > 0) && (this.state.statuses.rules_st === statuses[0] || this.state.statuses.rules_st === "Не требуется" || this.state.statuses.rules_st === "")) {
+            if ((this.state.lesson.rules.length + 0 > 0) && (this.state.statuses.rules_st === statuses[0] || this.state.statuses.rules_st === "")) {
                 mistakes = mistakes + 1;
                 toast.error("Ошибка в заполнении статуса Правила.");
             }

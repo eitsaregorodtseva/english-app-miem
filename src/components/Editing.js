@@ -16,7 +16,7 @@ import '../style.css';
 const BadgePills = {
     padding: "1% 5% 1% 5%"
 }
-const statuses = ["Пусто     ", "В процессе", "Не требуется", "Готово    "];
+const statuses = ["Пусто     ", "В процессе", "Готов     "];
 const getBlocksUrl = 'http://172.18.130.45:5052/api/lessonblocks/';
 const getLexemesUrl = 'http://172.18.130.45:5052/api/lexemes/';
 const postLessonUrl = 'http://172.18.130.45:5052/api/lessons/';
@@ -42,52 +42,9 @@ export default class Editing extends Component {
             replicas: [],
             videos: []
         }
-        this.getBlocks = this.getBlocks.bind(this);
-        this.getLexemes = this.getLexemes.bind(this);
     };
 
     componentDidMount() {
-        /*let lesson = [{ lex: this.props.location.state.lesson.lex, phr: this.props.location.state.lesson.phr, dialog: this.props.location.state.lesson.dialog, rules: this.props.location.state.lesson.rules }];
-        console.log(this.props.location.state.lexemes);
-        this.setState({ lesson: lesson,
-            lexemes: this.props.location.state.lexemes,
-            buttonsState: false,
-            selectState: false,
-            lessonState: false,
-            emptyLessonState: true });*/
-        /*if (this.props.location.state) {
-            let lesson_info = [];
-            for (var i = 0; i < this.props.location.state.blocks.length; i++) {
-                if (this.props.location.state.blocks[i].id_lb === this.props.location.state.id_lb) {
-                    lesson_info = this.props.location.state.blocks[i].lesson_info;
-                }
-            }
-            let current_lesson = [];
-            for (var i = 0; i < lesson_info.length; i++) {
-                if (lesson_info[i].id_les === this.props.location.state.id_les) {
-                    current_lesson = lesson_info[i];
-                }
-            }
-            let video = { id_video: current_lesson.video };
-            this.setState({
-                lesson: [{
-                    lex: [],
-                    phr: [],
-                    dialog: [],
-                    rules: [],
-                }],
-                id_lb: this.props.location.state.id_lb,
-                id_les: this.props.location.state.id_les,
-                name_les: current_lesson.name_les,
-                video: video,
-                lesson_info: lesson_info,
-                current_lesson: current_lesson,
-                buttonsState: false,
-                selectState: false,
-                lessonState: false,
-                emptyLessonState: true
-            });
-        };*/
         console.log(this.props);
         if (this.props.location.state.id_lb) {
             let lesson_info = [];
@@ -132,49 +89,6 @@ export default class Editing extends Component {
             });
 
         }
-        /*fetch(getBlocksUrl)
-            .then((response) => {
-                console.log(response);
-                return response.json();
-            })
-            .then((data) => {
-                console.log(data);
-                this.setState({ blocks: data });
-            });*/
-        /*fetch(getLexemesUrl)
-            .then((response) => {
-                console.log(response);
-                return response.json();
-            })
-            .then((data) => {
-                console.log(data);
-                this.setState({
-                    lexemes: data,
-                });
-            });*/
-        //console.log(this.props.location.state.lesson.lex);
-        //this.intervalGetBlocks = setInterval(this.getLexemes, 5000);
-        //this.intervalGetBlocks = setInterval(this.getBlocks, 5000);
-    }
-
-    async getLexemes() {
-        const response = await fetch(getLexemesUrl);
-        const lexemes = await response.json();
-        console.log(lexemes);
-        this.setState({
-            lexemes: lexemes,
-        });
-        /*fetch(getLexemesUrl)
-            .then((response) => {
-                console.log(response);
-                return response.json();
-            })
-            .then((data) => {
-                console.log(data);
-                this.setState({
-                    lexemes: data,
-                });
-            });*/
     }
 
     async getBlocks() {
@@ -444,52 +358,9 @@ export default class Editing extends Component {
                     </div>
                 </div>
                 <div hidden={this.state.lessonState}>
-                    {/*<div style={{ marginTop: "7%", marginBottom: "5%" }}>
-                        <Form row>
-                            <FormGroup row>
-                                <Label sm={2}>Название блока:</Label>
-                                <Col sm={3}><Input type="text" value={this.props.location.state ? this.props.location.state.block_id : ""}></Input></Col>
-                                <Col><button type="button" class="GreyButton">Изменить</button></Col>
-                            </FormGroup>
-                        </Form>
-                                    </div>*/}
                     {this.state.lesson.map((obj, i) =>
                         <div style={{ marginTop: "7%" }}>
                             <button disabled class="GreyBox">Урок {this.state.id_les}</button>
-                            {/*<div style={{ marginTop: "5%", marginLeft: "3%" }}>
-                            <List>
-                                <FormGroup row>
-                                    <Label sm={3}>Видео</Label>
-                                    <Col sm={9}>
-                                        <Badge pill color="warning" style={BadgePills}>В процессе</Badge>
-                                    </Col>
-                                </FormGroup>
-                                <FormGroup row>
-                                    <Label sm={3}>Буквы-слова</Label>
-                                    <Col sm={9}>
-                                        <Badge pill color="danger" style={BadgePills}>Пусто</Badge>
-                                    </Col>
-                                </FormGroup>
-                                <FormGroup row>
-                                    <Label sm={3}>Фразы</Label>
-                                    <Col sm={9}>
-                                        <Badge pill color="danger" style={BadgePills}>Пусто</Badge>
-                                    </Col>
-                                </FormGroup>
-                                <FormGroup row>
-                                    <Label sm={3}>Диалог</Label>
-                                    <Col sm={9}>
-                                        <Badge pill color="danger" style={BadgePills}>Пусто</Badge>
-                                    </Col>
-                                </FormGroup>
-                                <FormGroup row>
-                                    <Label sm={3}>Правила</Label>
-                                    <Col sm={9}>
-                                        <Badge pill color="danger" style={BadgePills}>Пусто</Badge>
-                                    </Col>
-                                </FormGroup>
-                            </List>
-        </div>*/}
                             <div style={{ marginTop: "5%", marginBottom: "5%" }}>
                                 <Form row="true">
                                     <FormGroup row>

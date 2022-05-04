@@ -6,7 +6,7 @@ import CustomNavbar from './Navbar';
 import axios from 'axios';
 import '../style.css';
 
-const newAdminUrl = 'https://api.unolingua.flareon.ru/people/';
+const newAdminUrl = 'https://api.unolingua.flareon.ru/auth/users/regist/';
 
 export default function NewAdmin() {
     const [name, setName] = useState("");

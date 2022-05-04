@@ -106,17 +106,18 @@ export default class Profile extends Component {
                     <Form>
                         <FormGroup row style={{ marginTop: "7%" }}>
                             <Label for="name" sm={2}>
-                                Имя
+                                Username
                             </Label>
                             <Col sm={10}>
                                 <Input style={{ width: "40%", borderRadius: "10px" }}
                                     id="name"
                                     name="name"
                                     type="text"
+                                    value={localStorage.username}
                                     disabled />
                             </Col>
                         </FormGroup>
-                        <FormGroup row style={{ marginTop: "20px" }}>
+                        {/*<FormGroup row style={{ marginTop: "20px" }}>
                             <Label for="last_name" sm={2}>
                                 Фамилия
                             </Label>
@@ -127,7 +128,7 @@ export default class Profile extends Component {
                                     type="text"
                                     disabled />
                             </Col>
-                        </FormGroup>
+        </FormGroup>*/}
                         <FormGroup row style={{ marginTop: "20px" }}>
                             <Label for="email" sm={2}>
                                 Email
