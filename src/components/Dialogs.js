@@ -27,7 +27,6 @@ export default class Dialogs extends Component {
             replicas: [],
             current_dialog: { id: null, type_ex: 0, num_ex: 0 },
             id_rep: "",
-            //pic_video: "",
             id_miss: "",
             options: [],
             options_dialogs: []
@@ -118,7 +117,7 @@ export default class Dialogs extends Component {
                 id_miss.push(event[i].value)
             }
         }
-        let newDialog = { ...this.state.current_dialog, id_miss: id_miss};
+        let newDialog = { ...this.state.current_dialog, id_miss: id_miss };
         let dialog = this.state.dialog;
         dialog[newDialog.id] = newDialog;
         this.setState({
@@ -150,7 +149,6 @@ export default class Dialogs extends Component {
                 this.setState({
                     current_dialog: this.state.dialog[id],
                     id_rep: this.state.dialog[id].id_rep ? this.state.dialog[id].id_rep : "",
-                    //pic_video: this.state.dialog[id].pic_video ? this.state.dialog[id].pic_video : ""
                 });
                 break;
             case 22:
@@ -172,7 +170,6 @@ export default class Dialogs extends Component {
             current_dialog: newDialog,
             dialog: dialog,
             id_rep: "",
-            //pic_video: "",
             id_miss: ""
         });
         this.passPropsToParent();
@@ -252,18 +249,18 @@ export default class Dialogs extends Component {
                                             </Col>
                                         </div>
                                         <div className="row StructureFields" style={{ marginTop: "20px" }}>
-                                                <Label sm={3}>Диалог:</Label>
-                                                <Col sm={9}>
-                                                    <Select
-                                                        options={this.state.options_dialogs}
-                                                        value={this.state.options_dialogs.filter(this.filterOptions, this.state.id_rep)}
-                                                        className="basic-single"
-                                                        classNamePrefix="select"
-                                                        onChange={this.handleChangeMultiple}
-                                                        placeholder="Выберите диалог"
-                                                    />
-                                                </Col>
-                                            </div>
+                                            <Label sm={3}>Диалог:</Label>
+                                            <Col sm={9}>
+                                                <Select
+                                                    options={this.state.options_dialogs}
+                                                    value={this.state.options_dialogs.filter(this.filterOptions, this.state.id_rep)}
+                                                    className="basic-single"
+                                                    classNamePrefix="select"
+                                                    onChange={this.handleChangeMultiple}
+                                                    placeholder="Выберите диалог"
+                                                />
+                                            </Col>
+                                        </div>
                                     </div> :
                                     this.state.current_dialog.type_ex === 22 ?
                                         <div>

@@ -214,7 +214,6 @@ export default class Rules extends Component {
     }
 
     filterOptions(vl) {
-        //console.log(vl);
         return this.includes(vl.value)
     }
 

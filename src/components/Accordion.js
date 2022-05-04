@@ -1,9 +1,8 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import React, { useState } from 'react';
-import { FormGroup, Badge, Col, List, Label, Spinner } from "reactstrap";
-import { Link, Redirect } from 'react-router-dom';
-import Editing from './Editing';
+import { FormGroup, Badge, Col, List, Label } from "reactstrap";
+import { Link } from 'react-router-dom';
 import '../style.css';
 
 const statuses = ["Пусто     ", "В процессе", "Не требуется", "Готово    "];
@@ -35,9 +34,9 @@ const Accordion = ({ header, content, blocks, lexemes, replicas }) => {
                                     lexemes: lexemes,
                                     replicas: replicas
                                 }
-                            }} >
-                                <button type="button" class="EditLesson">
-                                    Редактировать урок</button></Link>
+                            }}>
+                                <button type="button" class="EditLesson">Редактировать урок</button>
+                            </Link>
                             <button class="ViewLesson">Просмотр</button>
                         </div>
                         <div style={{ marginTop: "5%" }}>
@@ -75,7 +74,7 @@ const Accordion = ({ header, content, blocks, lexemes, replicas }) => {
                             </List>
                         </div>
                     </div>
-                        ))}
+                ))}
             </div>}
         </div>
     );

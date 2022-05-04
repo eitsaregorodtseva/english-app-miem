@@ -26,7 +26,7 @@ export default class Editing extends Component {
         super(props);
         this.state = {
             lesson: [],
-            video: { video_link: null },
+            video: { id_video: null },
             id_lb: null,
             id_les: null,
             name_les: "",
@@ -39,7 +39,8 @@ export default class Editing extends Component {
             lessonState: true,
             buttonsState: true,
             lexemes: [],
-            replicas: []
+            replicas: [],
+            videos: []
         }
         this.getBlocks = this.getBlocks.bind(this);
         this.getLexemes = this.getLexemes.bind(this);
@@ -67,7 +68,7 @@ export default class Editing extends Component {
                     current_lesson = lesson_info[i];
                 }
             }
-            let video = { video_link: current_lesson.video };
+            let video = { id_video: current_lesson.video };
             this.setState({
                 lesson: [{
                     lex: [],
@@ -101,12 +102,13 @@ export default class Editing extends Component {
                     current_lesson = lesson_info[i];
                 }
             }
-            let video = { video_link: current_lesson.video };
+            let video = { id_video: current_lesson.video };
             console.log(current_lesson.lesson);
             this.setState({
                 blocks: this.props.location.state.blocks,
                 lexemes: this.props.location.state.lexemes,
                 replicas: this.props.location.state.replicas,
+                videos: this.props.location.state.videos,
                 id_lb: this.props.location.state.id_lb,
                 id_les: this.props.location.state.id_les,
                 name_les: current_lesson.name_les,
@@ -125,7 +127,8 @@ export default class Editing extends Component {
             this.setState({
                 blocks: this.props.location.state.blocks,
                 lexemes: this.props.location.state.lexemes,
-                replicas: this.props.location.state.replicas
+                replicas: this.props.location.state.replicas,
+                videos: this.props.location.state.videos
             });
 
         }
@@ -236,7 +239,7 @@ export default class Editing extends Component {
     }
 
     openEmptyLesson = () => {
-        let video = { video_link: null };
+        let video = { id_video: null };
         console.log(video);
         this.setState({
             lesson: [{
@@ -257,7 +260,14 @@ export default class Editing extends Component {
     }
 
     deleteLesson = () => {
-
+        console.log(this.state.id_lb);
+        console.log(this.state.id_les);
+        axios.delete('https://api.unolingua.flareon.ru/lessons/' + this.state.id_les)
+        .then((response) => {
+            console.log(response);
+        }, (error) => {
+            console.log(error);
+        });;
     }
 
     blockChange = (id_lb) => {
@@ -299,7 +309,7 @@ export default class Editing extends Component {
             lessonState = false;
         }
         let name_les = current_lesson.name_les;
-        let video = { video_link: current_lesson.video };
+        let video = { id_video: current_lesson.video };
         this.setState({
             lesson: [current_lesson.lesson],
             id_les: id_les,
@@ -315,11 +325,11 @@ export default class Editing extends Component {
         console.log(this.state.dialogs);
         let mistakes = 0;
         for (var i = 0; i < this.state.lesson.length; i++) {
-            if ((this.state.video.video_link === null || this.state.video.video_link === "" ) && this.state.statuses.video_st !== statuses[0] && this.state.statuses.video_st !== "Не требуется") {
+            if ((this.state.video.id_video === null || this.state.video.id_video === "" ) && this.state.statuses.video_st !== statuses[0] && this.state.statuses.video_st !== "Не требуется") {
                 mistakes = mistakes + 1;
                 toast.error("Ошибка в заполнении статуса Видео.");
             }
-            if ((this.state.video.video_link !== null && this.state.video.video_link !== "") && (this.state.statuses.video_st === statuses[0] || this.state.statuses.video_st === "Не требуется" || this.state.statuses.video_st === "")) {
+            if ((this.state.video.id_video !== null && this.state.video.id_video !== "") && (this.state.statuses.video_st === statuses[0] || this.state.statuses.video_st === "Не требуется" || this.state.statuses.video_st === "")) {
                 mistakes = mistakes + 1;
                 toast.error("Ошибка в заполнении статуса Видео.");
             }
@@ -502,7 +512,7 @@ export default class Editing extends Component {
                                 </nav>
                                 <div class="tab-content" id="myTabContent">
                                     <div class="tab-pane fade show active" id="video" role="tabpanel" aria-labelledby="video-tab">
-                                        <Videos key={1} video={Object.assign(this.state.video)} />
+                                        <Videos key={1} video={Object.assign(this.state.video)} videos={this.state.videos}/>
                                     </div>
                                     <div class="tab-pane fade" id="letter" role="tabpanel" aria-labelledby="letter-tab">
                                         <Vocabulary nam={this.state.name_les} key={2} lex={Object.assign(this.state.lesson[0].lex)} lexemes={this.state.lexemes} parentCallback={this.handleCallbackVoc} />
@@ -527,7 +537,7 @@ export default class Editing extends Component {
                         </div>
                     </div>
                     <div style={{ marginTop: "5%" }}>
-                        <button type="button" class="DeleteLesson" onClick={this.deleteLesson} disabled>Удалить урок</button>
+                        <button type="button" class="DeleteLesson" onClick={this.deleteLesson}>Удалить урок</button>
                     </div>
                     <div style={{ marginTop: "5%" }}>
                         <button disabled class="GreyBox">Описание</button>

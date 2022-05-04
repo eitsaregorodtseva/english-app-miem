@@ -45,7 +45,7 @@ export default class Vocabulary extends Component {
     }
 
     componentDidMount() {
-        console.log(this.props.nam);
+        console.log(this.props);
         let options = [];
         let options_letters = [];
         let options_syllables = [];
@@ -62,7 +62,6 @@ export default class Vocabulary extends Component {
                 options_words.push({ value: this.props.lexemes[i].id_lex, label: this.props.lexemes[i].mean_lex })
             }
         }
-
         this.setState({
             lex: this.props.lex,
             lexemes: this.props.lexemes,

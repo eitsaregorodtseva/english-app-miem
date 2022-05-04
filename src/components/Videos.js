@@ -1,24 +1,34 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { React, useState, useEffect } from 'react';
-import { Form, Input, Label } from "reactstrap";
+import { Col } from "reactstrap";
+import Select from 'react-select';
 import '../style.css';
 
 export default function Videos(props) {
-    const [video_link, setVideo] = useState(props.video.video_link);
+    const [id_video, setVideo] = useState(props.video.id_video);
+    const [videos, setVideos] = useState(props.videos);
 
     useEffect(() => {
-        setVideo(props.video.video_link);
+        setVideo(props.video.id_video);
+        setVideos(props.videos);
     }, [props])
 
     useEffect(() => {
-        props.video.video_link = video_link;
+        props.video.id_video = id_video;
     })
 
     return (
-        <div class="row" style={{ marginTop: "3%", marginBottom: "3%" }}>
-            <Form>
-                <Label>Ссылка на видео:</Label>
-                <Input type="textarea" rows="3" key={video_link} name="video_link" value={video_link} onChange={(e) => setVideo(e.target.value)}/*onChange={this.handleChange}*/></Input>
-            </Form>
+        <div class="row StructureFields" style={{ marginTop: "3%", marginBottom: "3%" }}>
+                <Col sm={7}>
+                    <Select
+                        options={videos}
+                        name="colors"
+                        value={videos.filter(video => video.value === id_video)}
+                        className="basic-single"
+                        classNamePrefix="select"
+                        onChange={(e) => setVideo(e.value)}
+                        placeholder="Выберите видео"
+                    />
+                </Col>
         </div>)
 }

@@ -13,6 +13,7 @@ import new_admin from '../static/icons/new_admin.svg';
 import '../style.css';
 
 const getBlocksUrl = 'https://api.unolingua.flareon.ru/lessonblocks/';
+const getVideosUrl = 'https://api.unolingua.flareon.ru/api/makevideo/video/';
 const getPhrasesUrl = 'https://api.unolingua.flareon.ru/showinfoaboutphrase/';
 const getTypesUrl = 'https://api.unolingua.flareon.ru/typesex/';
 const getLexemesUrl = 'https://api.unolingua.flareon.ru/lexemes/';
@@ -41,6 +42,7 @@ export default class Menu extends Component {
             types_ex: [],
             lexemes: [],
             replicas: [],
+            videos: [],
             flag: false
         }
     }
@@ -62,7 +64,6 @@ export default class Menu extends Component {
                         }
                     }
                 }
-
                 this.setState({ blocks: data });
             });
         fetch(getTypesUrl)
@@ -74,6 +75,21 @@ export default class Menu extends Component {
                 console.log(data);
                 this.setState({
                     types_ex: data
+                });
+            });
+        fetch(getVideosUrl)
+            .then((response) => {
+                console.log(response);
+                return response.json();
+            })
+            .then((data) => {
+                console.log(data);
+                let videos = [];
+                for (var i = 0; i < data.length; i++) {
+                    videos.push({ value: data[i].id_v, label: data[i].name_video })
+                }
+                this.setState({
+                    videos: videos
                 });
             });
         fetch(getReplicasUrl)
@@ -107,12 +123,14 @@ export default class Menu extends Component {
         }
         else {
             this.props.history.push({
-                pathname: route, 
+                pathname: route,
                 state: {
-                lexemes: this.state.lexemes,
-                replicas: this.state.replicas,
-                blocks: this.state.blocks
-            }});
+                    lexemes: this.state.lexemes,
+                    replicas: this.state.replicas,
+                    blocks: this.state.blocks,
+                    videos: this.state.videos
+                }
+            });
         }
     }
 
@@ -369,9 +387,7 @@ export default class Menu extends Component {
             else {
                 return 0
             }
-
         }
-
     }
 
     findIdArrays = (words, word_type) => {
@@ -399,7 +415,6 @@ export default class Menu extends Component {
                 return id_words;
             }
         }
-
     }
 
     render() {
@@ -429,15 +444,6 @@ export default class Menu extends Component {
                             <img src={tasks} alt="" />
                             Уроки
                         </ListGroupItem>
-                        {/*<Link to={{
-                            pathname: "/editing",
-                            state: {
-                                lexemes: this.state.lexemes,
-                                replicas: this.state.replicas,
-                                blocks: this.state.blocks
-                            }
-                        }}
-                    style={{ textDecoration: 'none' }}>*/}
                         <ListGroupItem
                             action
                             style={MenuItems}
@@ -445,7 +451,6 @@ export default class Menu extends Component {
                             <img src={edit} alt="" />
                             Редактирование
                         </ListGroupItem>
-                        {/*</Link>*/}
                         <ListGroupItem
                             action
                             href="/statistics"

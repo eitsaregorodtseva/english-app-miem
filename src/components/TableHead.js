@@ -24,11 +24,9 @@ export default function TableHead(props) {
                                 : "default"
                         : "";
                     return (
-                        <th
-                            key={accessor}
+                        <th key={accessor}
                             onClick={sortable ? () => handleSortingChange(accessor) : null}
-                            className={cl}
-                        >
+                            className={cl}>
                             {label}
                         </th>
                     );

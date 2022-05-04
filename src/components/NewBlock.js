@@ -13,6 +13,7 @@ import Statuses from './Statuses';
 import '../style.css';
 
 const statuses = ["Пусто     ", "В процессе", "Не требуется", "Готово    "];
+const postLesson = 'https://api.unolingua.flareon.ru/forlessonsdto/';
 
 export default class NewBlock extends Component {
     constructor() {
@@ -21,11 +22,12 @@ export default class NewBlock extends Component {
             blocks: [],
             lexemes: [],
             replicas: [],
+            videos: [],
             id_lb: 0,
             name_les: "",
             lesson_info: [],
             lesson: [],
-            video: { video_link: null },
+            video: { id_video: null },
             statuses: {},
             description: "",
             add_button_hidden: false
@@ -38,6 +40,7 @@ export default class NewBlock extends Component {
             blocks: this.props.location.state.blocks,
             lexemes: this.props.location.state.lexemes,
             replicas: this.props.location.state.replicas,
+            videos: this.props.location.state.videos,
             id_lb: id_lb
         });
     }
@@ -70,69 +73,184 @@ export default class NewBlock extends Component {
         this.setState({ [event.target.name]: event.target.value });
     }
 
-    checkStatuses = () => {
-        console.log(this.state.statuses.video_st);
-        console.log(this.state.video);
+    checkTypes = () => {
         let mistakes = 0;
-        for (var i = 0; i < this.state.lesson.length; i++) {
-            if ((this.state.video.video_link === null || this.state.video.video_link === "" ) && this.state.statuses.video_st !== statuses[0] && this.state.statuses.video_st !== "Не требуется") {
-                mistakes = mistakes + 1;
-                toast.error("Ошибка в заполнении статуса Видео.");
-            }
-            if ((this.state.video.video_link !== null && this.state.video.video_link !== "" ) && (this.state.statuses.video_st === statuses[0] || this.state.statuses.video_st === "Не требуется" || this.state.statuses.video_st === "")) {
-                mistakes = mistakes + 1;
-                toast.error("Ошибка в заполнении статуса Видео.");
-            }
-            if ((this.state.lesson[i].lex.length + 0 === 0) && (this.state.statuses.lex_st !== statuses[0] && this.state.statuses.lex_st !== "Не требуется")) {
-                mistakes = mistakes + 1;
-                toast.error("Ошибка в заполнении статуса Буквы-слова.");
-            }
-            if ((this.state.lesson[i].lex.length + 0 > 0) && (this.state.statuses.lex_st === statuses[0] || this.state.statuses.lex_st === "Не требуется" || this.state.statuses.lex_st === "")) {
-                mistakes = mistakes + 1;
-                toast.error("Ошибка в заполнении статуса Буквы-слова.");
-            }
-            if ((this.state.lesson[i].phr.length + 0 === 0) && (this.state.statuses.phr_st !== statuses[0] && this.state.statuses.phr_st !== "Не требуется")) {
-                mistakes = mistakes + 1;
-                toast.error("Ошибка в заполнении статуса Фразы.");
-            }
-            if ((this.state.lesson[i].phr.length + 0 > 0) && (this.state.statuses.phr_st === statuses[0] || this.state.statuses.phr_st === "Не требуется" || this.state.statuses.phr_st === "")) {
-                mistakes = mistakes + 1;
-                toast.error("Ошибка в заполнении статуса Фразы.");
-            }
-            if ((this.state.lesson[i].dialog.length + 0 === 0) && (this.state.statuses.dialog_st !== statuses[0] && this.state.statuses.dialog_st !== "Не требуется")) {
-                mistakes = mistakes + 1;
-                toast.error("Ошибка в заполнении статуса Диалоги.");
-            }
-            if ((this.state.lesson[i].dialog.length + 0 > 0) && (this.state.statuses.dialog_st === statuses[0] || this.state.statuses.dialog_st === "Не требуется" || this.state.statuses.dialog_st === "")) {
-                mistakes = mistakes + 1;
-                toast.error("Ошибка в заполнении статуса Диалоги.");
-            }
-            if ((this.state.lesson[i].rules.length + 0 === 0) && (this.state.statuses.rules_st !== statuses[0] && this.state.statuses.rules_st !== "Не требуется")) {
-                mistakes = mistakes + 1;
-                toast.error("Ошибка в заполнении статуса Правила.");
-            }
-            if ((this.state.lesson[i].rules.length + 0 > 0) && (this.state.statuses.rules_st === statuses[0] || this.state.statuses.rules_st === "Не требуется" || this.state.statuses.rules_st === "")) {
-                mistakes = mistakes + 1;
-                toast.error("Ошибка в заполнении статуса Правила.");
+        for (var i = 0; i < this.state.lesson.lex.length; i++) {
+            if (this.state.lesson.lex[i].type_ex === 0) {
+                mistakes += 1;
+                toast.error("Для Буквы-слова " + (i + 1) + " не выбран тип задания. Заполните задание или удалите его.")
             }
         }
-        if (mistakes === 0) {
-            this.handleSubmit();
+        for (var i = 0; i < this.state.lesson.rules.length; i++) {
+            if (this.state.lesson.rules[i].type_ex === 0) {
+                mistakes += 1;
+                toast.error("Для Правило " + (i + 1) + " не выбран тип задания. Заполните задание или удалите его.")
+            }
         }
+        for (var i = 0; i < this.state.lesson.phr.length; i++) {
+            if (this.state.lesson.phr[i].type_ex === 0) {
+                mistakes += 1;
+                toast.error("Для Фраза " + (i + 1) + " не выбран тип задания. Заполните задание или удалите его.")
+            }
+        }
+        for (var i = 0; i < this.state.lesson.dialog.length; i++) {
+            if (this.state.lesson.dialog[i].type_ex === 0) {
+                mistakes += 1;
+                toast.error("Для Диалог " + (i + 1) + " не выбран тип задания. Заполните задание или удалите его.")
+            }
+        }
+        return mistakes;
     }
 
-    handleSubmit = () => {
-        let data = { id_lb: this.state.id_lb, lesson_info: this.state.lesson_info };
-        data = { 
-            name_les: this.state.name_les, 
-            lessonblock: this.state.id_lb, 
-            video: this.state.video.video_link, 
-            lesson_info: this.state.statuses, 
-            rules: this.state.lesson[0].rules, 
-            lex: this.state.lesson[0].lex, 
-            dialogs: this.state.lesson[0].dialog, 
-            phrases: this.state.lesson[0].phr, description: this.state.description };
-        console.log(data);
+    checkOrder = () => {
+        let order = [];
+        let mistakes = 0;
+        for (var i = 0; i < this.state.lesson.lex.length; i++) {
+            if (this.state.lesson.lex[i].num_ex === 0 && this.state.lesson.lex[i].type_ex !== 0) {
+                mistakes += 1;
+                toast.error("Для Буквы-слова " + (i + 1) + " не указан порядковый номер в уроке.")
+            }
+            else {
+                if (order.includes(this.state.lesson.lex[i].num_ex)) {
+                    mistakes += 1;
+                    toast.error("Для Буквы-слова " + (i + 1) + " указан уже существующий порядковый номер.")
+                }
+                else {
+                    order.push(this.state.lesson.lex[i].num_ex)
+                }
+            }
+        }
+        for (var i = 0; i < this.state.lesson.phr.length; i++) {
+            if (this.state.lesson.phr[i].num_ex === 0 && this.state.lesson.phr[i].type_ex !== 0) {
+                mistakes += 1;
+                toast.error("Для Фраза " + (i + 1) + " не указан порядковый номер в уроке.")
+            }
+            else {
+                if (order.includes(this.state.lesson.phr[i].num_ex)) {
+                    mistakes += 1;
+                    toast.error("Для Фраза " + (i + 1) + " указан уже существующий порядковый номер.")
+                }
+                else {
+                    order.push(this.state.lesson.phr[i].num_ex)
+                }
+            }
+        }
+        for (var i = 0; i < this.state.lesson.dialog.length; i++) {
+            if (this.state.lesson.dialog[i].num_ex === 0 && this.state.lesson.dialog[i].type_ex !== 0) {
+                mistakes += 1;
+                toast.error("Для Диалог " + (i + 1) + " не указан порядковый номер в уроке.")
+            }
+            else {
+                if (order.includes(this.state.lesson.dialog[i].num_ex)) {
+                    mistakes += 1;
+                    toast.error("Для Диалог " + (i + 1) + " указан уже существующий порядковый номер.")
+                }
+                else {
+                    order.push(this.state.lesson.dialog[i].num_ex)
+                }
+            }
+        }
+        for (var i = 0; i < this.state.lesson.rules.length; i++) {
+            if (this.state.lesson.rules[i].num_ex === 0 && this.state.lesson.rules[i].type_ex !== 0 && this.state.lesson.rules[i].type_ex !== 23) {
+                mistakes += 1;
+                toast.error("Для Правило " + (i + 1) + " не указан порядковый номер в уроке.")
+            }
+            else {
+                if (order.includes(this.state.lesson.rules[i].num_ex)) {
+                    mistakes += 1;
+                    toast.error("Для Правило " + (i + 1) + " указан уже существующий порядковый номер.")
+                }
+                else {
+                    order.push(this.state.lesson.rules[i].num_ex)
+                }
+            }
+        }
+        return mistakes;
+    }
+
+    checkStatuses = () => {
+        let mistakes = 0;
+        mistakes = mistakes + this.checkTypes();
+        mistakes = mistakes + this.checkOrder();
+        console.log(mistakes);
+        if ((this.state.video.id_video === null || this.state.video.id_video === "") && this.state.statuses.video_st !== statuses[0] && this.state.statuses.video_st !== "Не требуется") {
+                mistakes = mistakes + 1;
+                toast.error("Ошибка в заполнении статуса Видео.");
+            }
+            if ((this.state.video.id_video !== null && this.state.video.id_video !== "") && (this.state.statuses.video_st === statuses[0] || this.state.statuses.video_st === "Не требуется" || this.state.statuses.video_st === "")) {
+                mistakes = mistakes + 1;
+                toast.error("Ошибка в заполнении статуса Видео.");
+            }
+            if ((this.state.lesson.lex.length + 0 === 0) && (this.state.statuses.lex_st !== statuses[0] && this.state.statuses.lex_st !== "Не требуется")) {
+                mistakes = mistakes + 1;
+                toast.error("Ошибка в заполнении статуса Буквы-слова.");
+            }
+            if ((this.state.lesson.lex.length + 0 > 0) && (this.state.statuses.lex_st === statuses[0] || this.state.statuses.lex_st === "Не требуется" || this.state.statuses.lex_st === "")) {
+                mistakes = mistakes + 1;
+                toast.error("Ошибка в заполнении статуса Буквы-слова.");
+            }
+            if ((this.state.lesson.phr.length + 0 === 0) && (this.state.statuses.phr_st !== statuses[0] && this.state.statuses.phr_st !== "Не требуется")) {
+                mistakes = mistakes + 1;
+                toast.error("Ошибка в заполнении статуса Фразы.");
+            }
+            if ((this.state.lesson.phr.length + 0 > 0) && (this.state.statuses.phr_st === statuses[0] || this.state.statuses.phr_st === "Не требуется" || this.state.statuses.phr_st === "")) {
+                mistakes = mistakes + 1;
+                toast.error("Ошибка в заполнении статуса Фразы.");
+            }
+            if ((this.state.lesson.dialog.length + 0 === 0) && (this.state.statuses.dialog_st !== statuses[0] && this.state.statuses.dialog_st !== "Не требуется")) {
+                mistakes = mistakes + 1;
+                toast.error("Ошибка в заполнении статуса Диалоги.");
+            }
+            if ((this.state.lesson.dialog.length + 0 > 0) && (this.state.statuses.dialog_st === statuses[0] || this.state.statuses.dialog_st === "Не требуется" || this.state.statuses.dialog_st === "")) {
+                mistakes = mistakes + 1;
+                toast.error("Ошибка в заполнении статуса Диалоги.");
+            }
+            if ((this.state.lesson.rules.length + 0 === 0) && (this.state.statuses.rules_st !== statuses[0] && this.state.statuses.rules_st !== "Не требуется")) {
+                mistakes = mistakes + 1;
+                toast.error("Ошибка в заполнении статуса Правила.");
+            }
+            if ((this.state.lesson.rules.length + 0 > 0) && (this.state.statuses.rules_st === statuses[0] || this.state.statuses.rules_st === "Не требуется" || this.state.statuses.rules_st === "")) {
+                mistakes = mistakes + 1;
+                toast.error("Ошибка в заполнении статуса Правила.");
+            }
+        
+        return mistakes;
+    }
+
+    handleSubmit = (event) => {
+        event.preventDefault();
+        let mistakes = 0;
+        mistakes = mistakes + this.checkStatuses();
+        if (mistakes === 0) {
+            let data = {
+                name_les: this.state.name_les,
+                lessonblock: this.state.id_lb,
+                video: this.state.video.id_video,
+                lesson_info: this.state.statuses,
+                rules: this.state.lesson.rules,
+                lex: this.state.lesson.lex,
+                dialogs: this.state.lesson.dialog,
+                phrases: this.state.lesson.phr,
+                description: this.state.description
+            };
+            console.log(data);
+            axios.post(postLesson, JSON.stringify(data), {
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            })
+                .then((response) => {
+                    console.log(response);
+                }, (error) => {
+                    console.log(error);
+                    console.log(error.response);
+                    console.log(error.response.data.errors);
+                });
+        };
+
+
+
+
         /*axios.post(postBlocksUrl, JSON.stringify(data), {
             headers: {
                 'Content-Type': 'application/json'
@@ -182,32 +300,30 @@ export default class NewBlock extends Component {
 
     addNewLesson = () => {
         this.setState({
-            lesson: [...this.state.lesson, {
-                id: this.state.lesson.length + 1,
+            lesson: {
                 lex: [],
                 phr: [],
                 dialog: [],
                 rules: [],
-            }],
+            },
             statuses: { video_st: "", lex_st: "", phr_st: "", dialog_st: "", rules_st: "" },
             add_button_hidden: true
         })
     }
 
-    deleteLesson = (buttonId) => {
+    /*deleteLesson = (buttonId) => {
         let newLesson = [];
         this.setState({
             lesson: newLesson,
             statuses: {},
             add_button_hidden: false
         });
-    }
+    }*/
 
     cancellingAllChanges = () => {
         this.setState({
-            /*id_lb: "",*/
             lesson: [],
-            video: { video_link: null },
+            video: { id_video: null },
             statuses: {},
             description: "",
             add_button_hidden: false
@@ -216,7 +332,7 @@ export default class NewBlock extends Component {
 
     render() {
         return (
-            <div className="Container">
+            <Form className="Container" onSubmit={this.handleSubmit}>
                 <header><CustomNavbar /></header>
                 <div style={{ marginTop: "100px" }}>
                     <nav aria-label="breadcrumb">
@@ -240,19 +356,17 @@ export default class NewBlock extends Component {
                 <div hidden={this.state.add_button_hidden} style={{ marginLeft: "35%" }}>
                     <button type="button" className="GreyButton" onClick={this.addNewLesson}>Добавить новый урок</button>
                 </div>
-                {this.state.lesson.map((obj, i) =>
-                    <div key={obj.id}>
+                {this.state.add_button_hidden === false ? <div></div>
+                    : <div>
                         <div style={{ marginTop: "7%" }}>
-                            <button disabled className="GreyBox">Урок {obj.id}</button>
+                            <button disabled className="GreyBox">Урок 1</button>
                             <div style={{ marginTop: "5%", marginBottom: "5%" }}>
-                                <Form row="true">
-                                    <FormGroup row>
-                                        <Label sm={2}>Название урока:</Label>
-                                        <Col sm={4}>
-                                            <Input type="text" name="name_les" value={this.state.name_les} onChange={this.handleChange}></Input>
-                                        </Col>
-                                    </FormGroup>
-                                </Form>
+                                <div className="row">
+                                    <Label sm={2}>Название урока:</Label>
+                                    <Col sm={4}>
+                                        <Input type="text" name="name_les" value={this.state.name_les} onChange={this.handleChange} required></Input>
+                                    </Col>
+                                </div>
                             </div>
                             <div style={{ marginTop: "5%", marginLeft: "3%", width: "90%" }} >
                                 <nav>
@@ -266,19 +380,19 @@ export default class NewBlock extends Component {
                                 </nav>
                                 <div className="tab-content" id="myTabContent" style={{ display: 'flex', flexDirection: 'column' }} >
                                     <div className="tab-pane fade show active" id="video" role="tabpanel" aria-labelledby="video-tab">
-                                        <Videos video={this.state.video} />
+                                        <Videos video={this.state.video} videos={this.state.videos} />
                                     </div>
                                     <div className="tab-pane fade" id="letter" role="tabpanel" aria-labelledby="letter-tab">
-                                        <Vocabulary lex={Object.assign(this.state.lesson[0].lex)} lexemes={this.state.lexemes} parentCallback={this.handleCallbackVoc} />
+                                        <Vocabulary lex={Object.assign(this.state.lesson.lex)} lexemes={this.state.lexemes} parentCallback={this.handleCallbackVoc} />
                                     </div>
                                     <div className="tab-pane fade" id="rule" role="tabpanel" aria-labelledby="rule-tab">
-                                        <Rules rule={Object.assign(this.state.lesson[0].rules)} lexemes={this.state.lexemes}  parentCallback={this.handleCallbackRule} />
+                                        <Rules rule={Object.assign(this.state.lesson.rules)} lexemes={this.state.lexemes} parentCallback={this.handleCallbackRule} />
                                     </div>
                                     <div className="tab-pane fade" id="phrase" role="tabpanel" aria-labelledby="phrase-tab">
-                                        <Phrases phr={Object.assign(this.state.lesson[0].phr)} lexemes={this.state.lexemes} replicas={this.state.replicas} parentCallback={this.handleCallbackPhr} />
+                                        <Phrases phr={Object.assign(this.state.lesson.phr)} lexemes={this.state.lexemes} replicas={this.state.replicas} parentCallback={this.handleCallbackPhr} />
                                     </div>
                                     <div className="tab-pane fade" id="dialog" role="tabpanel" aria-labelledby="dialog-tab">
-                                        <Dialogs dialog={Object.assign(this.state.lesson[0].dialog)} lexemes={this.state.lexemes} replicas={this.state.replicas} parentCallback={this.handleCallbackDialog} />
+                                        <Dialogs dialog={Object.assign(this.state.lesson.dialog)} lexemes={this.state.lexemes} replicas={this.state.replicas} parentCallback={this.handleCallbackDialog} />
                                     </div>
                                 </div>
                             </div>
@@ -289,11 +403,8 @@ export default class NewBlock extends Component {
                                 <Statuses statuses={this.state.statuses} />
                             </div>
                         </div>
-                        <div style={{ marginTop: "5%" }}>
-                            <button className="DeleteLesson" onClick={() => this.deleteLesson(obj.id)}>Удалить урок</button>
-                        </div>
                     </div>
-                )}
+                }
                 <div style={{ marginTop: "5%" }}>
                     <button disabled className="GreyBox">Описание</button>
                     <Input style={{ marginTop: "3%", width: "94%" }} type="textarea" rows="4" name="description"
@@ -301,10 +412,10 @@ export default class NewBlock extends Component {
                 </div>
                 <div style={{ marginTop: "5%" }}>
                     <button className="Cancel" onClick={this.cancellingAllChanges}>Отменить</button>
-                    <button className="Save" onClick={this.checkStatuses}>Сохранить изменения</button>
+                    <button className="Save" type="submit">Сохранить изменения</button>
                 </div>
                 <Toaster position="bottom-right" />
-            </div>
+            </Form>
         )
     }
 }
