@@ -279,7 +279,7 @@ export default class Vocabulary extends Component {
     render() {
         return (
             <div className="row" style={{ marginBottom: "3%" }}>
-                <div className="col-sm-3" style={{ marginTop: "1%", overflowY: "scroll", minHeight: "5px", height: "450px" }}>
+                <div className="col-sm-3" style={{ marginTop: "1%", overflowY: "scroll", minHeight: "5px", height: "450px", width: "200px" }}>
                     <Col sm={12}>
                         <Button style={{ width: "190px" }} onClick={this.addNewLex}>Добавить</Button>
                         {this.state.lex.map((obj, i) =>
@@ -287,7 +287,7 @@ export default class Vocabulary extends Component {
                     </Col>
                 </div>
                 {this.state.lex.length === 0 || this.state.current_lex.id === null ? <div></div> :
-                    <div className="col" style={{ marginTop: "1%", width: "500px" }}>
+                    <div className="col" style={{ marginTop: "1%", width: "100px", height: "450px" }}>
                         <Form>
                             <select className="form-select" style={{ marginBottom: "20px" }} value={this.state.current_lex.type_ex} onChange={this.getSelectedTypeLex}>
                                 <option value={0}>Выберите тип</option>
@@ -305,7 +305,7 @@ export default class Vocabulary extends Component {
                             {this.state.current_lex.type_ex === 0 ? <div></div> :
                                 this.state.current_lex.type_ex === 14 ?
                                     <div>
-                                        <div style={{ paddingLeft: "530px", paddingBottom: "10px" }}>
+                                        <div style={{ paddingBottom: "10px" }}>
                                             <Button id="Popover2" type="button">Подсказка</Button>
                                             <UncontrolledPopover placement="right" target="Popover2" trigger="focus">
                                                 <PopoverBody row="true">
@@ -523,8 +523,8 @@ export default class Vocabulary extends Component {
                                                                     </Col>
                                                                 </div>
                                                                 <div className="row StructureFields" style={{ marginTop: "20px" }}>
-                                                                    <Label sm={3}>Пропущенная буква:</Label>
-                                                                    <Col sm={9}>
+                                                                    <Label sm={4}>Пропущенная буква:</Label>
+                                                                    <Col sm={8}>
                                                                         <Select
                                                                             options={numbers}
                                                                             name="colors"
@@ -583,8 +583,8 @@ export default class Vocabulary extends Component {
                                                                         </Col>
                                                                     </div>
                                                                     <div className="row StructureFields" style={{ marginTop: "20px" }}>
-                                                                        <Label sm={3}>Пропущенные буквы:</Label>
-                                                                        <Col sm={9}>
+                                                                        <Label sm={4}>Пропущенные буквы:</Label>
+                                                                        <Col sm={8}>
                                                                             <Select
                                                                                 options={numbers}
                                                                                 isMulti

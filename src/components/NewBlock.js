@@ -1,6 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { React, Component } from 'react';
 import { Col, Form, FormGroup, Input, Label } from "reactstrap";
+import { Link } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
 import axios from 'axios';
 import CustomNavbar from './Navbar';
@@ -47,25 +48,25 @@ export default class NewBlock extends Component {
 
     handleCallbackVoc = (props) => {
         let newLesson = this.state.lesson;
-        newLesson[0].lex = props;
+        newLesson.lex = props;
         this.setState({ lesson: newLesson });
     }
 
     handleCallbackPhr = (props) => {
         let newLesson = this.state.lesson;
-        newLesson[0].phr = props;
+        newLesson.phr = props;
         this.setState({ lesson: newLesson });
     }
 
     handleCallbackDialog = (props) => {
         let newLesson = this.state.lesson;
-        newLesson[0].dialog = props;
+        newLesson.dialog = props;
         this.setState({ lesson: newLesson });
     }
 
     handleCallbackRule = (props) => {
         let newLesson = this.state.lesson;
-        newLesson[0].rules = props;
+        newLesson.rules = props;
         this.setState({ lesson: newLesson });
     }
 
@@ -338,24 +339,30 @@ export default class NewBlock extends Component {
                     <nav aria-label="breadcrumb">
                         <ol className="breadcrumb">
                             <li className="breadcrumb-item"><a href="/menu">Меню</a></li>
-                            <li className="breadcrumb-item"><a href="/cabinet">Уроки</a></li>
+                            <li className="breadcrumb-item">
+                                <Link to={{pathname: "/cabinet", state: {
+                                    blocks: this.state.blocks,
+                                    lexemes: this.state.lexemes,
+                                    replicas: this.state.replicas,
+                                    videos: this.state.videos
+                                }}}>Уроки</Link></li>
                             <li className="breadcrumb-item active" aria-current="page">Новый блок</li>
                         </ol>
                     </nav>
                 </div>
-                <div style={{ marginTop: "5%", marginBottom: "5%" }}>
+                <div style={{ marginTop: "5%" }}>
                     <Form row="true">
                         <FormGroup row>
                             <Label sm={2}>Номер блока:</Label>
-                            <Col sm={4}>
+                            <Col sm={2}>
                                 <Input type="text" name="id_lb" value={this.state.id_lb} onChange={this.handleChange} disabled></Input>
                             </Col>
                         </FormGroup>
                     </Form>
                 </div>
-                <div hidden={this.state.add_button_hidden} style={{ marginLeft: "35%" }}>
-                    <button type="button" className="GreyButton" onClick={this.addNewLesson}>Добавить новый урок</button>
-                </div>
+                {this.state.add_button_hidden === true ? <div></div> : <div style={{ marginTop: "5%", marginLeft: "35%" }}>
+                    <button type="button" className="GreyButton" onClick={this.addNewLesson}>Добавить урок</button>
+                </div>}
                 {this.state.add_button_hidden === false ? <div></div>
                     : <div>
                         <div style={{ marginTop: "7%" }}>
@@ -368,7 +375,7 @@ export default class NewBlock extends Component {
                                     </Col>
                                 </div>
                             </div>
-                            <div style={{ marginTop: "5%", marginLeft: "3%", width: "90%" }} >
+                            <div style={{ marginTop: "5%", marginLeft: "3%", overflow: "auto",  width: "90%", minWidth: "600px"  }} >
                                 <nav>
                                     <div className="nav nav-pills" id="myTab" role="tablist">
                                         <button className="nav-link active" id="video-tab" data-bs-toggle="tab" data-bs-target="#video" type="button" role="tab" aria-controls="video" aria-selected="true">Видео</button>
@@ -412,7 +419,7 @@ export default class NewBlock extends Component {
                 </div>
                 <div style={{ marginTop: "5%" }}>
                     <button className="Cancel" onClick={this.cancellingAllChanges}>Отменить</button>
-                    <button className="Save" type="submit">Сохранить изменения</button>
+                    <button className="Save" type="submit">Сохранить</button>
                 </div>
                 <Toaster position="bottom-right" />
             </Form>

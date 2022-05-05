@@ -1,4 +1,5 @@
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import {  PrivateRoute  } from './components/PrivateRoute';
 import Login from './components/Login';
 import Menu from './components/Menu';
 import Profile from './components/Profile';
@@ -9,6 +10,7 @@ import Editing from './components/Editing';
 import Statistics from './components/Statistics';
 import Cabinet from './components/Cabinet';
 import MakeVideo from './components/MakeVideo';
+import Unauthorized from './components/Unauthorized';
 
 export default function App() {
 
@@ -17,15 +19,16 @@ export default function App() {
       <div className="App" >
         <Switch>
           <Route exact path="/" component={Login} />
-          <Route exact path="/menu" component={Menu} />
-          <Route exact path="/profile" component={Profile} />
-          <Route exact path="/new_admin" component={NewAdmin} />
-          <Route exact path="/history" component={History} />
-          <Route exact path="/new_block" component={NewBlock} />
-          <Route exact path="/editing" component={Editing} />
-          <Route exact path="/statistics" component={Statistics} />
-          <Route exact path="/cabinet" component={Cabinet} />
-          <Route exact path="/make_video" component={MakeVideo} />
+          <Route exact path="/unauthorized" component={Unauthorized} />
+          <PrivateRoute exact path="/menu" component={Menu} />
+          <PrivateRoute exact path="/profile" component={Profile} />
+          <PrivateRoute exact path="/new_admin" component={NewAdmin} />
+          <PrivateRoute exact path="/history" component={History} />
+          <PrivateRoute exact path="/new_block" component={NewBlock} />
+          <PrivateRoute exact path="/editing" component={Editing} />
+          <PrivateRoute exact path="/statistics" component={Statistics} />
+          <PrivateRoute exact path="/cabinet" component={Cabinet} />
+          <PrivateRoute exact path="/make_video" component={MakeVideo} />
         </Switch>
       </div>
     </BrowserRouter>

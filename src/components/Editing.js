@@ -328,7 +328,7 @@ export default class Editing extends Component {
                 <div style={{ marginTop: "5%" }}>
                     <Form row>
                         <FormGroup row>
-                            <Label sm={3}>Выберите блок:</Label>
+                            {/*<Label sm={3}>Выберите блок:</Label>*/}
                             <Col sm={4}>
                                 <Input type="select" value={this.state.id_lb ? this.state.id_lb : "0"} onChange={(e) => this.blockChange(e.target.value)}>
                                     <option value={0} key={0}>Выберите блок</option>
@@ -345,7 +345,7 @@ export default class Editing extends Component {
                     <div style={{ marginTop: "5%" }}>
                         <Form row hidden={this.state.selectState}>
                             <FormGroup row>
-                                <Label sm={3}>Выберите номер урока:</Label>
+                                {/*<Label sm={3}>Выберите номер урока:</Label>*/}
                                 <Col sm={4}>
                                     <Input type="select" value={this.state.id_les ? this.state.id_les : "0"} onChange={(e) => this.lessonChange(e.target.value)}>
                                         <option value={0} key={0}>Выберите урок</option>
@@ -371,7 +371,7 @@ export default class Editing extends Component {
                                     </FormGroup>
                                 </Form>
                             </div>
-                            <div style={{ marginTop: "5%", marginLeft: "3%", width: "90%" }} >
+                            <div style={{ marginTop: "5%", marginLeft: "3%", overflow: "auto",  width: "90%", minWidth: "600px" }} >
                                 <nav>
                                     <div class="nav nav-pills" id="myTab" role="tablist">
                                         <button class="nav-link active" id="video-tab" data-bs-toggle="tab" data-bs-target="#video" type="button" role="tab" aria-controls="video" aria-selected="true">Видео</button>
@@ -403,7 +403,7 @@ export default class Editing extends Component {
                     )}
                     <div style={{ marginTop: "5%" }}>
                         <button disabled class="GreyBox">Статусы</button>
-                        <div style={{ marginTop: "5%", marginLeft: "25%" }}>
+                        <div style={{ marginTop: "5%" }}>
                             <Statuses statuses={this.state.statuses} />
                         </div>
                     </div>
@@ -416,7 +416,7 @@ export default class Editing extends Component {
                     </div>
                     <div style={{ marginTop: "5%" }}>
                         <button type="button" class="Cancel" disabled>Отменить</button>
-                        <button type="button" class="Save" onClick={this.checkStatuses}>Сохранить изменения</button>
+                        <button type="button" class="Save" onClick={this.checkStatuses}>Сохранить</button>
                     </div>
                 </div>
                 <Toaster position="bottom-right" />

@@ -104,11 +104,11 @@ export default class Profile extends Component {
                 </div>
                 <div>
                     <Form>
-                        <FormGroup row style={{ marginTop: "7%" }}>
-                            <Label for="name" sm={2}>
+                        <FormGroup row style={{ marginTop: "5%" }}>
+                            <Label sm={2}>
                                 Username
                             </Label>
-                            <Col sm={10}>
+                            <Col sm={7}>
                                 <Input style={{ width: "40%", borderRadius: "10px" }}
                                     id="name"
                                     name="name"
@@ -130,10 +130,10 @@ export default class Profile extends Component {
                             </Col>
         </FormGroup>*/}
                         <FormGroup row style={{ marginTop: "20px" }}>
-                            <Label for="email" sm={2}>
+                            <Label sm={2}>
                                 Email
                             </Label>
-                            <Col sm={10}>
+                            <Col sm={7}>
                                 <Input style={{ width: "40%", borderRadius: "10px" }}
                                     id="email"
                                     name="email"
@@ -144,7 +144,7 @@ export default class Profile extends Component {
                         </FormGroup>
                     </Form>
                 </div>
-                <div style={{ marginTop: "10%" }}>
+                <div style={{ marginTop: "5%" }}>
                     <h4>История изменений</h4>
                     {this.state.tableData === null ? <div class="CenterContainer"><Spinner color="secondary" /></div> :
                         this.state.tableData.length === 0 ? <div>Нет данных</div> :

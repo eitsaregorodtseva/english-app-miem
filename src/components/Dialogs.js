@@ -62,21 +62,10 @@ export default class Dialogs extends Component {
         }
     }
 
-    handleChange = (event) => {
-        let newDialog = { ...this.state.current_dialog, [event.target.name]: event.target.value };
-        let dialog = this.state.dialog;
-        dialog[newDialog.id] = newDialog;
-        this.setState({
-            current_dialog: newDialog,
-            dialog: dialog,
-            [event.target.name]: event.target.value
-        });
-        this.passPropsToParent();
-    }
-
     handleChangeOrder = (event) => {
         let num_ex = parseInt(event.target.value);
         let newDialog = { ...this.state.current_dialog, num_ex: num_ex };
+
         let dialog = this.state.dialog;
         dialog[newDialog.id] = newDialog;
         this.setState({
@@ -97,6 +86,7 @@ export default class Dialogs extends Component {
             }
         }
         let newDialog = { ...this.state.current_dialog, id_rep: id_rep };
+        
         let dialog = this.state.dialog;
         dialog[newDialog.id] = newDialog;
         this.setState({
@@ -215,7 +205,7 @@ export default class Dialogs extends Component {
     render() {
         return (
             <div class="row" style={{ marginBottom: "3%" }}>
-                <div class="col-sm-3" style={{ marginTop: "1%", overflowY: "scroll", minHeight: "5px", height: "370px" }}>
+                <div class="col-sm-3" style={{ marginTop: "1%", overflowY: "scroll", minHeight: "5px", height: "370px", width: "200px" }}>
                     <Col sm={12}>
                         <Button style={{ width: "190px" }} onClick={() => this.addNewDialog()}>Добавить</Button>
                         {this.state.dialog.map((obj, i) =>
@@ -223,7 +213,7 @@ export default class Dialogs extends Component {
                     </Col>
                 </div>
                 {this.state.dialog.length === 0 || this.state.current_dialog.id === null ? <div></div> :
-                    <div class="col" style={{ marginTop: "1%", width: "500px" }}>
+                    <div class="col" style={{ marginTop: "1%", width: "100px", height: "370px" }}>
                         <Form>
                             <select class="form-select" style={{ marginBottom: "20px" }} value={this.state.current_dialog.type_ex} onChange={this.getSelectedTypeDialog}>
                                 <option value={0}>Выберите тип</option>

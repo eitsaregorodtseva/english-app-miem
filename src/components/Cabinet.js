@@ -54,7 +54,7 @@ export default class Cabinet extends Component {
           </div>
         }
         {this.state.blocks === null ? <div></div> :
-          <div style={{ marginTop: "7%", marginLeft: "37%" }}>
+          <div style={{ marginTop: "5%", marginLeft: "35%" }}>
             <Link to={{
               pathname: "/new_block",
               state: {
@@ -66,7 +66,7 @@ export default class Cabinet extends Component {
             }}
               style={{ textDecoration: 'none' }}>
               <button style={{ padding: "2% 9% 2% 9%", backgroundColor: "#C4C4C4", color: "#000000", border: "none", borderRadius: "4px" }}>
-                Добавить новый блок
+                Новый блок
               </button>
             </Link>
           </div>

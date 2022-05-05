@@ -216,6 +216,13 @@ export default class Menu extends Component {
                     block.lesson_info[place[1]].lesson = lesson;
                     blocks[place[0]] = block;
                 }
+                for (var i = 0; i < blocks.length; i++) {
+                    for (var j = 0; j < blocks[i].lesson_info.length; j++) {
+                        for (var k = 0; k < blocks[i].lesson_info[j].lesson.phr.length; k++) {
+                            blocks[i].lesson_info[j].lesson.phr[k].id = k;
+                        } 
+                    }
+                }
                 for (var i = 0; i < dialogs.length; i++) {
                     let place = this.findLesLb(dialogs[i].name_les);
                     let block = this.state.blocks[place[0]];
@@ -223,6 +230,12 @@ export default class Menu extends Component {
                     lesson.dialog[lesson.dialog.length] = dialogs[i];
                     block.lesson_info[place[1]].lesson = lesson;
                     blocks[place[0]] = block;
+                }for (var i = 0; i < blocks.length; i++) {
+                    for (var j = 0; j < blocks[i].lesson_info.length; j++) {
+                        for (var k = 0; k < blocks[i].lesson_info[j].lesson.dialog.length; k++) {
+                            blocks[i].lesson_info[j].lesson.dialog[k].id = k;
+                        } 
+                    }
                 }
                 this.setState({ blocks: blocks });
             });
@@ -282,6 +295,13 @@ export default class Menu extends Component {
                     block.lesson_info[place[1]].lesson = lesson;
                     blocks[place[0]] = block;
                 }
+                for (var i = 0; i < blocks.length; i++) {
+                    for (var j = 0; j < blocks[i].lesson_info.length; j++) {
+                        for (var k = 0; k < blocks[i].lesson_info[j].lesson.lex.length; k++) {
+                            blocks[i].lesson_info[j].lesson.lex[k].id = k;
+                        } 
+                    }
+                }
                 this.setState({ blocks: blocks });
             });
         fetch(getRulesUrl)
@@ -290,7 +310,7 @@ export default class Menu extends Component {
                 return response.json();
             })
             .then((data) => {
-                //console.log(data);
+                console.log(data);
                 let rules = [];
                 let type_ex = 0;
                 let lex_split = null;
@@ -344,6 +364,13 @@ export default class Menu extends Component {
                     lesson.rules[lesson.rules.length] = rules[i];
                     block.lesson_info[place[1]].lesson = lesson;
                     blocks[place[0]] = block;
+                }
+                for (var i = 0; i < blocks.length; i++) {
+                    for (var j = 0; j < blocks[i].lesson_info.length; j++) {
+                        for (var k = 0; k < blocks[i].lesson_info[j].lesson.rules.length; k++) {
+                            blocks[i].lesson_info[j].lesson.rules[k].id = k;
+                        } 
+                    }
                 }
                 this.setState({ blocks: blocks, flag: true });
                 console.log(blocks);

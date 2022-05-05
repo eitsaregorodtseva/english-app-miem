@@ -225,7 +225,7 @@ export default class Rules extends Component {
     render() {
         return (
             <div class="row" style={{ marginBottom: "3%" }}>
-                <div class="col-sm-3" style={{ marginTop: "1%", overflowY: "scroll", minHeight: "5px", height: "530px" }}>
+                <div class="col-sm-3" style={{ marginTop: "1%", overflowY: "scroll", minHeight: "5px", height: "530px", width: "200px" }}>
                     <Col sm={12}>
                         <Button style={{ width: "190px" }} onClick={() => this.addNewRule()}>Добавить</Button>
                         {this.state.rule.map((obj, i) =>
@@ -233,7 +233,7 @@ export default class Rules extends Component {
                     </Col>
                 </div>
                 {this.state.rule.length === 0 || this.state.current_rule.id === null ? <div></div> :
-                    <div class="col" style={{ marginTop: "1%", width: "500px" }}>
+                    <div class="col" style={{ marginTop: "1%", width: "100px", height: "530px" }}>
                         <Form>
                             <select class="form-select" style={{ marginBottom: "20px" }} value={this.state.current_rule.type_ex} onChange={this.getSelectedTypeRule}>
                                 <option value={0}>Выберите тип</option>
