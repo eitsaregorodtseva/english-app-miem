@@ -34,7 +34,7 @@ export default class Dialogs extends Component {
     }
 
     componentDidMount() {
-        let options = [];
+        /*let options = [];
         for (var i = 0; i < this.props.replicas.length; i++) {
             options.push({ value: this.props.replicas[i].id_rep, label: this.props.replicas[i].lexeme.mean_lex + this.props.replicas[i].symbol })
         }
@@ -43,13 +43,13 @@ export default class Dialogs extends Component {
             if (this.props.lexemes[i].type === "диалог") {
                 options_dialogs.push({ value: this.props.lexemes[i].id_lex, label: this.props.lexemes[i].mean_lex })
             }
-        }
+        }*/
         this.setState({
             dialog: this.props.dialog,
             lexemes: this.props.lexemes,
             replicas: this.props.replicas,
-            options: options,
-            options_dialogs: options_dialogs
+            options: this.props.options_replicas,
+            options_dialogs: this.props.options_dialogs
         });
     }
 
@@ -58,6 +58,14 @@ export default class Dialogs extends Component {
             this.setState({
                 dialog: this.props.dialog,
                 current_dialog: { id: null, type_ex: 0, num_ex: 0 }
+            })
+        }
+        if (this.props.lexemes !== this.state.lexemes) {
+            this.setState({
+                lexemes: this.props.lexemes,
+                options: this.props.options,
+                options: this.props.options_replicas,
+                options_dialogs: this.props.options_dialogs
             })
         }
     }
@@ -86,7 +94,7 @@ export default class Dialogs extends Component {
             }
         }
         let newDialog = { ...this.state.current_dialog, id_rep: id_rep };
-        
+
         let dialog = this.state.dialog;
         dialog[newDialog.id] = newDialog;
         this.setState({

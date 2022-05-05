@@ -46,7 +46,7 @@ export default class Vocabulary extends Component {
 
     componentDidMount() {
         console.log(this.props);
-        let options = [];
+        /*let options = [];
         let options_letters = [];
         let options_syllables = [];
         let options_words = [];
@@ -61,22 +61,48 @@ export default class Vocabulary extends Component {
             if (this.props.lexemes[i].type === "слово") {
                 options_words.push({ value: this.props.lexemes[i].id_lex, label: this.props.lexemes[i].mean_lex })
             }
-        }
+        }*/
         this.setState({
             lex: this.props.lex,
             lexemes: this.props.lexemes,
-            options: options,
-            options_letters: options_letters,
-            options_syllables: options_syllables,
-            options_words: options_words
+            options: this.props.options,
+            options_letters: this.props.options_letters,
+            options_syllables: this.props.options_syllables,
+            options_words: this.props.options_words
         });
     }
 
     componentDidUpdate(prevProps, prevState) {
+        //console.log(this.props);
         if (this.props.lex !== this.state.lex) {
             this.setState({
                 lex: this.props.lex,
                 current_lex: { id: null, type_ex: 0, num_ex: 0 }
+            })
+        }
+        if (this.props.lexemes !== this.state.lexemes) {
+            /*let options = [];
+            let options_letters = [];
+            let options_syllables = [];
+            let options_words = [];
+            for (var i = 0; i < this.props.lexemes.length; i++) {
+                options.push({ value: this.props.lexemes[i].id_lex, label: this.props.lexemes[i].mean_lex });
+                if (this.props.lexemes[i].type === "буква") {
+                    options_letters.push({ value: this.props.lexemes[i].id_lex, label: this.props.lexemes[i].mean_lex })
+                }
+                if (this.props.lexemes[i].type === "слог") {
+                    options_syllables.push({ value: this.props.lexemes[i].id_lex, label: this.props.lexemes[i].mean_lex })
+                }
+                if (this.props.lexemes[i].type === "слово") {
+                    options_words.push({ value: this.props.lexemes[i].id_lex, label: this.props.lexemes[i].mean_lex })
+                }
+            }*/
+            this.setState({
+                lexemes: this.props.lexemes,
+                options: this.props.options,
+                options_letters: this.props.options_letters,
+                options_syllables: this.props.options_syllables,
+                options_words: this.props.options_words
             })
         }
     }

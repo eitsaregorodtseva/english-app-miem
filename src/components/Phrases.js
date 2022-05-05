@@ -42,7 +42,7 @@ export default class Phrases extends Component {
     }
 
     componentDidMount() {
-        let options = [];
+        /*let options = [];
         let options_words = [];
         for (var i = 0; i < this.props.lexemes.length; i++) {
             options.push({ value: this.props.lexemes[i].id_lex, label: this.props.lexemes[i].mean_lex });
@@ -54,14 +54,14 @@ export default class Phrases extends Component {
         for (var i = 0; i < this.props.replicas.length; i++) {
             options_phrases.push({ value: this.props.replicas[i].id_rep, label: this.props.replicas[i].lexeme.mean_lex + this.props.replicas[i].symbol})
         }
-        console.log(options_words);
+        console.log(options_words);*/
         this.setState({
             phr: this.props.phr,
             lexemes: this.props.lexemes,
             replicas: this.props.replicas,
-            options: options,
-            options_phrases: options_phrases,
-            options_words: options_words
+            options: this.props.options,
+            options_phrases: this.props.options_phrases,
+            options_words: this.props.options_words
         });
     }
 
@@ -70,6 +70,14 @@ export default class Phrases extends Component {
             this.setState({
                 phr: this.props.phr,
                 current_phr: { id: null, type_ex: 0, num_ex: 0 }
+            })
+        }
+        if (this.props.lexemes !== this.state.lexemes) {
+            this.setState({
+                lexemes: this.props.lexemes,
+                options: this.props.options,
+                options_phrases: this.props.options_phrases,
+                options_words: this.props.options_words
             })
         }
     }
@@ -376,19 +384,19 @@ export default class Phrases extends Component {
                                                     </Col>
                                                 </div>
                                                 <div class="row StructureFields" style={{ marginTop: "20px" }}>
-                                                <Label sm={3}>Пропущенные слова:</Label>
-                                                <Col sm={5}>
-                                                    <Select
-                                                        options={numbers}
-                                                        isMulti
-                                                        value={numbers.filter(this.filterOptions, this.state.id_miss)}
-                                                        className="basic-multi-select"
-                                                        classNamePrefix="select"
-                                                        onChange={this.handleChangeMultipleNum}
-                                                        placeholder="Выберите номера слов"
-                                                    />
-                                                </Col>
-                                            </div>
+                                                    <Label sm={3}>Пропущенные слова:</Label>
+                                                    <Col sm={5}>
+                                                        <Select
+                                                            options={numbers}
+                                                            isMulti
+                                                            value={numbers.filter(this.filterOptions, this.state.id_miss)}
+                                                            className="basic-multi-select"
+                                                            classNamePrefix="select"
+                                                            onChange={this.handleChangeMultipleNum}
+                                                            placeholder="Выберите номера слов"
+                                                        />
+                                                    </Col>
+                                                </div>
                                                 <div class="row StructureFields" style={{ marginTop: "20px" }}>
                                                     <Label sm={3}>Варианты:</Label>
                                                     <Col sm={9}>

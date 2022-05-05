@@ -30,19 +30,19 @@ export default class Rules extends Component {
     }
 
     componentDidMount() {
-        let options = [];
+        /*let options = [];
         let options_words = [];
         for (var i = 0; i < this.props.lexemes.length; i++) {
             options.push({ value: this.props.lexemes[i].id_lex, label: this.props.lexemes[i].mean_lex });
             if (this.props.lexemes[i].type === "слово") {
                 options_words.push({ value: this.props.lexemes[i].id_lex, label: this.props.lexemes[i].mean_lex })
             }
-        }
+        }*/
         this.setState({
             rule: this.props.rule,
             lexemes: this.props.lexemes,
-            options: options,
-            options_words: options_words
+            options: this.props.options,
+            options_words: this.props.options_words
         });
     }
 
@@ -53,9 +53,31 @@ export default class Rules extends Component {
                 current_rule: { id: null, type_ex: 0, num_ex: 0 }
             })
         }
+        if (this.props.lexemes !== this.state.lexemes) {
+            this.setState({
+                lexemes: this.props.lexemes,
+                options: this.props.options,
+                options_words: this.props.options_words
+            })
+        }
     }
 
     handleChange(event) {
+        /*console.log(event.target.files[0]);
+        let file = event.target.files[0];
+        if (file) {
+            console.log(file.name);
+            let formData = new FormData();
+            formData.append(
+              "name", "file"
+            );
+            formData.set(
+                file.name, file
+              );
+            console.log(formData);
+            console.log(URL.createObjectURL(file))
+        }*/
+
         let newRule = { ...this.state.current_rule, [event.target.name]: event.target.value };
         let rule = this.state.rule;
         rule[newRule.id] = newRule;
