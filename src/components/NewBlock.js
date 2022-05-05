@@ -206,8 +206,9 @@ export default class NewBlock extends Component {
                 description: this.state.description
             };
             console.log(data);
-            /*axios.post(postLesson, JSON.stringify(data), {
+            axios.post(postLesson, JSON.stringify(data), {
                 headers: {
+                    Authorization: `Token ${localStorage.token}`,
                     'Content-Type': 'application/json'
                 },
             })
@@ -217,7 +218,7 @@ export default class NewBlock extends Component {
                     console.log(error);
                     console.log(error.response);
                     console.log(error.response.data.errors);
-                });*/
+                });
         };
     }
 

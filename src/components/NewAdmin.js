@@ -6,11 +6,10 @@ import CustomNavbar from './Navbar';
 import axios from 'axios';
 import '../style.css';
 
-const newAdminUrl = 'https://api.unolingua.flareon.ru/auth/users/regist/';
+const newAdminUrl = 'https://api.unolingua.flareon.ru/auth/users/regist';
 
 export default function NewAdmin() {
-    const [name, setName] = useState("");
-    const [last_name, setLastName] = useState("");
+    const [username, setUserName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [verify_password, setVerifyPassword] = useState("");
@@ -28,23 +27,26 @@ export default function NewAdmin() {
     const handleSubmit = (event) => {
         event.preventDefault();
         if (match === "") {
-            let new_admin = {
-                name: name,
-                surname: last_name,
+            let user = {
+                username: username,
                 email: email,
-                password_admin: password,
-                group_user: "Администратор"
+                password: password
             }
-            console.log(new_admin);
-            axios.post(newAdminUrl, JSON.stringify(new_admin), {
+            console.log(JSON.stringify( user ));
+            axios.post(newAdminUrl, JSON.stringify({ user }), {
                 headers: {
+                    Authorization: `Token ${localStorage.token}`,
                     'Content-Type': 'application/json'
                 },
             })
                 .then((response) => {
                     console.log(response);
+                    if (response.status === 201) {
+                        toast.success("Администратор успешно добавлен.");
+                    }
                 }, (error) => {
                     console.log(error);
+                    toast.error("Не удалось добавить нового администратора.");
                 });
         }
     }
@@ -77,24 +79,12 @@ export default function NewAdmin() {
                     <FormGroup row style={{ marginTop: "50px" }}>
                         <Col sm={14}>
                             <Input style={{ borderRadius: "10px" }}
-                                id="name"
-                                name="name"
+                                id="username"
+                                name="username"
                                 type="text"
-                                placeholder="Имя"
-                                onChange={(e) => setName(e.target.value)}
-                                value={name}
-                                required />
-                        </Col>
-                    </FormGroup>
-                    <FormGroup row style={{ marginTop: "30px" }}>
-                        <Col sm={14}>
-                            <Input style={{ borderRadius: "10px" }}
-                                id="last_name"
-                                name="last_name"
-                                type="text"
-                                placeholder="Фамилия"
-                                onChange={(e) => setLastName(e.target.value)}
-                                value={last_name}
+                                placeholder="Юзернейм"
+                                onChange={(e) => setUserName(e.target.value)}
+                                value={username}
                                 required />
                         </Col>
                     </FormGroup>
