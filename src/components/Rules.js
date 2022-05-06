@@ -1,6 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { React, Component } from 'react';
 import { Button, Col, Form, Input, Label, UncontrolledPopover, PopoverBody } from "reactstrap";
+import Modal from './Modal';
 import Select from 'react-select';
 import '../style.css';
 import model_rule from "../static/tips/model_rule.jpg";
@@ -21,7 +22,8 @@ export default class Rules extends Component {
             picture: "",
             sound_rule: "",
             options: [],
-            options_words: []
+            options_words: [],
+            show: false
         }
         this.handleChange = this.handleChange.bind(this);
         this.addNewRule = this.addNewRule.bind(this);
@@ -63,21 +65,28 @@ export default class Rules extends Component {
     }
 
     handleChange(event) {
-        /*console.log(event.target.files[0]);
-        let file = event.target.files[0];
-        if (file) {
-            console.log(file.name);
-            let formData = new FormData();
-            formData.append(
-              "name", "file"
-            );
-            formData.set(
-                file.name, file
-              );
-            console.log(formData);
-            console.log(URL.createObjectURL(file))
-        }*/
+        //console.log(event.target.files[0]);
+        /*let newRule = { ...this.state.current_rule, [event.target.name]: event.target.value };
+        let rule = this.state.rule;
+        rule[newRule.id] = newRule;
+        this.setState({
+            current_rule: newRule,
+            rule: rule,
+            [event.target.name]: event.target.value
+        });*/
+        /*let form_data = new FormData();
+        let data = {image_url: event.target.files[0], name: event.target.files[0].name};
+        console.log(data);
+        if (data.image_url)
+            form_data.append("image_url", data.image_url, data.image_url.name);
+        form_data.append("is_active", true);
+        console.log(form_data)*/
+        /*let form_data = new FormData();
+        let data = event.target.files[0];
+        form_data.append("media", data);
 
+        console.log(Object.fromEntries(form_data).media.name);
+        console.log(typeof(Object.fromEntries(form_data)));*/
         let newRule = { ...this.state.current_rule, [event.target.name]: event.target.value };
         let rule = this.state.rule;
         rule[newRule.id] = newRule;
@@ -190,7 +199,7 @@ export default class Rules extends Component {
             id_var: "",
             side: "",
             picture: "",
-            sound_rule: "",
+            sound_rule: ""
         });
         this.passPropsToParent();
     }
@@ -238,6 +247,14 @@ export default class Rules extends Component {
     filterOptions(vl) {
         return this.includes(vl.value)
     }
+
+    showModal = () => {
+        this.setState({ show: true });
+    };
+
+    hideModal = () => {
+        this.setState({ show: false });
+    };
 
     passPropsToParent() {
         this.props.parentCallback(this.state.rule);
@@ -301,13 +318,13 @@ export default class Rules extends Component {
                                         <div class="row StructureFields">
                                             <Label sm={3}>Звук:</Label>
                                             <Col sm={9}>
-                                                <Input type="textarea" rows="2" name="sound_rule" value={this.state.sound_rule} onChange={this.handleChange}></Input>
+                                                <Input type="text" rows="2" name="sound_rule" value={this.state.sound_rule} onChange={this.handleChange}></Input>
                                             </Col>
                                         </div>
                                         <div class="row StructureFields">
                                             <Label sm={3}>Изображение:</Label>
                                             <Col sm={9}>
-                                                <Input type="textarea" rows="2" name="picture" value={this.state.picture} onChange={this.handleChange}></Input>
+                                                <Input type="text" rows="2" name="picture" value={this.state.picture} onChange={this.handleChange}></Input>
                                             </Col>
                                         </div>
                                     </div> :
@@ -357,18 +374,20 @@ export default class Rules extends Component {
                                             <div class="row StructureFields" style={{ marginTop: "20px" }}>
                                                 <Label sm={3}>Звук:</Label>
                                                 <Col sm={9}>
-                                                    <Input type="textarea" rows="2" name="sound_rule" value={this.state.sound_rule} onChange={this.handleChange}></Input>
+                                                    <Input type="text" rows="2" name="sound_rule" value={this.state.sound_rule} onChange={this.handleChange}></Input>
                                                 </Col>
                                             </div>
                                             <div class="row StructureFields">
                                                 <Label sm={3}>Изображение:</Label>
                                                 <Col sm={9}>
-                                                    <Input type="textarea" rows="2" name="picture" value={this.state.picture} onChange={this.handleChange}></Input>
+                                                    <Input type="text" rows="2" name="picture" value={this.state.picture} onChange={this.handleChange}></Input>
                                                 </Col>
                                             </div>
                                         </div> :
                                         <div></div>}
                         </Form>
+                        <Button onClick={this.showModal}>Добавить файлы</Button>
+                        <Modal show={this.state.show} handleClose={this.hideModal}></Modal>
                     </div>}
             </div>)
     }

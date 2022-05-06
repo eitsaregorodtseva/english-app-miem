@@ -47,7 +47,6 @@ export default class Dialogs extends Component {
         this.setState({
             dialog: this.props.dialog,
             lexemes: this.props.lexemes,
-            replicas: this.props.replicas,
             options: this.props.options_replicas,
             options_dialogs: this.props.options_dialogs
         });
@@ -63,7 +62,6 @@ export default class Dialogs extends Component {
         if (this.props.lexemes !== this.state.lexemes) {
             this.setState({
                 lexemes: this.props.lexemes,
-                options: this.props.options,
                 options: this.props.options_replicas,
                 options_dialogs: this.props.options_dialogs
             })

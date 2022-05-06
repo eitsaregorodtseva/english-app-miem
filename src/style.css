@@ -207,4 +207,30 @@ th.down {
   background: #fff;
 }
 
+.modal {
+  position: fixed;
+  top: 20%;
+  left: 20%;
+  width:60%;
+  height: 60%;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.modal-main {
+  position:fixed;
+  background: white;
+  width: 60%;
+  height: 60%;
+  top:50%;
+  left:50%;
+  transform: translate(-50%,-50%);
+}
+
+.display-block {
+  display: block;
+}
+
+.display-none {
+  display: none;
+}
 

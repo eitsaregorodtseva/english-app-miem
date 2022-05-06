@@ -30,7 +30,8 @@ export default class Lesson extends Component {
             options_syllables: [],
             options_words: [],
             options_dialogs: [],
-            options_replicas: []
+            options_replicas: [],
+            options_phrases: []
         }
     }
 
@@ -41,6 +42,7 @@ export default class Lesson extends Component {
         let options_words = [];
         let options_dialogs = [];
         let options_replicas = [];
+        let options_phrases = [];
         for (var i = 0; i < this.props.lexemes.length; i++) {
             options.push({ value: this.props.lexemes[i].id_lex, label: this.props.lexemes[i].mean_lex });
             if (this.props.lexemes[i].type === "буква") {
@@ -52,6 +54,9 @@ export default class Lesson extends Component {
             if (this.props.lexemes[i].type === "слово") {
                 options_words.push({ value: this.props.lexemes[i].id_lex, label: this.props.lexemes[i].mean_lex })
             }
+            if (this.props.lexemes[i].type === "фраза") {
+                options_phrases.push({ value: this.props.lexemes[i].id_lex, label: this.props.lexemes[i].mean_lex })
+            }
             if (this.props.lexemes[i].type === "диалог") {
                 options_dialogs.push({ value: this.props.lexemes[i].id_lex, label: this.props.lexemes[i].mean_lex })
             }
@@ -59,6 +64,7 @@ export default class Lesson extends Component {
         for (var i = 0; i < this.props.replicas.length; i++) {
             options_replicas.push({ value: this.props.replicas[i].id_rep, label: this.props.replicas[i].lexeme.mean_lex + this.props.replicas[i].symbol })
         }
+
         this.setState({
             lesson: this.props.lesson,
             statuses: this.props.statuses,
@@ -68,6 +74,7 @@ export default class Lesson extends Component {
             videos: this.props.videos,
             video: this.props.video,
             options: options,
+            options_phrases: options_phrases,
             options_letters: options_letters,
             options_syllables: options_syllables,
             options_words: options_words,
@@ -183,7 +190,7 @@ export default class Lesson extends Component {
                                     replicas={this.state.replicas}
                                     options={this.state.options}
                                     options_words={this.state.options_words}
-                                    options_phrases={this.state.options_phrases}
+                                    options_replicas={this.state.options_replicas}
                                     parentCallback={this.handleCallbackPhr} />
                             </div>
                             <div className="tab-pane fade" id="dialog" role="tabpanel" aria-labelledby="dialog-tab">

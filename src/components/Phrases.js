@@ -32,7 +32,7 @@ export default class Phrases extends Component {
             id_miss: "",
             id_var: "",
             options: [],
-            options_phrases: [],
+            options_replicas: [],
             options_words: []
         }
         this.handleChange = this.handleChange.bind(this);
@@ -60,7 +60,7 @@ export default class Phrases extends Component {
             lexemes: this.props.lexemes,
             replicas: this.props.replicas,
             options: this.props.options,
-            options_phrases: this.props.options_phrases,
+            options_replicas: this.props.options_replicas,
             options_words: this.props.options_words
         });
     }
@@ -75,8 +75,9 @@ export default class Phrases extends Component {
         if (this.props.lexemes !== this.state.lexemes) {
             this.setState({
                 lexemes: this.props.lexemes,
+                replicas: this.props.replicas,
                 options: this.props.options,
-                options_phrases: this.props.options_phrases,
+                options_replicas: this.props.options_replicas,
                 options_words: this.props.options_words
             })
         }
@@ -301,8 +302,8 @@ export default class Phrases extends Component {
                                             <Label sm={3}>Фраза:</Label>
                                             <Col sm={9}>
                                                 <Select
-                                                    options={this.state.options_phrases}
-                                                    value={this.state.options_phrases.filter(this.filterOptions, this.state.id_rep)}
+                                                    options={this.state.options_replicas}
+                                                    value={this.state.options_replicas.filter(this.filterOptions, this.state.id_rep)}
                                                     className="basic-single"
                                                     classNamePrefix="select"
                                                     onChange={this.handleChangeSingle}
@@ -331,8 +332,8 @@ export default class Phrases extends Component {
                                                 <Label sm={3}>Фраза:</Label>
                                                 <Col sm={9}>
                                                     <Select
-                                                        options={this.state.options_phrases}
-                                                        value={this.state.options_phrases.filter(this.filterOptions, this.state.id_rep)}
+                                                        options={this.state.options_replicas}
+                                                        value={this.state.options_replicas.filter(this.filterOptions, this.state.id_rep)}
                                                         className="basic-single"
                                                         classNamePrefix="select"
                                                         onChange={this.handleChangeSingle}
@@ -374,8 +375,8 @@ export default class Phrases extends Component {
                                                     <Label sm={3}>Ответ:</Label>
                                                     <Col sm={9}>
                                                         <Select
-                                                            options={this.state.options_phrases}
-                                                            value={this.state.options_phrases.filter(this.filterOptions, this.state.id_rep)}
+                                                            options={this.state.options_replicas}
+                                                            value={this.state.options_replicas.filter(this.filterOptions, this.state.id_rep)}
                                                             className="basic-single"
                                                             classNamePrefix="select"
                                                             onChange={this.handleChangeSingle}

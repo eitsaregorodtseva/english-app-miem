@@ -154,7 +154,7 @@ export default class Menu extends Component {
                                 id: phrases.length,
                                 name_les: data[i].name_les,
                                 type_ex: type_ex,
-                                num_ex: parseInt(data[i].id_ex),
+                                num_ex: parseInt(data[i].num_ex),
                                 id_rep: [this.findId(data[i].replica, "rep")]
                             };
                             break;
@@ -164,7 +164,7 @@ export default class Menu extends Component {
                                 id: phrases.length,
                                 name_les: data[i].name_les,
                                 type_ex: type_ex,
-                                num_ex: parseInt(data[i].id_ex),
+                                num_ex: parseInt(data[i].num_ex),
                                 id_rep: [this.findId(data[i].replica, "rep")],
                                 id_miss: num
                             };
@@ -177,7 +177,7 @@ export default class Menu extends Component {
                                 id: phrases.length,
                                 name_les: data[i].name_les,
                                 type_ex: type_ex,
-                                num_ex: parseInt(data[i].id_ex),
+                                num_ex: parseInt(data[i].num_ex),
                                 id_rep: [this.findId(data[i].replica, "rep")],
                                 id_var: variant,
                                 id_miss: num
@@ -189,7 +189,7 @@ export default class Menu extends Component {
                                 id: dialogs.length,
                                 name_les: data[i].name_les,
                                 type_ex: type_ex,
-                                num_ex: parseInt(data[i].id_ex),
+                                num_ex: parseInt(data[i].num_ex),
                                 id_rep: [id_rep]
                             };
                             break;
@@ -201,7 +201,7 @@ export default class Menu extends Component {
                                 id: dialogs.length,
                                 name_les: data[i].name_les,
                                 type_ex: type_ex,
-                                num_ex: parseInt(data[i].id_ex),
+                                num_ex: parseInt(data[i].num_ex),
                                 id_rep: reps,
                                 id_miss: nums
                             };
@@ -256,7 +256,7 @@ export default class Menu extends Component {
                         id: i,
                         name_les: data[i].name_les,
                         type_ex: type_ex,
-                        num_ex: parseInt(data[i].id_ex),
+                        num_ex: parseInt(data[i].num_ex),
                         id_lex: id_lex
                     };
                     let lex_split = "";
@@ -268,7 +268,7 @@ export default class Menu extends Component {
                             break;
                         case 7:
                             lex_split = data[i].mean_lex1.replaceAll(',', '').split(' ');
-                            id_lex = [lex_split[0], lex_split[4], lex_split[8], lex_split[12]];
+                            id_lex = [lex_split[0], lex_split[2], lex_split[4], lex_split[6]];
                             id_lex = this.findIdArrays(id_lex, "lex");
                             lex[lex.length - 1] = { ...lex[lex.length - 1], id_lex: id_lex };
                             break;
@@ -331,11 +331,11 @@ export default class Menu extends Component {
                                 id: i,
                                 name_les: data[i].name_les,
                                 type_ex: type_ex,
-                                num_ex: parseInt(data[i].id_ex),
+                                num_ex: parseInt(data[i].num_ex),
                                 id_var: var_lex,
                                 side: data[i].side,
                                 picture: data[i].picture,
-                                sound_rule: data[i].sound_rule
+                                sound_rule: data[i].sound_rule !== null ? data[i].sound_rule.split("/").pop() : ""
                             };
                             break;
                         case 17:
@@ -347,11 +347,11 @@ export default class Menu extends Component {
                                 id: i,
                                 name_les: data[i].name_les,
                                 type_ex: type_ex,
-                                num_ex: parseInt(data[i].id_ex),
+                                num_ex: parseInt(data[i].num_ex),
                                 id_lex: id_lex,
                                 id_var: var_lex,
-                                picture: data[i].picture,
-                                sound_rule: data[i].sound_rule
+                                picture: data[i].picture !== null ? data[i].picture.split("/").pop() : "",
+                                sound_rule: data[i].sound_rule !== null ? data[i].sound_rule.split("/").pop() : ""
                             };
                             break;
                     }

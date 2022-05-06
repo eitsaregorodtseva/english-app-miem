@@ -214,10 +214,14 @@ export default class NewBlock extends Component {
             })
                 .then((response) => {
                     console.log(response);
+                    if (response.status === 201) {
+                        toast.success("Урок " + (this.state.name_les) + "успешно создан.")
+                    }
                 }, (error) => {
                     console.log(error);
                     console.log(error.response);
                     console.log(error.response.data.errors);
+                    toast.error("Не удалось создать новый блок.");
                 });
         };
     }
@@ -297,7 +301,7 @@ export default class NewBlock extends Component {
                             videos={this.state.videos}
                             name_les={this.state.name_les}
                             video={this.state.video}
-                            parentCallback={this.handleCallback}/>
+                            parentCallback={this.handleCallback} />
                     </div>
                 }
                 <div style={{ marginTop: "5%" }}>
