@@ -63,7 +63,7 @@ export default function NewAdmin() {
 
     return (
         <div class="Container">
-            <header><CustomNavbar /></header>
+            <header><CustomNavbar login={false} /></header>
             <div style={{ marginTop: "100px" }}>
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">

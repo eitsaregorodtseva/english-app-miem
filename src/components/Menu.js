@@ -455,7 +455,7 @@ export default class Menu extends Component {
     render() {
         return (
             <div>
-                <header><CustomNavbar /></header>
+                <header><CustomNavbar login={false} /></header>
                 <div style={MenuContainer}>
                     <ListGroup style={{
                         border: "1px solid rgba(217, 244, 234, 0.4)",

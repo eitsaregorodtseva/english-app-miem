@@ -3,7 +3,7 @@ import axios from 'axios';
 import { React, useState } from 'react';
 import { useHistory } from "react-router-dom";
 import { Col, Form, FormGroup, Input } from "reactstrap";
-import NavbarLogin from './NavbarLogin';
+import CustomNavbar from './Navbar';
 import '../style.css';
 
 const loginUrl = 'https://api.unolingua.flareon.ru/auth/users/login/';
@@ -55,7 +55,7 @@ export default function LoginForm() {
 
   return (
     <div>
-      <header><NavbarLogin /></header>
+      <header><CustomNavbar login={true} /></header>
       <div class="LoginContainer">
         <Form onSubmit={handleSubmit} style={{
           border: "none", borderRadius: "49px",

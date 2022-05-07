@@ -4,6 +4,11 @@ import { Navbar, Nav, NavItem, Button } from "reactstrap";
 import exit from '../static/icons/logout.svg';
 
 const NavbarStyle = {
+    backgroundColor: '#84C7AE',
+    height: "54px"
+}
+
+const NavbarStyleExit = {
     backgroundColor: '#84C7AE'
 }
 
@@ -14,10 +19,10 @@ const ButtonStyle = {
     border: "none"
 }
 
-export default function CustomNavbar() {
+export default function CustomNavbar(props) {
     let history = useHistory();
 
-    function logout() {
+    const logout = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('group');
         localStorage.removeItem('email');
@@ -26,20 +31,24 @@ export default function CustomNavbar() {
 
     return (
         <div>
-            <Navbar container expand="md" fixed="top" style={NavbarStyle}>
-                <Nav className="ms-auto"
-                    navbar style={{ marginRight: "-3%" }}>
-                    <NavItem>
-                        <Button style={ButtonStyle} onClick={logout} href="/">
-                            <img src={exit} alt="" style={{ height: "24px", paddingRight: "10px", paddingLeft: "5px" }} />
-                            <span style={{ paddingRight: "10px" }}>Выйти</span>
-                        </Button>
-                    </NavItem>
-                    {/*<NavItem>
-                        <img src={exit} alt="" style={{ height: "24px", paddingRight: "10px", paddingLeft: "5px" }}  onClick={logout} href="/"/>
-                    </NavItem>*/}
-                </Nav>
-            </Navbar>
+            {props.login === false ?
+                <Navbar container expand="md" fixed="top" style={NavbarStyleExit}>
+                    <Nav className="ms-auto"
+                        navbar style={{ marginRight: "-3%" }}>
+                        <NavItem>
+                            <Button style={ButtonStyle} onClick={logout} href="/">
+                                <img src={exit} alt="" style={{ height: "24px", paddingRight: "10px", paddingLeft: "5px" }} />
+                                <span style={{ paddingRight: "10px" }}>Выйти</span>
+                            </Button>
+                        </NavItem>
+                    </Nav>
+                </Navbar> : 
+                <Navbar container expand="md" fixed="top" style={NavbarStyle}>
+                    <Nav className="ms-auto"
+                        navbar style={{ marginRight: "-3%" }}>
+                    </Nav>
+                </Navbar>
+            }
         </div>
     )
 }

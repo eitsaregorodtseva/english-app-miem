@@ -262,7 +262,7 @@ export default class NewBlock extends Component {
     render() {
         return (
             <Form className="Container" onSubmit={this.handleSubmit}>
-                <header><CustomNavbar /></header>
+                <header><CustomNavbar login={false} /></header>
                 <div style={{ marginTop: "100px" }}>
                     <nav aria-label="breadcrumb">
                         <ol className="breadcrumb">
