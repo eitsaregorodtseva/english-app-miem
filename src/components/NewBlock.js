@@ -7,7 +7,6 @@ import axios from 'axios';
 import CustomNavbar from './Navbar';
 import Lesson from './Lesson';
 import '../style.css';
-import LessonName from './LessonName';
 
 const statuses = ["Пусто     ", "В процессе", "Готов     "];
 const postLesson = 'https://api.unolingua.flareon.ru/forlessonsdto/';

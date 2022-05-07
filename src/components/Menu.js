@@ -4,7 +4,6 @@ import toast, { Toaster } from 'react-hot-toast';
 import { ListGroup, ListGroupItem } from "reactstrap";
 import { Link, Redirect } from 'react-router-dom';
 import CustomNavbar from './Navbar';
-import { GetLessons } from './GetLessons';
 import tasks from '../static/icons/tasks.svg';
 import profile from '../static/icons/profile.svg';
 import analytics from '../static/icons/analytics.svg';
