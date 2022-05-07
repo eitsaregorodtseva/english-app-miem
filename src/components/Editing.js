@@ -19,7 +19,7 @@ export default class Editing extends Component {
             video: { id_video: null },
             id_lb: null,
             id_les: null,
-            name_les: "",
+            name_les: { les: "" },
             lesson_info: [],
             current_lesson: [],
             blocks: [],
@@ -51,6 +51,7 @@ export default class Editing extends Component {
             }
             let video = { id_video: current_lesson.video };
             console.log(current_lesson.lesson);
+            let name_les = {les: current_lesson.name_les};
             this.setState({
                 blocks: this.props.location.state.blocks,
                 lexemes: this.props.location.state.lexemes,
@@ -58,7 +59,7 @@ export default class Editing extends Component {
                 videos: this.props.location.state.videos,
                 id_lb: this.props.location.state.id_lb,
                 id_les: this.props.location.state.id_les,
-                name_les: current_lesson.name_les,
+                name_les: name_les,
                 lesson: [current_lesson.lesson],
                 video: video,
                 lesson_info: lesson_info,
@@ -109,7 +110,7 @@ export default class Editing extends Component {
             lessonState: false,
             selectState: true,
             current_lesson: [],
-            name_les: "",
+            name_les: { les: "" },
             id_les: null,
             video: video
         })
@@ -143,7 +144,7 @@ export default class Editing extends Component {
         this.setState({
             id_lb: id_lb,
             id_les: null,
-            name_les: "",
+            name_les: {les: ""},
             lesson_info: lesson_info,
             current_lesson: [],
             buttonsState: buttonsState,
@@ -165,7 +166,7 @@ export default class Editing extends Component {
             }
             lessonState = false;
         }
-        let name_les = current_lesson.name_les;
+        let name_les = {les: current_lesson.name_les};
         let video = { id_video: current_lesson.video };
         console.log(current_lesson.lesson)
         this.setState({
@@ -274,6 +275,7 @@ export default class Editing extends Component {
         return mistakes;
     }
 
+
     checkStatuses = () => {
         let mistakes = 0;
         mistakes = mistakes + this.checkTypes();
@@ -283,7 +285,7 @@ export default class Editing extends Component {
             mistakes = mistakes + 1;
             toast.error("Ошибка в заполнении статуса Видео.");
         }
-        if ((this.state.video.id_video !== null && this.state.video.id_video !== "") && (this.state.statuses.video_st === statuses[0] || this.state.statuses.video_st === "")) {
+        if ((this.state.video.id_video !== null && this.state.video.id_video !== "") && (this.state.statuses.video_st === statuses[0] || this.state.statuses.video_st === undefined)) {
             mistakes = mistakes + 1;
             toast.error("Ошибка в заполнении статуса Видео.");
         }
@@ -291,7 +293,7 @@ export default class Editing extends Component {
             mistakes = mistakes + 1;
             toast.error("Ошибка в заполнении статуса Буквы-слова.");
         }
-        if ((this.state.lesson.lex.length + 0 > 0) && (this.state.statuses.lex_st === statuses[0] || this.state.statuses.lex_st === "")) {
+        if ((this.state.lesson.lex.length + 0 > 0) && (this.state.statuses.lex_st === statuses[0] || this.state.statuses.lex_st === undefined)) {
             mistakes = mistakes + 1;
             toast.error("Ошибка в заполнении статуса Буквы-слова.");
         }
@@ -299,7 +301,7 @@ export default class Editing extends Component {
             mistakes = mistakes + 1;
             toast.error("Ошибка в заполнении статуса Фразы.");
         }
-        if ((this.state.lesson.phr.length + 0 > 0) && (this.state.statuses.phr_st === statuses[0] || this.state.statuses.phr_st === "")) {
+        if ((this.state.lesson.phr.length + 0 > 0) && (this.state.statuses.phr_st === statuses[0] || this.state.statuses.phr_st === undefined)) {
             mistakes = mistakes + 1;
             toast.error("Ошибка в заполнении статуса Фразы.");
         }
@@ -307,7 +309,7 @@ export default class Editing extends Component {
             mistakes = mistakes + 1;
             toast.error("Ошибка в заполнении статуса Диалоги.");
         }
-        if ((this.state.lesson.dialog.length + 0 > 0) && (this.state.statuses.dialog_st === statuses[0] || this.state.statuses.dialog_st === "")) {
+        if ((this.state.lesson.dialog.length + 0 > 0) && (this.state.statuses.dialog_st === statuses[0] || this.state.statuses.dialog_st === undefined)) {
             mistakes = mistakes + 1;
             toast.error("Ошибка в заполнении статуса Диалоги.");
         }
@@ -315,7 +317,7 @@ export default class Editing extends Component {
             mistakes = mistakes + 1;
             toast.error("Ошибка в заполнении статуса Правила.");
         }
-        if ((this.state.lesson.rules.length + 0 > 0) && (this.state.statuses.rules_st === statuses[0] || this.state.statuses.rules_st === "")) {
+        if ((this.state.lesson.rules.length + 0 > 0) && (this.state.statuses.rules_st === statuses[0] || this.state.statuses.rules_st === undefined)) {
             mistakes = mistakes + 1;
             toast.error("Ошибка в заполнении статуса Правила.");
         }
@@ -330,7 +332,7 @@ export default class Editing extends Component {
         if (mistakes === 0) {
             if (this.state.id_les === null) {
                 let data = {
-                    name_les: this.state.name_les,
+                    name_les: this.state.name_les.les,
                     lessonblock: this.state.id_lb,
                     video: this.state.video.id_video,
                     lesson_info: this.state.statuses,
@@ -350,18 +352,19 @@ export default class Editing extends Component {
                     .then((response) => {
                         console.log(response);
                         if (response.status === 201) {
-                            toast.success("Урок " + (this.state.name_les) + "успешно создан.")
+                            toast.success("Урок " + (this.state.name_les.les) + " успешно создан.");
+                            this.props.history.push('/menu');
                         }
                     }, (error) => {
                         console.log(error);
                         console.log(error.response);
                         console.log(error.response.data.errors);
-                        toast.error("Не удалось добавить урок.");
+                        toast.error("Не удалось добавить урок. Проверьте заполнение обязательных полей.");
                     });
             }
             else {
                 let data = {
-                    name_les: this.state.name_les,
+                    name_les: this.state.name_les.les,
                     id: this.state.id_les,
                     lessonblock: this.state.id_lb,
                     video: this.state.video.id_video,
@@ -382,15 +385,15 @@ export default class Editing extends Component {
                     .then((response) => {
                         console.log(response);
                         if (response.status === 200) {
-                            toast.success("Урок " + (this.state.name_les) + "успешно изменен.")
+                            toast.success("Урок " + (this.state.name_les.les) + " успешно изменен.")
                         }
                     }, (error) => {
                         console.log(error);
                         console.log(error.response);
                         console.log(error.response.data.errors);
-                        toast.error("Не удалось изменить урок.");
+                        toast.error("Не удалось изменить урок. Проверьте заполнение обязательных полей.");
                     });
-            }  
+            }
         }
     }
 
@@ -462,7 +465,7 @@ export default class Editing extends Component {
                         </div>
                         <div style={{ marginTop: "5%" }}>
                             <button disabled class="GreyBox">Описание</button>
-                            <Input style={{ marginTop: "3%", width: "94%" }} type="textarea" rows="4" onChange={this.handleChange}></Input>
+                            <Input style={{ marginTop: "3%", width: "94%" }} type="textarea" name="description" rows="4" onChange={this.handleChange} required></Input>
                         </div>
                         <div style={{ marginTop: "5%" }}>
                             <button type="button" class="Cancel" disabled>Отменить</button>

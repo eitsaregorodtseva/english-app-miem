@@ -8,6 +8,7 @@ import Rules from './Rules';
 import Dialogs from './Dialogs';
 import Statuses from './Statuses';
 import '../style.css';
+import LessonName from './LessonName';
 
 export default class Lesson extends Component {
     constructor(props) {
@@ -16,7 +17,6 @@ export default class Lesson extends Component {
             lexemes: [],
             replicas: [],
             videos: [],
-            name_les: "",
             lesson: {
                 lex: [],
                 phr: [],
@@ -24,6 +24,7 @@ export default class Lesson extends Component {
                 rules: []
             },
             video: { id_video: null },
+            name_les: { les: "" },
             statuses: {},
             options: [],
             options_letters: [],
@@ -64,15 +65,15 @@ export default class Lesson extends Component {
         for (var i = 0; i < this.props.replicas.length; i++) {
             options_replicas.push({ value: this.props.replicas[i].id_rep, label: this.props.replicas[i].lexeme.mean_lex + this.props.replicas[i].symbol })
         }
-
+        console.log("mount")
         this.setState({
             lesson: this.props.lesson,
             statuses: this.props.statuses,
             lexemes: this.props.lexemes,
             replicas: this.props.replicas,
-            name_les: this.props.name_les,
             videos: this.props.videos,
             video: this.props.video,
+            name_les: this.props.name_les,
             options: options,
             options_phrases: options_phrases,
             options_letters: options_letters,
@@ -86,21 +87,17 @@ export default class Lesson extends Component {
     componentDidUpdate(prevProps, prevState) {
         console.log(this.props);
         if (this.props.lesson !== this.state.lesson) {
+            console.log("update")
             this.setState({
                 lesson: this.props.lesson,
                 statuses: this.props.statuses,
                 lexemes: this.props.lexemes,
                 replicas: this.props.replicas,
-                name_les: this.props.name_les,
                 videos: this.props.videos,
-                video: this.props.video
+                video: this.props.video,
+                name_les: this.props.name_les
             })
         }
-    }
-
-    handleChange = (event) => {
-        this.setState({ [event.target.name]: event.target.value });
-        this.passPropsToParent();
     }
 
     handleCallbackVoc = (props) => {
@@ -132,6 +129,7 @@ export default class Lesson extends Component {
     }
 
     passPropsToParent() {
+        console.log("update!!!");
         let state = {
             lesson: this.state.lesson,
             statuses: this.state.statuses,
@@ -146,14 +144,7 @@ export default class Lesson extends Component {
             <div>
                 <div style={{ marginTop: "7%" }}>
                     <button disabled className="GreyBox">Урок 1</button>
-                    <div style={{ marginTop: "5%", marginBottom: "5%" }}>
-                        <div className="row">
-                            <Label sm={2}>Название урока:</Label>
-                            <Col sm={4}>
-                                <Input type="text" name="name_les" value={this.state.name_les} onChange={this.handleChange} required></Input>
-                            </Col>
-                        </div>
-                    </div>
+                    <LessonName name_les={this.state.name_les} />
                     <div style={{ marginTop: "5%", marginLeft: "3%", overflow: "auto", width: "90%", minWidth: "600px" }} >
                         <nav>
                             <div className="nav nav-pills" id="myTab" role="tablist">

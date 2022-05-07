@@ -7,6 +7,7 @@ import axios from 'axios';
 import CustomNavbar from './Navbar';
 import Lesson from './Lesson';
 import '../style.css';
+import LessonName from './LessonName';
 
 const statuses = ["Пусто     ", "В процессе", "Готов     "];
 const postLesson = 'https://api.unolingua.flareon.ru/forlessonsdto/';
@@ -20,7 +21,7 @@ export default class NewBlock extends Component {
             replicas: [],
             videos: [],
             id_lb: 0,
-            name_les: "",
+            name_les: { les: "" },
             lesson_info: [],
             lesson: [],
             video: { id_video: null },
@@ -149,7 +150,7 @@ export default class NewBlock extends Component {
             mistakes = mistakes + 1;
             toast.error("Ошибка в заполнении статуса Видео.");
         }
-        if ((this.state.video.id_video !== null && this.state.video.id_video !== "") && (this.state.statuses.video_st === statuses[0] || this.state.statuses.video_st === "")) {
+        if ((this.state.video.id_video !== null && this.state.video.id_video !== "") && (this.state.statuses.video_st === statuses[0] || this.state.statuses.video_st === undefined)) {
             mistakes = mistakes + 1;
             toast.error("Ошибка в заполнении статуса Видео.");
         }
@@ -157,7 +158,7 @@ export default class NewBlock extends Component {
             mistakes = mistakes + 1;
             toast.error("Ошибка в заполнении статуса Буквы-слова.");
         }
-        if ((this.state.lesson.lex.length + 0 > 0) && (this.state.statuses.lex_st === statuses[0] || this.state.statuses.lex_st === "")) {
+        if ((this.state.lesson.lex.length + 0 > 0) && (this.state.statuses.lex_st === statuses[0] || this.state.statuses.lex_st === undefined)) {
             mistakes = mistakes + 1;
             toast.error("Ошибка в заполнении статуса Буквы-слова.");
         }
@@ -165,7 +166,7 @@ export default class NewBlock extends Component {
             mistakes = mistakes + 1;
             toast.error("Ошибка в заполнении статуса Фразы.");
         }
-        if ((this.state.lesson.phr.length + 0 > 0) && (this.state.statuses.phr_st === statuses[0] || this.state.statuses.phr_st === "")) {
+        if ((this.state.lesson.phr.length + 0 > 0) && (this.state.statuses.phr_st === statuses[0] || this.state.statuses.phr_st === undefined)) {
             mistakes = mistakes + 1;
             toast.error("Ошибка в заполнении статуса Фразы.");
         }
@@ -173,7 +174,7 @@ export default class NewBlock extends Component {
             mistakes = mistakes + 1;
             toast.error("Ошибка в заполнении статуса Диалоги.");
         }
-        if ((this.state.lesson.dialog.length + 0 > 0) && (this.state.statuses.dialog_st === statuses[0] || this.state.statuses.dialog_st === "")) {
+        if ((this.state.lesson.dialog.length + 0 > 0) && (this.state.statuses.dialog_st === statuses[0] || this.state.statuses.dialog_st === undefined)) {
             mistakes = mistakes + 1;
             toast.error("Ошибка в заполнении статуса Диалоги.");
         }
@@ -181,7 +182,7 @@ export default class NewBlock extends Component {
             mistakes = mistakes + 1;
             toast.error("Ошибка в заполнении статуса Правила.");
         }
-        if ((this.state.lesson.rules.length + 0 > 0) && (this.state.statuses.rules_st === statuses[0] || this.state.statuses.rules_st === "")) {
+        if ((this.state.lesson.rules.length + 0 > 0) && (this.state.statuses.rules_st === statuses[0] || this.state.statuses.rules_st === undefined)) {
             mistakes = mistakes + 1;
             toast.error("Ошибка в заполнении статуса Правила.");
         }
@@ -195,7 +196,7 @@ export default class NewBlock extends Component {
         mistakes = mistakes + this.checkStatuses();
         if (mistakes === 0) {
             let data = {
-                name_les: this.state.name_les,
+                name_les: this.state.name_les.les,
                 lessonblock: this.state.id_lb,
                 video: this.state.video.id_video,
                 lesson_info: this.state.statuses,
@@ -215,13 +216,13 @@ export default class NewBlock extends Component {
                 .then((response) => {
                     console.log(response);
                     if (response.status === 201) {
-                        toast.success("Урок " + (this.state.name_les) + "успешно создан.")
+                        toast.success("Урок " + (this.state.name_les.les) + " успешно создан.")
                     }
                 }, (error) => {
                     console.log(error);
                     console.log(error.response);
                     console.log(error.response.data.errors);
-                    toast.error("Не удалось создать новый блок.");
+                    toast.error("Не удалось создать новый блок. Проверьте заполнение обязательных полей.");
                 });
         };
     }
@@ -250,6 +251,7 @@ export default class NewBlock extends Component {
     }
 
     handleCallback = (props) => {
+        console.log(props)
         this.setState({
             lesson: props.lesson,
             statuses: props.statuses,
@@ -294,13 +296,14 @@ export default class NewBlock extends Component {
                 </div>}
                 {this.state.add_button_hidden === false ? <div></div>
                     : <div>
+                        {/*<LessonName name_les={this.state.name_les}/>*/}
                         <Lesson lesson={this.state.lesson}
                             statuses={this.state.statuses}
                             lexemes={this.state.lexemes}
                             replicas={this.state.replicas}
                             videos={this.state.videos}
-                            name_les={this.state.name_les}
                             video={this.state.video}
+                            name_les={this.state.name_les}
                             parentCallback={this.handleCallback} />
                     </div>
                 }
