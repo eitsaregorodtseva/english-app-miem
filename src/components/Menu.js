@@ -151,7 +151,8 @@ export default class Menu extends Component {
                     switch (type_ex) {
                         case 4:
                             phrases[phrases.length] = {
-                                id: phrases.length,
+                                id_fr: phrases.length,
+                                id: parseInt(data[i].id_ex),
                                 name_les: data[i].name_les,
                                 type_ex: type_ex,
                                 num_ex: parseInt(data[i].num_ex),
@@ -161,7 +162,8 @@ export default class Menu extends Component {
                         case 19:
                             num = this.findIdArrays(data[i].miss, "num");
                             phrases[phrases.length] = {
-                                id: phrases.length,
+                                id_fr: phrases.length,
+                                id: parseInt(data[i].id_ex),
                                 name_les: data[i].name_les,
                                 type_ex: type_ex,
                                 num_ex: parseInt(data[i].num_ex),
@@ -174,7 +176,8 @@ export default class Menu extends Component {
                             let variant = this.findIdArrays(variant_split, "lex");
                             num = this.findIdArrays(data[i].miss.replaceAll(',', '').split(' '), "num");
                             phrases[phrases.length] = {
-                                id: phrases.length,
+                                id_fr: phrases.length,
+                                id: parseInt(data[i].id_ex),
                                 name_les: data[i].name_les,
                                 type_ex: type_ex,
                                 num_ex: parseInt(data[i].num_ex),
@@ -186,7 +189,8 @@ export default class Menu extends Component {
                         case 21:
                             let id_rep = this.findId(data[i].replica, "lex");
                             dialogs[dialogs.length] = {
-                                id: dialogs.length,
+                                id_fr: dialogs.length,
+                                id: parseInt(data[i].id_ex),
                                 name_les: data[i].name_les,
                                 type_ex: type_ex,
                                 num_ex: parseInt(data[i].num_ex),
@@ -198,7 +202,8 @@ export default class Menu extends Component {
                             let reps = this.findIdArrays(replica_split, "rep");
                             let nums = this.findIdArrays(data[i].miss.replaceAll(',', '').split(' '), "num")
                             dialogs[dialogs.length] = {
-                                id: dialogs.length,
+                                id_fr: dialogs.length,
+                                id: parseInt(data[i].id_ex),
                                 name_les: data[i].name_les,
                                 type_ex: type_ex,
                                 num_ex: parseInt(data[i].num_ex),
@@ -220,7 +225,7 @@ export default class Menu extends Component {
                 for (var i = 0; i < blocks.length; i++) {
                     for (var j = 0; j < blocks[i].lesson_info.length; j++) {
                         for (var k = 0; k < blocks[i].lesson_info[j].lesson.phr.length; k++) {
-                            blocks[i].lesson_info[j].lesson.phr[k].id = k;
+                            blocks[i].lesson_info[j].lesson.phr[k].id_fr = k;
                         } 
                     }
                 }
@@ -234,7 +239,7 @@ export default class Menu extends Component {
                 }for (var i = 0; i < blocks.length; i++) {
                     for (var j = 0; j < blocks[i].lesson_info.length; j++) {
                         for (var k = 0; k < blocks[i].lesson_info[j].lesson.dialog.length; k++) {
-                            blocks[i].lesson_info[j].lesson.dialog[k].id = k;
+                            blocks[i].lesson_info[j].lesson.dialog[k].id_fr = k;
                         } 
                     }
                 }
@@ -253,7 +258,8 @@ export default class Menu extends Component {
                     let id_lex = [];
                     id_lex.push(this.findId(data[i].mean_lex1, "lex"));
                     lex[lex.length] = {
-                        id: i,
+                        id_fr: i,
+                        id: parseInt(data[i].id_ex),
                         name_les: data[i].name_les,
                         type_ex: type_ex,
                         num_ex: parseInt(data[i].num_ex),
@@ -299,7 +305,7 @@ export default class Menu extends Component {
                 for (var i = 0; i < blocks.length; i++) {
                     for (var j = 0; j < blocks[i].lesson_info.length; j++) {
                         for (var k = 0; k < blocks[i].lesson_info[j].lesson.lex.length; k++) {
-                            blocks[i].lesson_info[j].lesson.lex[k].id = k;
+                            blocks[i].lesson_info[j].lesson.lex[k].id_fr = k;
                         } 
                     }
                 }
@@ -328,7 +334,8 @@ export default class Menu extends Component {
                             lex_split = data[i].var_lex.split(',');
                             var_lex = this.findIdArrays(lex_split, "lex");
                             rules[rules.length] = {
-                                id: i,
+                                id_fr: i,
+                                id: parseInt(data[i].id_ex),
                                 name_les: data[i].name_les,
                                 type_ex: type_ex,
                                 num_ex: parseInt(data[i].num_ex),
@@ -344,7 +351,8 @@ export default class Menu extends Component {
                             let id_lex = [];
                             id_lex.push(this.findId(data[i].mean_lex, "lex"));
                             rules[rules.length] = {
-                                id: i,
+                                id_fr: i,
+                                id: parseInt(data[i].id_ex),
                                 name_les: data[i].name_les,
                                 type_ex: type_ex,
                                 num_ex: parseInt(data[i].num_ex),
@@ -369,7 +377,7 @@ export default class Menu extends Component {
                 for (var i = 0; i < blocks.length; i++) {
                     for (var j = 0; j < blocks[i].lesson_info.length; j++) {
                         for (var k = 0; k < blocks[i].lesson_info[j].lesson.rules.length; k++) {
-                            blocks[i].lesson_info[j].lesson.rules[k].id = k;
+                            blocks[i].lesson_info[j].lesson.rules[k].id_fr = k;
                         } 
                     }
                 }

@@ -15,7 +15,7 @@ export default class Rules extends Component {
         this.state = {
             rule: [],
             lexemes: [],
-            current_rule: { id: null, type_ex: 0, num_ex: 0 },
+            current_rule: { id_fr: null, id: 0, type_ex: 0, num_ex: 0 },
             id_lex: null,
             id_var: "",
             side: "",
@@ -52,7 +52,7 @@ export default class Rules extends Component {
         if (this.props.rule !== this.state.rule) {
             this.setState({
                 rule: this.props.rule,
-                current_rule: { id: null, type_ex: 0, num_ex: 0 }
+                current_rule: { id_fr: null, id: 0, type_ex: 0, num_ex: 0 }
             })
         }
         if (this.props.lexemes !== this.state.lexemes) {
@@ -89,7 +89,7 @@ export default class Rules extends Component {
         console.log(typeof(Object.fromEntries(form_data)));*/
         let newRule = { ...this.state.current_rule, [event.target.name]: event.target.value };
         let rule = this.state.rule;
-        rule[newRule.id] = newRule;
+        rule[newRule.id_fr] = newRule;
         this.setState({
             current_rule: newRule,
             rule: rule,
@@ -102,7 +102,7 @@ export default class Rules extends Component {
         let num_ex = parseInt(event.target.value);
         let newRule = { ...this.state.current_rule, num_ex: num_ex };
         let rule = this.state.rule;
-        rule[newRule.id] = newRule;
+        rule[newRule.id_fr] = newRule;
         this.setState({
             current_rule: newRule,
             rule: rule,
@@ -122,7 +122,7 @@ export default class Rules extends Component {
         }
         let newRule = { ...this.state.current_rule, id_lex: id_lex };
         let rule = this.state.rule;
-        rule[newRule.id] = newRule;
+        rule[newRule.id_fr] = newRule;
         this.setState({
             current_rule: newRule,
             rule: rule,
@@ -139,7 +139,7 @@ export default class Rules extends Component {
         console.log(id_var);
         let newRule = { ...this.state.current_rule, id_var: id_var };
         let rule = this.state.rule;
-        rule[newRule.id] = newRule;
+        rule[newRule.id_fr] = newRule;
         this.setState({
             current_rule: newRule,
             rule: rule,
@@ -149,38 +149,38 @@ export default class Rules extends Component {
     }
 
     addNewRule() {
-        let newRule = { id: this.state.rule.length, type_ex: 0, num_ex: 0 };
+        let newRule = { id_fr: this.state.rule.length, id: 0, type_ex: 0, num_ex: 0 };
         let rule = this.state.rule;
-        rule[newRule.id] = newRule;
+        rule[newRule.id_fr] = newRule;
         this.setState({
             rule: rule,
         });
         this.passPropsToParent();
     }
 
-    showCurrentRule(id) {
-        switch (this.state.rule[id].type_ex) {
+    showCurrentRule(id_fr) {
+        switch (this.state.rule[id_fr].type_ex) {
             case 0:
                 this.setState({
-                    current_rule: this.state.rule[id],
+                    current_rule: this.state.rule[id_fr],
                 });
                 break;
             case 23:
                 this.setState({
-                    current_rule: this.state.rule[id],
-                    id_var: this.state.rule[id].id_var ? this.state.rule[id].id_var : "",
-                    side: this.state.rule[id].side ? this.state.rule[id].side : "",
-                    picture: this.state.rule[id].picture ? this.state.rule[id].picture : "",
-                    sound_rule: this.state.rule[id].sound_rule ? this.state.rule[id].sound_rule : "",
+                    current_rule: this.state.rule[id_fr],
+                    id_var: this.state.rule[id_fr].id_var ? this.state.rule[id_fr].id_var : "",
+                    side: this.state.rule[id_fr].side ? this.state.rule[id_fr].side : "",
+                    picture: this.state.rule[id_fr].picture ? this.state.rule[id_fr].picture : "",
+                    sound_rule: this.state.rule[id_fr].sound_rule ? this.state.rule[id_fr].sound_rule : "",
                 });
                 break;
             case 17:
                 this.setState({
-                    current_rule: this.state.rule[id],
-                    id_lex: this.state.rule[id].id_lex ? this.state.rule[id].id_lex : "",
-                    id_var: this.state.rule[id].id_var ? this.state.rule[id].id_var : "",
-                    picture: this.state.rule[id].picture ? this.state.rule[id].picture : "",
-                    sound_rule: this.state.rule[id].sound_rule ? this.state.rule[id].sound_rule : "",
+                    current_rule: this.state.rule[id_fr],
+                    id_lex: this.state.rule[id_fr].id_lex ? this.state.rule[id_fr].id_lex : "",
+                    id_var: this.state.rule[id_fr].id_var ? this.state.rule[id_fr].id_var : "",
+                    picture: this.state.rule[id_fr].picture ? this.state.rule[id_fr].picture : "",
+                    sound_rule: this.state.rule[id_fr].sound_rule ? this.state.rule[id_fr].sound_rule : "",
                 });
                 break;
         }
@@ -189,9 +189,9 @@ export default class Rules extends Component {
 
     getSelectedTypeRule(event) {
         let type_ex = parseInt(event.target.value);
-        let newRule = { id: this.state.current_rule.id, type_ex: type_ex, num_ex: 0 };
+        let newRule = { id_fr: this.state.current_rule.id_fr, id: 0, type_ex: type_ex, num_ex: 0 };
         let rule = this.state.rule;
-        rule[newRule.id] = newRule;
+        rule[newRule.id_fr] = newRule;
         this.setState({
             current_rule: newRule,
             rule: rule,
@@ -209,7 +209,7 @@ export default class Rules extends Component {
         id_lex.push(parseInt(event.target.value));
         let newRule = { ...this.state.current_rule, [event.target.name]: id_lex };
         let rule = this.state.rule;
-        rule[newRule.id] = newRule;
+        rule[newRule.id_fr] = newRule;
         this.setState({
             current_rule: newRule,
             rule: rule,
@@ -221,7 +221,7 @@ export default class Rules extends Component {
     getSelectedSide = (event) => {
         let newRule = { ...this.state.current_rule, side: event.target.value };
         let rule = this.state.rule;
-        rule[newRule.id] = newRule;
+        rule[newRule.id_fr] = newRule;
         this.setState({
             current_rule: newRule,
             rule: rule,
@@ -230,13 +230,13 @@ export default class Rules extends Component {
         this.passPropsToParent();
     }
 
-    deleteElement = (id) => {
+    deleteElement = (id_fr) => {
         let rule = this.state.rule;
-        rule.splice(id, 1);
+        rule.splice(id_fr, 1);
         for (var i = 0; i < rule.length; i++) {
-            rule[i].id = i;
+            rule[i].id_fr = i;
         }
-        let newRule = { id: null, type_ex: 0, num_ex: 0 };
+        let newRule = { id_fr: null, id: 0, type_ex: 0, num_ex: 0 };
         this.setState({
             rule: rule,
             current_rule: newRule,
@@ -268,10 +268,10 @@ export default class Rules extends Component {
                     <Col sm={12}>
                         <Button style={{ width: "190px" }} onClick={() => this.addNewRule()}>Добавить</Button>
                         {this.state.rule.map((obj, i) =>
-                            <Button style={{ width: "190px" }} key={obj.id} color={this.state.current_rule.id === i ? "primary" : "secondary"} onClick={() => this.showCurrentRule(i)}>Правило {i + 1}</Button>)}
+                            <Button style={{ width: "190px" }} key={obj.id_fr} color={this.state.current_rule.id_fr === i ? "primary" : "secondary"} onClick={() => this.showCurrentRule(i)}>Правило {i + 1}</Button>)}
                     </Col>
                 </div>
-                {this.state.rule.length === 0 || this.state.current_rule.id === null ? <div></div> :
+                {this.state.rule.length === 0 || this.state.current_rule.id_fr === null ? <div></div> :
                     <div class="col" style={{ marginTop: "1%", width: "100px", height: "530px" }}>
                         <Form>
                             <select class="form-select" style={{ marginBottom: "20px" }} value={this.state.current_rule.type_ex} onChange={this.getSelectedTypeRule}>
@@ -279,7 +279,7 @@ export default class Rules extends Component {
                                 <option value={23}>Правило</option>
                                 <option value={17}>Задание на правило</option>
                             </select>
-                            <Button color="danger" onClick={() => this.deleteElement(this.state.current_rule.id)}>Удалить</Button>
+                            <Button color="danger" onClick={() => this.deleteElement(this.state.current_rule.id_fr)}>Удалить</Button>
                             {this.state.current_rule.type_ex === 0 ? <div></div> :
                                 this.state.current_rule.type_ex === 23 ?
                                     <div>

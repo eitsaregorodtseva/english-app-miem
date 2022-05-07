@@ -27,7 +27,7 @@ export default class Phrases extends Component {
             phr: [],
             lexemes: [],
             replicas: [],
-            current_phr: { id: null, type_ex: 0, num_ex: 0 },
+            current_phr: { id_fr: null, id: 0, type_ex: 0, num_ex: 0 },
             id_rep: "",
             id_miss: "",
             id_var: "",
@@ -69,7 +69,7 @@ export default class Phrases extends Component {
         if (this.props.phr !== this.state.phr) {
             this.setState({
                 phr: this.props.phr,
-                current_phr: { id: null, type_ex: 0, num_ex: 0 }
+                current_phr: { id_fr: null, id: 0, type_ex: 0, num_ex: 0 }
             })
         }
         if (this.props.lexemes !== this.state.lexemes) {
@@ -86,7 +86,7 @@ export default class Phrases extends Component {
     handleChange(event) {
         let newPhr = { ...this.state.current_phr, [event.target.name]: event.target.value };
         let phr = this.state.phr;
-        phr[newPhr.id] = newPhr;
+        phr[newPhr.id_fr] = newPhr;
         this.setState({
             current_phr: newPhr,
             phr: phr,
@@ -119,7 +119,7 @@ export default class Phrases extends Component {
         }
         let newPhr = { ...this.state.current_phr, id_rep: id_rep };
         let phr = this.state.phr;
-        phr[newPhr.id] = newPhr;
+        phr[newPhr.id_fr] = newPhr;
         this.setState({
             current_phr: newPhr,
             phr: phr,
@@ -136,7 +136,7 @@ export default class Phrases extends Component {
         console.log(id_var);
         let newPhr = { ...this.state.current_phr, id_var: id_var };
         let phr = this.state.phr;
-        phr[newPhr.id] = newPhr;
+        phr[newPhr.id_fr] = newPhr;
         this.setState({
             current_phr: newPhr,
             phr: phr,
@@ -158,7 +158,7 @@ export default class Phrases extends Component {
         console.log(id_miss);
         let newPhr = { ...this.state.current_phr, id_miss: id_miss };
         let phr = this.state.phr;
-        phr[newPhr.id] = newPhr;
+        phr[newPhr.id_fr] = newPhr;
         this.setState({
             current_phr: newPhr,
             phr: phr,
@@ -168,41 +168,41 @@ export default class Phrases extends Component {
     }
 
     addNewPhr() {
-        let newPhr = { id: this.state.phr.length, type_ex: 0, num_ex: 0 };
+        let newPhr = { id_fr: this.state.phr.length, id: 0, type_ex: 0, num_ex: 0 };
         let phr = this.state.phr;
-        phr[newPhr.id] = newPhr;
+        phr[newPhr.id_fr] = newPhr;
         this.setState({
             phr: phr,
         });
         this.passPropsToParent();
     }
 
-    showCurrentPhr(id) {
-        switch (this.state.phr[id].type_ex) {
+    showCurrentPhr(id_fr) {
+        switch (this.state.phr[id_fr].type_ex) {
             case 0:
                 this.setState({
-                    current_phr: this.state.phr[id],
+                    current_phr: this.state.phr[id_fr],
                 });
                 break;
             case 4:
                 this.setState({
-                    current_phr: this.state.phr[id],
-                    id_rep: this.state.phr[id].id_rep ? this.state.phr[id].id_rep : "",
+                    current_phr: this.state.phr[id_fr],
+                    id_rep: this.state.phr[id_fr].id_rep ? this.state.phr[id_fr].id_rep : "",
                 });
                 break;
             case 19:
                 this.setState({
-                    current_phr: this.state.phr[id],
-                    id_rep: this.state.phr[id].id_rep ? this.state.phr[id].id_rep : "",
-                    id_miss: this.state.phr[id].id_miss ? this.state.phr[id].id_miss : "",
+                    current_phr: this.state.phr[id_fr],
+                    id_rep: this.state.phr[id_fr].id_rep ? this.state.phr[id_fr].id_rep : "",
+                    id_miss: this.state.phr[id_fr].id_miss ? this.state.phr[id_fr].id_miss : "",
                 });
                 break;
             case 20:
                 this.setState({
-                    current_phr: this.state.phr[id],
-                    id_rep: this.state.phr[id].id_rep ? this.state.phr[id].id_rep : "",
-                    id_var: this.state.phr[id].id_var ? this.state.phr[id].id_var : "",
-                    id_miss: this.state.phr[id].id_miss ? this.state.phr[id].id_miss : ""
+                    current_phr: this.state.phr[id_fr],
+                    id_rep: this.state.phr[id_fr].id_rep ? this.state.phr[id_fr].id_rep : "",
+                    id_var: this.state.phr[id_fr].id_var ? this.state.phr[id_fr].id_var : "",
+                    id_miss: this.state.phr[id_fr].id_miss ? this.state.phr[id_fr].id_miss : ""
                 });
                 break;
         }
@@ -211,9 +211,9 @@ export default class Phrases extends Component {
 
     getSelectedTypePhr(event) {
         let type_ex = parseInt(event.target.value);
-        let newPhr = { id: this.state.current_phr.id, type_ex: type_ex, num_ex: 0 };
+        let newPhr = { id_fr: this.state.current_phr.id_fr, id: 0, type_ex: type_ex, num_ex: 0 };
         let phr = this.state.phr;
-        phr[newPhr.id] = newPhr;
+        phr[newPhr.id_fr] = newPhr;
         this.setState({
             current_phr: newPhr,
             phr: phr,
@@ -229,7 +229,7 @@ export default class Phrases extends Component {
         id_rep.push(parseInt(event.target.value));
         let newPhr = { ...this.state.current_phr, [event.target.name]: id_rep };
         let phr = this.state.phr;
-        phr[newPhr.id] = newPhr;
+        phr[newPhr.id_fr] = newPhr;
         this.setState({
             current_phr: newPhr,
             phr: phr,
@@ -238,13 +238,13 @@ export default class Phrases extends Component {
         this.passPropsToParent();
     }
 
-    deleteElement = (id) => {
+    deleteElement = (id_fr) => {
         let phr = this.state.phr;
-        phr.splice(id, 1);
+        phr.splice(id_fr, 1);
         for (var i = 0; i < phr.length; i++) {
-            phr[i].id = i;
+            phr[i].id_fr = i;
         }
-        let newPhr = { id: null, type_ex: 0, num_ex: 0 };
+        let newPhr = { id_fr: null, id: 0, type_ex: 0, num_ex: 0 };
         this.setState({
             phr: phr,
             current_phr: newPhr,
@@ -267,10 +267,10 @@ export default class Phrases extends Component {
                     <Col sm={12}>
                         <Button style={{ width: "190px" }} onClick={() => this.addNewPhr()}>Добавить</Button>
                         {this.state.phr.map((obj, i) =>
-                            <Button style={{ width: "190px" }} key={obj.id} color={this.state.current_phr.id === i ? "primary" : "secondary"} onClick={() => this.showCurrentPhr(i)}>Фраза {i + 1}</Button>)}
+                            <Button style={{ width: "190px" }} key={obj.id_fr} color={this.state.current_phr.id_fr === i ? "primary" : "secondary"} onClick={() => this.showCurrentPhr(i)}>Фраза {i + 1}</Button>)}
                     </Col>
                 </div>
-                {this.state.phr.length === 0 || this.state.current_phr.id === null ? <div></div> :
+                {this.state.phr.length === 0 || this.state.current_phr.id_fr === null ? <div></div> :
                     <div class="col" style={{ marginTop: "1%", width: "100px", height: "350px" }}>
                         <Form>
                             <select class="form-select" style={{ marginBottom: "20px" }} value={this.state.current_phr.type_ex} onChange={this.getSelectedTypePhr}>
@@ -279,7 +279,7 @@ export default class Phrases extends Component {
                                 <option value={19}>Задание вставь буквы во фразу</option>
                                 <option value={20}>Задание вставь слова</option>
                             </select>
-                            <Button color="danger" onClick={() => this.deleteElement(this.state.current_phr.id)}>Удалить</Button>
+                            <Button color="danger" onClick={() => this.deleteElement(this.state.current_phr.id_fr)}>Удалить</Button>
                             {this.state.current_phr.type_ex === 0 ? <div></div> :
                                 this.state.current_phr.type_ex === 4 ?
                                     <div>

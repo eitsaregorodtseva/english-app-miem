@@ -33,7 +33,7 @@ export default class Vocabulary extends Component {
         this.state = {
             lex: [],
             lexemes: [],
-            current_lex: { id: null, type_ex: 0, num_ex: 0 },
+            current_lex: { id_fr: null, id: 0, type_ex: 0, num_ex: 0 },
             id_lex: "",
             id_miss: "",
             id_var: "",
@@ -77,7 +77,7 @@ export default class Vocabulary extends Component {
         if (this.props.lex !== this.state.lex) {
             this.setState({
                 lex: this.props.lex,
-                current_lex: { id: null, type_ex: 0, num_ex: 0 }
+                current_lex: { id_fr: null, id: 0, type_ex: 0, num_ex: 0 }
             })
         }
         if (this.props.lexemes !== this.state.lexemes) {
@@ -110,7 +110,7 @@ export default class Vocabulary extends Component {
     handleChange = (event) => {
         let newLex = { ...this.state.current_lex, [event.target.name]: event.target.value };
         let lex = this.state.lex;
-        lex[newLex.id] = newLex;
+        lex[newLex.id_fr] = newLex;
         this.setState({
             current_lex: newLex,
             lex: lex,
@@ -123,7 +123,7 @@ export default class Vocabulary extends Component {
         let num_ex = parseInt(event.target.value);
         let newLex = { ...this.state.current_lex, num_ex: num_ex };
         let lex = this.state.lex;
-        lex[newLex.id] = newLex;
+        lex[newLex.id_fr] = newLex;
         this.setState({
             current_lex: newLex,
             lex: lex,
@@ -144,7 +144,7 @@ export default class Vocabulary extends Component {
         console.log(id_lex);
         let newLex = { ...this.state.current_lex, id_lex: id_lex };
         let lex = this.state.lex;
-        lex[newLex.id] = newLex;
+        lex[newLex.id_fr] = newLex;
         this.setState({
             current_lex: newLex,
             lex: lex,
@@ -166,7 +166,7 @@ export default class Vocabulary extends Component {
         console.log(id_miss);
         let newLex = { ...this.state.current_lex, id_miss: id_miss };
         let lex = this.state.lex;
-        lex[newLex.id] = newLex;
+        lex[newLex.id_fr] = newLex;
         this.setState({
             current_lex: newLex,
             lex: lex,
@@ -183,7 +183,7 @@ export default class Vocabulary extends Component {
         console.log(id_var);
         let newLex = { ...this.state.current_lex, id_var: id_var };
         let lex = this.state.lex;
-        lex[newLex.id] = newLex;
+        lex[newLex.id_fr] = newLex;
         this.setState({
             current_lex: newLex,
             lex: lex,
@@ -193,20 +193,20 @@ export default class Vocabulary extends Component {
     }
 
     addNewLex = () => {
-        let newLex = { id: this.state.lex.length, type_ex: 0, num_ex: 0 };
+        let newLex = { id_fr: this.state.lex.length, id: 0, type_ex: 0, num_ex: 0 };
         let lex = this.state.lex;
-        lex[newLex.id] = newLex;
+        lex[newLex.id_fr] = newLex;
         this.setState({
             lex: lex,
         });
         this.passPropsToParent();
     }
 
-    showCurrentLex = (id) => {
-        switch (this.state.lex[id].type_ex) {
+    showCurrentLex = (id_fr) => {
+        switch (this.state.lex[id_fr].type_ex) {
             case 0:
                 this.setState({
-                    current_lex: this.state.lex[id],
+                    current_lex: this.state.lex[id_fr],
                 });
                 break;
             case 14:
@@ -214,38 +214,38 @@ export default class Vocabulary extends Component {
             case 1:
             case 18:
                 this.setState({
-                    current_lex: this.state.lex[id],
-                    id_lex: this.state.lex[id].id_lex ? this.state.lex[id].id_lex : "",
+                    current_lex: this.state.lex[id_fr],
+                    id_lex: this.state.lex[id_fr].id_lex ? this.state.lex[id_fr].id_lex : "",
                 });
                 break;
             case 2:
             case 7:
                 this.setState({
-                    current_lex: this.state.lex[id],
-                    id_lex: this.state.lex[id].id_lex ? this.state.lex[id].id_lex : "",
+                    current_lex: this.state.lex[id_fr],
+                    id_lex: this.state.lex[id_fr].id_lex ? this.state.lex[id_fr].id_lex : "",
                 });
                 break;
             case 5:
                 this.setState({
-                    current_lex: this.state.lex[id],
-                    id_lex: this.state.lex[id].id_lex ? this.state.lex[id].id_lex : "",
-                    id_miss: this.state.lex[id].id_miss ? this.state.lex[id].id_miss : "",
-                    id_var: this.state.lex[id].id_var ? this.state.lex[id].id_var : "",
+                    current_lex: this.state.lex[id_fr],
+                    id_lex: this.state.lex[id_fr].id_lex ? this.state.lex[id_fr].id_lex : "",
+                    id_miss: this.state.lex[id_fr].id_miss ? this.state.lex[id_fr].id_miss : "",
+                    id_var: this.state.lex[id_fr].id_var ? this.state.lex[id_fr].id_var : "",
                 });
                 break;
             case 15:
                 this.setState({
-                    current_lex: this.state.lex[id],
-                    id_lex: this.state.lex[id].id_lex ? this.state.lex[id].id_lex : "",
-                    id_miss: this.state.lex[id].id_miss ? this.state.lex[id].id_miss : "",
-                    id_var: this.state.lex[id].id_var ? this.state.lex[id].id_var : "",
+                    current_lex: this.state.lex[id_fr],
+                    id_lex: this.state.lex[id_fr].id_lex ? this.state.lex[id_fr].id_lex : "",
+                    id_miss: this.state.lex[id_fr].id_miss ? this.state.lex[id_fr].id_miss : "",
+                    id_var: this.state.lex[id_fr].id_var ? this.state.lex[id_fr].id_var : "",
                 });
                 break;
             case 6:
                 this.setState({
-                    current_lex: this.state.lex[id],
-                    id_lex: this.state.lex[id].id_lex ? this.state.lex[id].id_lex : "",
-                    id_var: this.state.lex[id].id_var ? this.state.lex[id].id_var : "",
+                    current_lex: this.state.lex[id_fr],
+                    id_lex: this.state.lex[id_fr].id_lex ? this.state.lex[id_fr].id_lex : "",
+                    id_var: this.state.lex[id_fr].id_var ? this.state.lex[id_fr].id_var : "",
                 });
                 break;
         }
@@ -253,9 +253,9 @@ export default class Vocabulary extends Component {
 
     getSelectedTypeLex = (event) => {
         let type_ex = parseInt(event.target.value);
-        let newLex = { id: this.state.current_lex.id, type_ex: type_ex, num_ex: 0 };
+        let newLex = { id_fr: this.state.current_lex.id_fr, type_ex: type_ex, id: 0,  num_ex: 0 };
         let lex = this.state.lex;
-        lex[newLex.id] = newLex;
+        lex[newLex.id_fr] = newLex;
         this.setState({
             current_lex: newLex,
             lex: lex,
@@ -271,7 +271,7 @@ export default class Vocabulary extends Component {
         id_lex.push(parseInt(event.target.value));
         let newLex = { ...this.state.current_lex, [event.target.name]: id_lex };
         let lex = this.state.lex;
-        lex[newLex.id] = newLex;
+        lex[newLex.id_fr] = newLex;
         this.setState({
             current_lex: newLex,
             lex: lex,
@@ -280,13 +280,13 @@ export default class Vocabulary extends Component {
         this.passPropsToParent();
     }
 
-    deleteElement = (id) => {
+    deleteElement = (id_fr) => {
         let lex = this.state.lex;
-        lex.splice(id, 1);
+        lex.splice(id_fr, 1);
         for (var i = 0; i < lex.length; i++) {
-            lex[i].id = i;
+            lex[i].id_fr = i;
         }
-        let newLex = { id: null, type_ex: 0, num_ex: 0 };
+        let newLex = { id_fr: null, type_ex: 0, id: 0, num_ex: 0 };
         this.setState({
             lex: lex,
             current_lex: newLex
@@ -309,10 +309,10 @@ export default class Vocabulary extends Component {
                     <Col sm={12}>
                         <Button style={{ width: "190px" }} onClick={this.addNewLex}>Добавить</Button>
                         {this.state.lex.map((obj, i) =>
-                            <Button style={{ width: "190px" }} key={obj.id} color={this.state.current_lex.id === i ? "primary" : "secondary"} onClick={() => this.showCurrentLex(i)}>Буквы-слова {i + 1}</Button>)}
+                            <Button style={{ width: "190px" }} key={obj.id_fr} color={this.state.current_lex.id_fr === i ? "primary" : "secondary"} onClick={() => this.showCurrentLex(i)}>Буквы-слова {i + 1}</Button>)}
                     </Col>
                 </div>
-                {this.state.lex.length === 0 || this.state.current_lex.id === null ? <div></div> :
+                {this.state.lex.length === 0 || this.state.current_lex.id_fr === null ? <div></div> :
                     <div className="col" style={{ marginTop: "1%", width: "100px", height: "450px" }}>
                         <Form>
                             <select className="form-select" style={{ marginBottom: "20px" }} value={this.state.current_lex.type_ex} onChange={this.getSelectedTypeLex}>
@@ -327,7 +327,7 @@ export default class Vocabulary extends Component {
                                 <option value={15}>Задание на выбор букв</option>
                                 <option value={6}>Задание на составление слова</option>
                             </select>
-                            <Button color="danger" onClick={() => this.deleteElement(this.state.current_lex.id)}>Удалить</Button>
+                            <Button color="danger" onClick={() => this.deleteElement(this.state.current_lex.id_fr)}>Удалить</Button>
                             {this.state.current_lex.type_ex === 0 ? <div></div> :
                                 this.state.current_lex.type_ex === 14 ?
                                     <div>

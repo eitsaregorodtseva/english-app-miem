@@ -25,7 +25,7 @@ export default class Dialogs extends Component {
             dialog: [],
             lexemes: [],
             replicas: [],
-            current_dialog: { id: null, type_ex: 0, num_ex: 0 },
+            current_dialog: { id_fr: null, id: 0, type_ex: 0, num_ex: 0 },
             id_rep: "",
             id_miss: "",
             options: [],
@@ -56,7 +56,7 @@ export default class Dialogs extends Component {
         if (this.props.dialog !== this.state.dialog) {
             this.setState({
                 dialog: this.props.dialog,
-                current_dialog: { id: null, type_ex: 0, num_ex: 0 }
+                current_dialog: { id_fr: null, id: 0, type_ex: 0, num_ex: 0 }
             })
         }
         if (this.props.lexemes !== this.state.lexemes) {
@@ -73,7 +73,7 @@ export default class Dialogs extends Component {
         let newDialog = { ...this.state.current_dialog, num_ex: num_ex };
 
         let dialog = this.state.dialog;
-        dialog[newDialog.id] = newDialog;
+        dialog[newDialog.id_fr] = newDialog;
         this.setState({
             current_dialog: newDialog,
             dialog: dialog,
@@ -94,7 +94,7 @@ export default class Dialogs extends Component {
         let newDialog = { ...this.state.current_dialog, id_rep: id_rep };
 
         let dialog = this.state.dialog;
-        dialog[newDialog.id] = newDialog;
+        dialog[newDialog.id_fr] = newDialog;
         this.setState({
             current_dialog: newDialog,
             dialog: dialog,
@@ -115,7 +115,7 @@ export default class Dialogs extends Component {
         }
         let newDialog = { ...this.state.current_dialog, id_miss: id_miss };
         let dialog = this.state.dialog;
-        dialog[newDialog.id] = newDialog;
+        dialog[newDialog.id_fr] = newDialog;
         this.setState({
             current_dialog: newDialog,
             dialog: dialog,
@@ -125,33 +125,33 @@ export default class Dialogs extends Component {
     }
 
     addNewDialog = () => {
-        let newDialog = { id: this.state.dialog.length, type_ex: 0, num_ex: 0 };
+        let newDialog = { id_fr: this.state.dialog.length, id: 0, type_ex: 0, num_ex: 0 };
         let dialog = this.state.dialog;
-        dialog[newDialog.id] = newDialog;
+        dialog[newDialog.id_fr] = newDialog;
         this.setState({
             dialog: dialog,
         });
         this.passPropsToParent();
     }
 
-    showCurrentDialog = (id) => {
-        switch (this.state.dialog[id].type_ex) {
+    showCurrentDialog = (id_fr) => {
+        switch (this.state.dialog[id_fr].type_ex) {
             case 0:
                 this.setState({
-                    current_dialog: this.state.dialog[id],
+                    current_dialog: this.state.dialog[id_fr],
                 });
                 break;
             case 21:
                 this.setState({
-                    current_dialog: this.state.dialog[id],
-                    id_rep: this.state.dialog[id].id_rep ? this.state.dialog[id].id_rep : "",
+                    current_dialog: this.state.dialog[id_fr],
+                    id_rep: this.state.dialog[id_fr].id_rep ? this.state.dialog[id_fr].id_rep : "",
                 });
                 break;
             case 22:
                 this.setState({
-                    current_dialog: this.state.dialog[id],
-                    id_rep: this.state.dialog[id].id_rep ? this.state.dialog[id].id_rep : "",
-                    id_miss: this.state.dialog[id].id_miss ? this.state.dialog[id].id_miss : ""
+                    current_dialog: this.state.dialog[id_fr],
+                    id_rep: this.state.dialog[id_fr].id_rep ? this.state.dialog[id_fr].id_rep : "",
+                    id_miss: this.state.dialog[id_fr].id_miss ? this.state.dialog[id_fr].id_miss : ""
                 });
                 break;
         }
@@ -159,9 +159,9 @@ export default class Dialogs extends Component {
 
     getSelectedTypeDialog = (event) => {
         let type_ex = parseInt(event.target.value);
-        let newDialog = { id: this.state.current_dialog.id, type_ex: type_ex, num_ex: 0 };
+        let newDialog = { id_fr: this.state.current_dialog.id_fr, id: 0, type_ex: type_ex, num_ex: 0 };
         let dialog = this.state.dialog;
-        dialog[newDialog.id] = newDialog;
+        dialog[newDialog.id_fr] = newDialog;
         this.setState({
             current_dialog: newDialog,
             dialog: dialog,
@@ -176,7 +176,7 @@ export default class Dialogs extends Component {
         id_rep.push(parseInt(event.target.value));
         let newDialog = { ...this.state.current_dialog, [event.target.name]: id_rep };
         let dialog = this.state.dialog;
-        dialog[newDialog.id] = newDialog;
+        dialog[newDialog.id_fr] = newDialog;
         this.setState({
             current_dialog: newDialog,
             dialog: dialog,
@@ -185,13 +185,13 @@ export default class Dialogs extends Component {
         this.passPropsToParent();
     }
 
-    deleteElement = (id) => {
+    deleteElement = (id_fr) => {
         let dialog = this.state.dialog;
-        dialog.splice(id, 1);
+        dialog.splice(id_fr, 1);
         for (var i = 0; i < dialog.length; i++) {
-            dialog[i].id = i;
+            dialog[i].id_fr = i;
         }
-        let newDialog = { id: null, type_ex: 0, num_ex: 0 };
+        let newDialog = { id_fr: null, id: 0, type_ex: 0, num_ex: 0 };
         this.setState({
             dialog: dialog,
             current_dialog: newDialog,
@@ -215,10 +215,10 @@ export default class Dialogs extends Component {
                     <Col sm={12}>
                         <Button style={{ width: "190px" }} onClick={() => this.addNewDialog()}>Добавить</Button>
                         {this.state.dialog.map((obj, i) =>
-                            <Button style={{ width: "190px" }} key={obj.id} color={this.state.current_dialog.id === i ? "primary" : "secondary"} onClick={() => this.showCurrentDialog(i)}>Диалог {i + 1}</Button>)}
+                            <Button style={{ width: "190px" }} key={obj.id_fr} color={this.state.current_dialog.id_fr === i ? "primary" : "secondary"} onClick={() => this.showCurrentDialog(i)}>Диалог {i + 1}</Button>)}
                     </Col>
                 </div>
-                {this.state.dialog.length === 0 || this.state.current_dialog.id === null ? <div></div> :
+                {this.state.dialog.length === 0 || this.state.current_dialog.id_fr === null ? <div></div> :
                     <div class="col" style={{ marginTop: "1%", width: "100px", height: "370px" }}>
                         <Form>
                             <select class="form-select" style={{ marginBottom: "20px" }} value={this.state.current_dialog.type_ex} onChange={this.getSelectedTypeDialog}>
@@ -226,7 +226,7 @@ export default class Dialogs extends Component {
                                 <option value={21}>Моделирование диалога</option>
                                 <option value={22}>Задание вставь фразы</option>
                             </select>
-                            <Button color="danger" onClick={() => this.deleteElement(this.state.current_dialog.id)}>Удалить</Button>
+                            <Button color="danger" onClick={() => this.deleteElement(this.state.current_dialog.id_fr)}>Удалить</Button>
                             {this.state.current_dialog.type_ex === 0 ? <div></div> :
                                 this.state.current_dialog.type_ex === 21 ?
                                     <div>

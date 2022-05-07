@@ -9,6 +9,7 @@ import Lesson from './Lesson';
 import '../style.css';
 
 const statuses = ["Пусто     ", "В процессе", "Готов     "];
+const postLesson = 'https://api.unolingua.flareon.ru/forlessonsdto/';
 
 export default class Editing extends Component {
     constructor(props) {
@@ -327,18 +328,69 @@ export default class Editing extends Component {
         let mistakes = 0;
         mistakes = mistakes + this.checkStatuses();
         if (mistakes === 0) {
-            let data = {
-                name_les: this.state.name_les,
-                lessonblock: this.state.id_lb,
-                video: this.state.video.id_video,
-                lesson_info: this.state.statuses,
-                rules: this.state.lesson.rules,
-                lex: this.state.lesson.lex,
-                dialogs: this.state.lesson.dialog,
-                phrases: this.state.lesson.phr,
-                description: this.state.description
-            };
-            console.log(data);
+            if (this.state.id_les === null) {
+                let data = {
+                    name_les: this.state.name_les,
+                    lessonblock: this.state.id_lb,
+                    video: this.state.video.id_video,
+                    lesson_info: this.state.statuses,
+                    rules: this.state.lesson.rules,
+                    lex: this.state.lesson.lex,
+                    dialogs: this.state.lesson.dialog,
+                    phrases: this.state.lesson.phr,
+                    description: this.state.description
+                };
+                console.log(data);
+                axios.post(postLesson, JSON.stringify(data), {
+                    headers: {
+                        Authorization: `Token ${localStorage.token}`,
+                        'Content-Type': 'application/json'
+                    },
+                })
+                    .then((response) => {
+                        console.log(response);
+                        if (response.status === 201) {
+                            toast.success("Урок " + (this.state.name_les) + "успешно создан.")
+                        }
+                    }, (error) => {
+                        console.log(error);
+                        console.log(error.response);
+                        console.log(error.response.data.errors);
+                        toast.error("Не удалось добавить урок.");
+                    });
+            }
+            else {
+                let data = {
+                    name_les: this.state.name_les,
+                    id: this.state.id_les,
+                    lessonblock: this.state.id_lb,
+                    video: this.state.video.id_video,
+                    lesson_info: this.state.statuses,
+                    rules: this.state.lesson.rules,
+                    lex: this.state.lesson.lex,
+                    dialogs: this.state.lesson.dialog,
+                    phrases: this.state.lesson.phr,
+                    description: this.state.description
+                };
+                console.log(data);
+                console.log(postLesson + this.state.id_les + '/');
+                axios.put(postLesson + this.state.id_les + '/', JSON.stringify(data), {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                })
+                    .then((response) => {
+                        console.log(response);
+                        if (response.status === 200) {
+                            toast.success("Урок " + (this.state.name_les) + "успешно изменен.")
+                        }
+                    }, (error) => {
+                        console.log(error);
+                        console.log(error.response);
+                        console.log(error.response.data.errors);
+                        toast.error("Не удалось изменить урок.");
+                    });
+            }  
         }
     }
 
@@ -410,7 +462,7 @@ export default class Editing extends Component {
                         </div>
                         <div style={{ marginTop: "5%" }}>
                             <button disabled class="GreyBox">Описание</button>
-                            <Input style={{ marginTop: "3%", width: "94%" }} type="textarea" rows="4"></Input>
+                            <Input style={{ marginTop: "3%", width: "94%" }} type="textarea" rows="4" onChange={this.handleChange}></Input>
                         </div>
                         <div style={{ marginTop: "5%" }}>
                             <button type="button" class="Cancel" disabled>Отменить</button>
