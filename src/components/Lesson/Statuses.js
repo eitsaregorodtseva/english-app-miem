@@ -1,7 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { React, useState, useEffect } from 'react';
 import { Col, Form, FormGroup, Input, Label } from "reactstrap";
-import '../style.css';
+import '../../style.css';
 
 const status = ["Пусто     ", "В процессе", "Готов     "];
 

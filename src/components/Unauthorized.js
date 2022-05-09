@@ -1,6 +1,6 @@
 import { useHistory } from "react-router-dom";
 import { Button} from "reactstrap";
-import CustomNavbar from './Navbar';
+import CustomNavbar from './Fragments/Navbar';
 import '../style.css';
 
 const Unauthorized = () => {

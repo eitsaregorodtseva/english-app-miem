@@ -3,16 +3,16 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { React, Component } from 'react';
 import { Button, Col, Form, Input, Label, UncontrolledPopover, PopoverBody } from "reactstrap";
 import Select from 'react-select';
-import '../style.css';
-import model_word from "../static/tips/model_word.jpg";
-import model_consonant from "../static/tips/model_consonant.jpg";
-import model_syllable from "../static/tips/model_consonant_2.jpg";
-import model_vowel from "../static/tips/model_vowel.jpg";
-import model_vowel_2 from "../static/tips/model_vowel_2.jpg";
-import leks_syllables from "../static/tips/leks_syllables.jpg";
-import leks_insert_letter from "../static/tips/leks_insert_letter.jpg";
-import leks_insert_letters from "../static/tips/leks_insert_letters.jpg";
-import leks_create_word from "../static/tips/leks_create_word.jpg";
+import '../../style.css';
+import model_word from "../../static/tips/model_word.jpg";
+import model_consonant from "../../static/tips/model_consonant.jpg";
+import model_syllable from "../../static/tips/model_consonant_2.jpg";
+import model_vowel from "../../static/tips/model_vowel.jpg";
+import model_vowel_2 from "../../static/tips/model_vowel_2.jpg";
+import leks_syllables from "../../static/tips/leks_syllables.jpg";
+import leks_insert_letter from "../../static/tips/leks_insert_letter.jpg";
+import leks_insert_letters from "../../static/tips/leks_insert_letters.jpg";
+import leks_create_word from "../../static/tips/leks_create_word.jpg";
 
 
 const numbers = [

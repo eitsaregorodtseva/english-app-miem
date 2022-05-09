@@ -2,9 +2,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { React, Component } from 'react';
 import { Button, Col, Form, Input, Label, UncontrolledPopover, PopoverBody } from "reactstrap";
 import Select from 'react-select';
-import '../style.css';
-import model_dialog from "../static/tips/model_dialog.jpg";
-import dialog_insert_phrases from "../static/tips/dialog_insert_phrases.jpg";
+import '../../style.css';
+import model_dialog from "../../static/tips/model_dialog.jpg";
+import dialog_insert_phrases from "../../static/tips/dialog_insert_phrases.jpg";
 
 const numbers = [
     { value: 1, label: "1" },

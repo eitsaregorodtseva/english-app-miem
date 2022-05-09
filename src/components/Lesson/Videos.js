@@ -2,7 +2,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { React, useState, useEffect } from 'react';
 import { Col } from "reactstrap";
 import Select from 'react-select';
-import '../style.css';
+import '../../style.css';
 
 export default function Videos(props) {
     const [id_video, setVideo] = useState(props.video.id_video);

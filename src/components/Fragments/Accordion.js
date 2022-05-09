@@ -3,7 +3,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import React, { useState } from 'react';
 import { FormGroup, Badge, Col, List, Label } from "reactstrap";
 import { Link } from 'react-router-dom';
-import '../style.css';
+import '../../style.css';
 
 const statuses = ["Пусто     ", "В процессе", "Готов     "];
 

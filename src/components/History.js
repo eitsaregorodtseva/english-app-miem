@@ -2,8 +2,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { React, Component } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { Spinner } from 'reactstrap';
-import CustomNavbar from './Navbar';
-import Table from './Table';
+import CustomNavbar from './Fragments/Navbar';
+import Table from './Fragments/Table';
 import '../style.css';
 
 const rows = 10;

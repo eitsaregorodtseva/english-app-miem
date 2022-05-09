@@ -1,7 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useHistory } from 'react-router-dom';
 import { Navbar, Nav, NavItem, Button } from "reactstrap";
-import exit from '../static/icons/logout.svg';
+import exit from '../../static/icons/logout.svg';
 
 const NavbarStyle = {
     backgroundColor: '#84C7AE',

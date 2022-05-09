@@ -4,8 +4,8 @@ import { Col, Form, FormGroup, Input, Label } from "reactstrap";
 import { Link } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
 import axios from 'axios';
-import CustomNavbar from './Navbar';
-import Lesson from './Lesson';
+import CustomNavbar from './Fragments/Navbar';
+import Lesson from './Lesson/Lesson.js';
 import '../style.css';
 
 const statuses = ["Пусто     ", "В процессе", "Готов     "];

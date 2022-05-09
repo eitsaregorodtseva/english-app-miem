@@ -2,7 +2,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { React, useState, useEffect } from 'react';
 import { Col, Form, FormGroup, Input } from "reactstrap";
 import toast, { Toaster } from 'react-hot-toast';
-import CustomNavbar from './Navbar';
+import CustomNavbar from './Fragments/Navbar';
 import axios from 'axios';
 import '../style.css';
 

@@ -2,11 +2,11 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { React, Component } from 'react';
 import { Button, Col, Form, Input, Label, UncontrolledPopover, PopoverBody } from "reactstrap";
 import Select from 'react-select';
-import '../style.css';
-import model_phrase from "../static/tips/model_phrase.jpg";
-import model_phrase_2 from "../static/tips/model_phrase_2.jpg";
-import phrase_create_word from "../static/tips/phrase_create_word.jpg";
-import phrase_insert_words from "../static/tips/phrase_insert_words.jpg";
+import '../../style.css';
+import model_phrase from "../../static/tips/model_phrase.jpg";
+import model_phrase_2 from "../../static/tips/model_phrase_2.jpg";
+import phrase_create_word from "../../static/tips/phrase_create_word.jpg";
+import phrase_insert_words from "../../static/tips/phrase_insert_words.jpg";
 
 const numbers = [
     { value: 1, label: "1" },

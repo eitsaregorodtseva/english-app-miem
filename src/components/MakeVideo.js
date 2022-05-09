@@ -1,7 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { React, Component } from 'react';
 import { Col, Form, FormGroup, Label, Button, Input } from "reactstrap";
-import CustomNavbar from './Navbar';
+import CustomNavbar from './Fragments/Navbar';
 import Select from 'react-select';
 import toast, { Toaster } from 'react-hot-toast';
 import axios from 'axios';

@@ -3,8 +3,8 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { React, Component } from 'react';
 import { Spinner } from "reactstrap";
 import { Link } from 'react-router-dom';
-import CustomNavbar from './Navbar';
-import Accordion from './Accordion';
+import CustomNavbar from './Fragments/Navbar';
+import Accordion from './Fragments/Accordion';
 import '../style.css';
 
 export default class Cabinet extends Component {

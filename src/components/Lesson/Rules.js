@@ -1,13 +1,13 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { React, Component } from 'react';
 import { Button, Col, Form, Input, Label, UncontrolledPopover, PopoverBody } from "reactstrap";
-import Modal from './Modal';
+import Modal from '../Modal';
 import Select from 'react-select';
-import '../style.css';
-import model_rule from "../static/tips/model_rule.jpg";
-import model_rule_2 from "../static/tips/model_rule_2.jpg";
-import task_rule from "../static/tips/task_rule.jpg";
-import task_rule_2 from "../static/tips/task_rule_2.jpg";
+import '../../style.css';
+import model_rule from "../../static/tips/model_rule.jpg";
+import model_rule_2 from "../../static/tips/model_rule_2.jpg";
+import task_rule from "../../static/tips/task_rule.jpg";
+import task_rule_2 from "../../static/tips/task_rule_2.jpg";
 
 export default class Rules extends Component {
     constructor(props) {

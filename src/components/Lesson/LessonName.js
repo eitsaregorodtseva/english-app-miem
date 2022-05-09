@@ -1,7 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { React, useState, useEffect } from 'react';
 import { Col, Input, Label } from 'reactstrap';
-import '../style.css';
+import '../../style.css';
 
 export default function LessonName(props) {
     const [name_les, setName] = useState(props.name_les.les);

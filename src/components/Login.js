@@ -3,7 +3,7 @@ import axios from 'axios';
 import { React, useState } from 'react';
 import { useHistory } from "react-router-dom";
 import { Col, Form, FormGroup, Input } from "reactstrap";
-import CustomNavbar from './Navbar';
+import CustomNavbar from './Fragments/Navbar';
 import '../style.css';
 
 const loginUrl = 'https://api.unolingua.flareon.ru/auth/users/login/';

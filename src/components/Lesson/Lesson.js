@@ -7,7 +7,7 @@ import Phrases from './Phrases';
 import Rules from './Rules';
 import Dialogs from './Dialogs';
 import Statuses from './Statuses';
-import '../style.css';
+import '../../style.css';
 import LessonName from './LessonName';
 
 export default class Lesson extends Component {
