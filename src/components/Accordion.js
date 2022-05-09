@@ -37,7 +37,6 @@ const Accordion = ({ header, content, blocks, lexemes, replicas, videos }) => {
                                 }}}>
                                 <button type="button" className="EditLesson">Редактировать</button>
                             </Link>
-                            <button class="ViewLesson">Просмотр</button>
                         </div>
                         <div style={{ marginTop: "5%" }}>
                             <List>
