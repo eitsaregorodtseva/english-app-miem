@@ -2,7 +2,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { React, Component } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { ListGroup, ListGroupItem } from "reactstrap";
-import { Link, Redirect } from 'react-router-dom';
 import CustomNavbar from './Navbar';
 import tasks from '../static/icons/tasks.svg';
 import profile from '../static/icons/profile.svg';
@@ -10,6 +9,7 @@ import analytics from '../static/icons/analytics.svg';
 import history from '../static/icons/history.svg';
 import edit from '../static/icons/edit.svg';
 import new_admin from '../static/icons/new_admin.svg';
+import make_video from '../static/icons/make_video.svg';
 import '../style.css';
 
 const getBlocksUrl = 'https://api.unolingua.flareon.ru/lessonblocks/';
@@ -518,6 +518,15 @@ export default class Menu extends Component {
                             <img src={new_admin} alt="" />
                             <span style={{ paddingRight: "20px" }}>
                                 Новый администратор</span>
+                        </ListGroupItem>
+                        <ListGroupItem
+                            action
+                            href="/make_video"
+                            tag="a"
+                            style={MenuItems}>
+                            <img src={make_video} alt="" />
+                            <span style={{ paddingRight: "20px" }}>
+                                Создать видео</span>
                         </ListGroupItem>
                     </ListGroup>
                 </div>

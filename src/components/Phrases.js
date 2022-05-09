@@ -99,7 +99,7 @@ export default class Phrases extends Component {
         let num_ex = parseInt(event.target.value);
         let newPhr = { ...this.state.current_phr, num_ex: num_ex };
         let phr = this.state.phr;
-        phr[newPhr.id] = newPhr;
+        phr[newPhr.id_fr] = newPhr;
         this.setState({
             current_phr: newPhr,
             phr: phr,

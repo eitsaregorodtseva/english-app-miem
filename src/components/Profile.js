@@ -7,27 +7,6 @@ import Table from './Table';
 import '../style.css';
 
 const rows = 10;
-const data = null;
-const tableData = [{ date: 10, description: 22 },
-{ date: 17, description: 24 },
-{ date: 1, description: 2 },
-{ date: 1, description: 2 },
-{ date: 17, description: 2 },
-{ date: 1, description: 2 },
-{ date: 1, description: 2 },
-{ date: 12, description: 2 },
-{ date: 1, description: 2 },
-{ date: 1, description: 2 },
-{ date: 1, description: 2 },
-{ date: 17, description: 24 },
-{ date: 1, description: 2 },
-{ date: 1, description: 2 },
-{ date: 17, description: 2 },
-{ date: 1, description: 2 },
-{ date: 1, description: 2 },
-{ date: 12, description: 2 },
-{ date: 1, description: 2 },
-{ date: 1, description: 2 }];
 
 const columns = [
     { label: "Дата изменений", accessor: "date", sortable: true },
@@ -38,9 +17,9 @@ export default class Profile extends Component {
     constructor() {
         super();
         this.state = {
-            tableData: null,
-            data_part: null,
-            columns: null,
+            tableData: [],
+            data_part: [],
+            columns: [],
             count: 0
         }
         this.getData = this.getData.bind(this);
@@ -58,32 +37,30 @@ export default class Profile extends Component {
                     data: data
                 });
             })*/
-        //let data_part = data.slice(0, 5);
-        //let data_part = data_1.slice(0, 5);
-        let data_part = data === null ? null : data.slice(0, rows);
-        let count = data === null ? 0 : Math.ceil(data.length / rows);
+        let data = [];
+        let data_part = data.length === 0 ? [] : data.slice(0, rows);
+        let count = data.length === 0 ? 0 : Math.ceil(data.length / rows);
         this.setState({
             tableData: data,
             data_part: data_part,
             count: count
         });
-        //this.setState({ data: data });
         toast.success("Данные получены.");
-        this.intervalGetData = setInterval(this.getData, 10000);
+        this.intervalGetData = setInterval(this.getData, 1000);
     }
 
     async getData() {
         /*const response = await fetch(getDataUrl);
         const data = await response.json();
-        console.log(data);*/
-        let data_part = tableData === null ? null : tableData.slice(0, rows);
-        let count = tableData === null ? 0 : Math.ceil(tableData.length / rows);
+        console.log(data);
+        let data_part = data.length === 0 ? [] : data.slice(0, rows);
+        let count = data.length === 0 ? 0 : Math.ceil(data.length / rows);
         this.setState({
-            tableData: tableData,
+            tableData: data,
             data_part: data_part,
             count: count
         });
-        toast.success("Данные получены.");
+        toast.success("Данные получены.");*/
     }
 
     componentWillUnmount = () => {
@@ -117,18 +94,6 @@ export default class Profile extends Component {
                                     disabled />
                             </Col>
                         </FormGroup>
-                        {/*<FormGroup row style={{ marginTop: "20px" }}>
-                            <Label for="last_name" sm={2}>
-                                Фамилия
-                            </Label>
-                            <Col sm={10}>
-                                <Input style={{ width: "40%", borderRadius: "10px" }}
-                                    id="last_name"
-                                    name="last_name"
-                                    type="text"
-                                    disabled />
-                            </Col>
-        </FormGroup>*/}
                         <FormGroup row style={{ marginTop: "20px" }}>
                             <Label sm={2}>
                                 Email

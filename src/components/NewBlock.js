@@ -192,7 +192,13 @@ export default class NewBlock extends Component {
     handleSubmit = (event) => {
         event.preventDefault();
         let mistakes = 0;
-        mistakes = mistakes + this.checkStatuses();
+        if (this.state.add_button_hidden === false) {
+            mistakes = mistakes + 1;
+            toast.error("Добавьте урок!")
+        }
+        else {
+            mistakes = mistakes + this.checkStatuses();
+        }
         if (mistakes === 0) {
             let data = {
                 name_les: this.state.name_les.les,

@@ -14,11 +14,12 @@ export default function Table(props) {
         count: props.count,
         firstButton: true,
         prevButton: true,
-        nextButton: false,
-        lastButton: false
+        nextButton: props.count === 1 ? true : false,
+        lastButton: props.count === 1 ? true : false
     });
 
     useEffect(() => {
+        console.log(props)
         setTableData(props.data);
         setColumns(props.columns);
         setState(previousState => ({
@@ -26,6 +27,8 @@ export default function Table(props) {
             page: 0,
             count: props.count,
             data_part: props.data_part,
+            nextButton: props.count === 1 ? true : false,
+            lastButton: props.count === 1 ? true : false
         }))
     }, [props])
 
@@ -117,25 +120,27 @@ export default function Table(props) {
 
     return (
         <div>
+            <div style={{ width: "100%", overflow: "auto" }} >
             <table className="table">
                 <TableHead columns={columns} handleSorting={handleSorting} />
                 <TableBody columns={columns} data={state.data_part} />
             </table>
+            </div>
             <Pagination>
-                    <PaginationItem disabled={state.firstButton}>
-                        <PaginationLink first onClick={firstPage} />
-                    </PaginationItem>
-                    <PaginationItem disabled={state.prevButton} >
-                        <PaginationLink previous onClick={previousPage} />
-                    </PaginationItem>
-                    <PaginationItem disabled={state.nextButton}>
-                        <PaginationLink next onClick={nextPage} />
-                    </PaginationItem>
-                    <PaginationItem disabled={state.lastButton}>
-                        <PaginationLink last onClick={lastPage} />
-                    </PaginationItem>
-                    <div style={{ marginLeft: "10px", marginTop: "9px" }}><nav>Страница {state.page + 1} из {state.count}</nav></div>
-                </Pagination>
+                <PaginationItem disabled={state.firstButton}>
+                    <PaginationLink first onClick={firstPage} />
+                </PaginationItem>
+                <PaginationItem disabled={state.prevButton} >
+                    <PaginationLink previous onClick={previousPage} />
+                </PaginationItem>
+                <PaginationItem disabled={state.nextButton}>
+                    <PaginationLink next onClick={nextPage} />
+                </PaginationItem>
+                <PaginationItem disabled={state.lastButton}>
+                    <PaginationLink last onClick={lastPage} />
+                </PaginationItem>
+                <div style={{ marginLeft: "10px", marginTop: "9px" }}><nav>Страница {state.page + 1} из {state.count}</nav></div>
+            </Pagination>
         </div>
     );
 };

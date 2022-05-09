@@ -51,7 +51,7 @@ export default class Editing extends Component {
             }
             let video = { id_video: current_lesson.video };
             console.log(current_lesson.lesson);
-            let name_les = {les: current_lesson.name_les};
+            let name_les = { les: current_lesson.name_les };
             this.setState({
                 blocks: this.props.location.state.blocks,
                 lexemes: this.props.location.state.lexemes,
@@ -120,12 +120,20 @@ export default class Editing extends Component {
     deleteLesson = () => {
         console.log(this.state.id_lb);
         console.log(this.state.id_les);
-        axios.delete('https://api.unolingua.flareon.ru/lessons/' + this.state.id_les)
-            .then((response) => {
-                console.log(response);
-            }, (error) => {
-                console.log(error);
-            });;
+        if (this.state.lesson.lex.length !== 0 || this.state.lesson.phr.length !== 0 ||
+            this.state.lesson.dialog.length !== 0 || this.state.lesson.rules.length !== 0) {
+            toast.error("Нельзя удалить не пустой урок!")
+        }
+        else {
+            axios.delete('https://api.unolingua.flareon.ru/lessons/' + this.state.id_les)
+                .then((response) => {
+                    console.log(response);
+                    toast.success("Урок " + (this.state.name_les.les) + " был успешно удален.");
+                }, (error) => {
+                    console.log(error);
+                    toast.error("Ошибка!")
+                });;
+        }
     }
 
     blockChange = (id_lb) => {
@@ -144,7 +152,7 @@ export default class Editing extends Component {
         this.setState({
             id_lb: id_lb,
             id_les: null,
-            name_les: {les: ""},
+            name_les: { les: "" },
             lesson_info: lesson_info,
             current_lesson: [],
             buttonsState: buttonsState,
@@ -166,7 +174,7 @@ export default class Editing extends Component {
             }
             lessonState = false;
         }
-        let name_les = {les: current_lesson.name_les};
+        let name_les = { les: current_lesson.name_les };
         let video = { id_video: current_lesson.video };
         console.log(current_lesson.lesson)
         this.setState({
@@ -460,9 +468,10 @@ export default class Editing extends Component {
                             name_les={this.state.name_les}
                             video={this.state.video}
                             parentCallback={this.handleCallback} />
-                        <div style={{ marginTop: "5%" }}>
-                            <button type="button" class="DeleteLesson" onClick={this.deleteLesson}>Удалить урок</button>
-                        </div>
+                        {this.state.emptyLessonState === false ? <div></div> :
+                            <div style={{ marginTop: "5%" }}>
+                                <button type="button" class="DeleteLesson" onClick={this.deleteLesson}>Удалить урок</button>
+                            </div>}
                         <div style={{ marginTop: "5%" }}>
                             <button disabled class="GreyBox">Описание</button>
                             <Input style={{ marginTop: "3%", width: "94%" }} type="textarea" name="description" rows="4" onChange={this.handleChange} required></Input>

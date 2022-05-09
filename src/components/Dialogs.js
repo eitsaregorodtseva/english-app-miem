@@ -279,8 +279,9 @@ export default class Dialogs extends Component {
                                                 <Col sm={9}>
                                                     <Select
                                                         options={this.state.options}
+                                                        isMulti
                                                         value={this.state.options.filter(this.filterOptions, this.state.id_rep)}
-                                                        className="basic-single"
+                                                        className="basic-multiple-select"
                                                         classNamePrefix="select"
                                                         onChange={this.handleChangeMultiple}
                                                         placeholder="Выберите реплики для диалога"

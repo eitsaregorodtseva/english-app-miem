@@ -1,26 +1,49 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { React, Component } from 'react';
-import { Col, Form, FormGroup, Label, Button } from "reactstrap";
+import { Col, Form, FormGroup, Label, Button, Input } from "reactstrap";
 import CustomNavbar from './Navbar';
+import Select from 'react-select';
+import toast, { Toaster } from 'react-hot-toast';
+import axios from 'axios';
 import '../style.css';
 
-const basic_actions = ["Идти", "Бежать", "Смотреть"];
+const getCommands = 'https://api.unolingua.flareon.ru/api/makevideo/showcommands/';
+const postCommands = 'https://api.unolingua.flareon.ru/api/makevideo/video/';
 
 export default class MakeVideo extends Component {
     constructor() {
         super();
         this.state = {
+            video_name: "",
+            options: [],
             selectors: [/*{ id: 1, value: "1" }, { id: 2, value: "2" }*/],
             current_selector: [{ id: null, value: "" }],
         }
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.addNewAction = this.addNewAction.bind(this);
     }
 
-    handleChange(event) {
-        let newAction = { ...this.state.current_selector, value: event.target.value };
-        newAction.id = event.target.getAttribute("data-key");
+    componentDidMount() {
+        fetch(getCommands)
+            .then((response) => {
+                console.log(response);
+                return response.json();
+            })
+            .then((data) => {
+                console.log(data);
+                let options = [];
+                for (var i = 0; i < data.length; i++) {
+                    options.push({ value: data[i], label: data[i] })
+                }
+                this.setState({
+                    options: options
+                });
+            });
+    }
+
+    handleChange = (event, id) => {
+        console.log(event);
+        console.log(id);
+        let newAction = { ...this.state.current_selector, value: event.value };
+        newAction.id = id;
         let selectors = this.state.selectors;
         selectors[newAction.id - 1].value = newAction.value;
         this.setState({
@@ -29,24 +52,54 @@ export default class MakeVideo extends Component {
         });
     }
 
-    handleSubmit(event) {
+    handleChangeVideo = (event) => {
+        this.setState({ [event.target.name]: event.target.value });
+    }
+
+    checkSelectors = () => {
+        let mistakes = 0;
+        for (var i = 0; i < this.state.selectors.length; i++) {
+            if (this.state.selectors[i].value === "") {
+                mistakes = mistakes + 1;
+                toast.error("Не выбрано действие " + (this.state.selectors[i].id) + "!");
+            }
+        }
+        return mistakes;
+    }
+
+    handleSubmit = (event) => {
         event.preventDefault();
-        let actions = this.state.selectors;
-        console.log(actions);
-        /*axios.post('', { actions },
+        let actions = [];
+        let mistakes = this.checkSelectors();
+        if (mistakes === 0) {
+            for (var i = 0; i < this.state.selectors.length; i++) {
+                actions.push(this.state.selectors[i].value)
+            }
+        }
+        let video = {
+            name_video: this.state.video_name,
+            commands: actions
+        }
+        console.log(video);
+        axios.post(postCommands, JSON.stringify(video),
             {
                 headers: {
+                    Authorization: `Token ${localStorage.token}`,
                     'Content-Type': 'application/json'
                 },
             })
             .then((response) => {
                 console.log(response);
+                if (response.status === 201) {
+                    toast.success("Команды для видео " + (this.state.video_name) + " успешно добавлены.")
+                }
             }, (error) => {
                 console.log(error);
-            })*/
+                toast.error("Ошибка!");
+            })
     }
 
-    addNewAction() {
+    addNewAction = () => {
         let newSelectors = this.state.selectors;
         newSelectors.push(
             {
@@ -59,31 +112,39 @@ export default class MakeVideo extends Component {
     render() {
         return (
             <div class="Container">
-                <header><CustomNavbar /></header>
+                <header><CustomNavbar login={false}/></header>
                 <div style={{ marginTop: "100px" }}>
-                    <div>
-                        <Button style={{marginLeft: "10%", marginBottom: "3%"}} onClick={this.addNewAction}>Добавить новое действие</Button>
-                    </div>
                     <Form onSubmit={this.handleSubmit}>
-                        {this.state.selectors.length === 0 ? <div></div> :
-                            this.state.selectors.map((obj, i) =>
-                                <FormGroup row>
-                                    <Label sm={3}>Действие {obj.id}</Label>
-                                    <Col sm={3}>
-                                        <select style={{marginLeft: "10%", marginTop: "5%"}} data-key={obj.id} name="selector" value={obj.value} onChange={this.handleChange}>
-                                            <option>Выберите действие</option>
-                                            {basic_actions.map((obj, j) =>
-                                                <option value={j}>{basic_actions[j]}</option>
-                                            )}
-                                        </select>
-                                    </Col>
-                                </FormGroup>
-                            )}
-                        {this.state.selectors.length === 0 ? <div></div> : 
-                        <Button style={{marginLeft: "15%", marginTop: "3%"}} /*type="submit"*/ onClick={this.handleSubmit}>Применить</Button>}
+                        <div style={{ marginLeft: "10%"}}>
+                            <Col sm={4} style={{ marginBottom: "3%" }} >
+                                <Input name="video_name" value={this.state.video_name} type="text" placeholder="Название видео" onChange={this.handleChangeVideo} required />
+                            </Col>
+                            <Button style={{ marginBottom: "3%" }} onClick={this.addNewAction}>Добавить новое действие</Button>
+                            {this.state.selectors.length === 0 ? <div></div> :
+                                this.state.selectors.map((obj, i) =>
+                                    <FormGroup row key={obj.id}>
+                                        <Label sm={2}>Команда {obj.id}</Label>
+                                        <Col sm={7}>
+                                            <Select
+                                                options={this.state.options}
+                                                name="colors"
+                                                value={this.state.options.filter(command => command.value === obj.value)}
+                                                className="basic-single"
+                                                classNamePrefix="select"
+                                                onChange={(e) => this.handleChange(e, obj.id)}
+                                                placeholder="Выберите команду"
+                                                required
+                                            />
+                                        </Col>
+                                    </FormGroup>
+                                )}
+                            {this.state.selectors.length === 0 ? <div></div> :
+                                <Button type="submit">Создать</Button>}
+                        </div>
                     </Form>
-                </div>
-            </div>
+                </div >
+                <Toaster position="bottom-right" />
+            </div >
         )
     }
 }

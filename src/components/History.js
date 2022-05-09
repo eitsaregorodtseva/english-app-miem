@@ -7,29 +7,9 @@ import Table from './Table';
 import '../style.css';
 
 const rows = 10;
-const tableData = [{ name: 10, date: 22, description: 23 },
-{ name: "try", date: 24, description: "Раз" },
-{ name: 1, date: 2, description: "Два" },
-{ name: 1, date: 2, description: "Три" },
-{ name: 17, date: 2, description: "gdfgdgfdg" },
-{ name: 1, date: 2, description: "gdfgdgfdg" },
-{ name: 1, date: 2, description: "gdfgdgfdg" },
-{ name: 12, date: 2, description: "gdfgdgfdg" },
-{ name: 1, date: 2, description: "gdfgdgfdg" },
-{ name: 1, date: 2, description: "gdfgdgfdg" },
-{ name: 1, date: 2, description: "gdfgdgfdg" },
-{ name: 17, date: 24, description: "gdfgdgfdg" },
-{ name: 1, date: 2, description: "gdfgdgfdg" },
-{ name: 1, date: 2, description: "gdfgdgfdg" },
-{ name: 17, date: 2, description: "gdfgdgfdg" },
-{ name: 1, date: 2, description: "gdfgdgfdg" },
-{ name: 1, date: 2, description: "gdfgdgfdg" },
-{ name: 12, date: 2, description: "gdfgdgfdg" },
-{ name: 1, date: 2, description: "gdfgdgfdg" },
-{ name: 1, date: 2, description: "gdfgdgfdg" }];
 
 const columns = [
-    { label: "Имя администратора", accessor: "name", sortable: true },
+    { label: "Администратор", accessor: "name", sortable: true },
     { label: "Дата изменения", accessor: "date", sortable: true },
     { label: "Описание", accessor: "description", sortable: true },
 ];
@@ -38,9 +18,9 @@ export default class History extends Component {
     constructor() {
         super();
         this.state = {
-            tableData: null,
-            data_part: null,
-            columns: null,
+            tableData: [],
+            data_part: [],
+            columns: [],
             count: 0
         }
         this.getData = this.getData.bind(this);
@@ -58,29 +38,30 @@ export default class History extends Component {
                     data: data
                 });
             })*/
-        let data_part = tableData === null ? null : tableData.slice(0, rows);
-        let count = tableData === null ? 0 : Math.ceil(tableData.length / rows);
+        let data = [];
+        let data_part = data.length === 0 ? [] : data.slice(0, rows);
+        let count = data.length === 0 ? 0 : Math.ceil(data.length / rows);
         this.setState({
-            tableData: tableData,
+            tableData: data,
             data_part: data_part,
             count: count
         });
         toast.success("Данные получены.");
-        this.intervalGetData = setInterval(this.getData, 10000);
+        this.intervalGetData = setInterval(this.getData, 1000);
     }
 
     async getData() {
         /*const response = await fetch(getDataUrl);
         const data = await response.json();
-        console.log(data);*/
-        let data_part = tableData === null ? null : tableData.slice(0, rows);
-        let count = tableData === null ? 0 : Math.ceil(tableData.length / rows);
+        console.log(data);
+        let data_part = data.length === 0 ? [] : data.slice(0, rows);
+        let count = data.length === 0 ? 0 : Math.ceil(data.length / rows);
         this.setState({
-            tableData: tableData,
+            tableData: data,
             data_part: data_part,
             count: count
         });
-        toast.success("Данные получены.");
+        toast.success("Данные получены.");*/
     }
 
     componentWillUnmount = () => {
@@ -88,8 +69,8 @@ export default class History extends Component {
     };
 
     render() {
-        return(
-            <div class = "Container" >
+        return (
+            <div class="Container" >
                 <header><CustomNavbar login={false} /></header>
                 <div style={{ marginTop: "100px" }}>
                     <nav aria-label="breadcrumb">
@@ -110,5 +91,5 @@ export default class History extends Component {
                 <Toaster position="bottom-right" />
             </div >
         )
-    }  
+    }
 }
