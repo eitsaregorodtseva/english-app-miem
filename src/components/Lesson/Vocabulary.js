@@ -73,7 +73,7 @@ export default class Vocabulary extends Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        //console.log(this.props);
+        console.log(this.props);
         if (this.props.lex !== this.state.lex) {
             this.setState({
                 lex: this.props.lex,
@@ -331,7 +331,7 @@ export default class Vocabulary extends Component {
                             {this.state.current_lex.type_ex === 0 ? <div></div> :
                                 this.state.current_lex.type_ex === 14 ?
                                     <div>
-                                        <div style={{ paddingBottom: "10px" }}>
+                                        <div style={{ paddingLeft: "530px", paddingBottom: "10px" }}>
                                             <Button id="Popover2" type="button">Подсказка</Button>
                                             <UncontrolledPopover placement="right" target="Popover2" trigger="focus">
                                                 <PopoverBody row="true">

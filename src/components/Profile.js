@@ -83,7 +83,7 @@ export default class Profile extends Component {
                     <Form>
                         <FormGroup row style={{ marginTop: "5%" }}>
                             <Label sm={2}>
-                                Username
+                                Username:
                             </Label>
                             <Col sm={7}>
                                 <Input style={{ width: "40%", borderRadius: "10px" }}
@@ -96,7 +96,7 @@ export default class Profile extends Component {
                         </FormGroup>
                         <FormGroup row style={{ marginTop: "20px" }}>
                             <Label sm={2}>
-                                Email
+                                Email:
                             </Label>
                             <Col sm={7}>
                                 <Input style={{ width: "40%", borderRadius: "10px" }}

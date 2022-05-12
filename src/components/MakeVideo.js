@@ -112,18 +112,29 @@ export default class MakeVideo extends Component {
     render() {
         return (
             <div class="Container">
-                <header><CustomNavbar login={false}/></header>
+                <header><CustomNavbar login={false} /></header>
                 <div style={{ marginTop: "100px" }}>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/menu">Меню</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Создать видео</li>
+                        </ol>
+                    </nav>
+                </div>
+                <div style={{ marginTop: "5%" }}>
                     <Form onSubmit={this.handleSubmit}>
-                        <div style={{ marginLeft: "10%"}}>
-                            <Col sm={4} style={{ marginBottom: "3%" }} >
-                                <Input name="video_name" value={this.state.video_name} type="text" placeholder="Название видео" onChange={this.handleChangeVideo} required />
-                            </Col>
+                        <div>
+                            <FormGroup row>
+                                <Label sm={2}>Название видео:</Label>
+                                <Col sm={4} style={{ marginBottom: "3%" }} >
+                                    <Input name="video_name" value={this.state.video_name} type="text" placeholder="Введите название" onChange={this.handleChangeVideo} required />
+                                </Col>
+                            </FormGroup>
                             <Button style={{ marginBottom: "3%" }} onClick={this.addNewAction}>Добавить новое действие</Button>
                             {this.state.selectors.length === 0 ? <div></div> :
                                 this.state.selectors.map((obj, i) =>
                                     <FormGroup row key={obj.id}>
-                                        <Label sm={2}>Команда {obj.id}</Label>
+                                        <Label sm={2}>Команда {obj.id}:</Label>
                                         <Col sm={7}>
                                             <Select
                                                 options={this.state.options}

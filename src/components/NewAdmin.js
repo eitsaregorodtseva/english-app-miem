@@ -82,7 +82,7 @@ export default function NewAdmin() {
                                 id="username"
                                 name="username"
                                 type="text"
-                                placeholder="Юзернейм"
+                                placeholder="Username"
                                 onChange={(e) => setUserName(e.target.value)}
                                 value={username}
                                 required />

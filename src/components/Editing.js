@@ -60,7 +60,7 @@ export default class Editing extends Component {
                 id_lb: this.props.location.state.id_lb,
                 id_les: this.props.location.state.id_les,
                 name_les: name_les,
-                lesson: [current_lesson.lesson],
+                lesson: current_lesson.lesson,
                 video: video,
                 lesson_info: lesson_info,
                 current_lesson: current_lesson,
@@ -441,9 +441,9 @@ export default class Editing extends Component {
                     </div>
                     <div row hidden={this.state.buttonsState}>
                         <Button color={this.state.emptyLessonState === false ? "primary" : "secondary"} type="button" onClick={this.openEmptyLesson}>Новый урок</Button>
-                        <Button color={this.state.selectState === false ? "primary" : "secondary"} type="button" onClick={this.openLessonSelect}>Выбрать урок</Button>
+                        <Button style={{marginLeft: "5%"}} color={this.state.selectState === false ? "primary" : "secondary"} type="button" onClick={this.openLessonSelect}>Выбрать урок</Button>
                     </div>
-                    <div style={{ marginTop: "5%" }}>
+                    <div style={{ marginTop: "2%" }}>
                         <div class="row" row hidden={this.state.selectState}>
                             <FormGroup row>
                                 {/*<Label sm={3}>Выберите номер урока:</Label>*/}
@@ -476,8 +476,8 @@ export default class Editing extends Component {
                             <button disabled class="GreyBox">Описание</button>
                             <Input style={{ marginTop: "3%", width: "94%" }} type="textarea" name="description" rows="4" onChange={this.handleChange} required></Input>
                         </div>
-                        <div style={{ marginTop: "5%" }}>
-                            <button type="button" class="Cancel" disabled>Отменить</button>
+                        <div style={{ marginTop: "5%", marginLeft: "37%" }}>
+                            {/*<button type="button" class="Cancel" disabled>Отменить</button>*/}
                             <button class="Save" type="submit">Сохранить</button>
                         </div>
                     </div>

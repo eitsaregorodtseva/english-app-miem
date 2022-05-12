@@ -37,6 +37,7 @@ export default class Lesson extends Component {
     }
 
     componentDidMount() {
+        console.log(this.props);
         let options = [];
         let options_letters = [];
         let options_syllables = [];
@@ -142,7 +143,7 @@ export default class Lesson extends Component {
     render() {
         return (
             <div>
-                <div style={{ marginTop: "7%" }}>
+                <div style={{ marginTop: "3%" }}>
                     <button disabled className="GreyBox">Урок 1</button>
                     <LessonName name_les={this.state.name_les} />
                     <div style={{ marginTop: "5%", marginLeft: "3%", overflow: "auto", width: "90%", minWidth: "600px" }} >
