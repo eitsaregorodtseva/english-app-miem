@@ -70,33 +70,34 @@ export default class MakeVideo extends Component {
     handleSubmit = (event) => {
         event.preventDefault();
         let actions = [];
-        let mistakes = this.checkSelectors();
+        let mistakes = 0;
+        mistakes = mistakes + this.checkSelectors();
         if (mistakes === 0) {
             for (var i = 0; i < this.state.selectors.length; i++) {
                 actions.push(this.state.selectors[i].value)
             }
+            let video = {
+                name_video: this.state.video_name,
+                commands: actions
+            }
+            console.log(video);
+            axios.post(postCommands, JSON.stringify(video),
+                {
+                    headers: {
+                        Authorization: `Token ${localStorage.token}`,
+                        'Content-Type': 'application/json'
+                    },
+                })
+                .then((response) => {
+                    console.log(response);
+                    if (response.status === 201) {
+                        toast.success("Команды для видео " + (this.state.video_name) + " успешно добавлены.")
+                    }
+                }, (error) => {
+                    console.log(error);
+                    toast.error("Ошибка!");
+                })
         }
-        let video = {
-            name_video: this.state.video_name,
-            commands: actions
-        }
-        console.log(video);
-        axios.post(postCommands, JSON.stringify(video),
-            {
-                headers: {
-                    Authorization: `Token ${localStorage.token}`,
-                    'Content-Type': 'application/json'
-                },
-            })
-            .then((response) => {
-                console.log(response);
-                if (response.status === 201) {
-                    toast.success("Команды для видео " + (this.state.video_name) + " успешно добавлены.")
-                }
-            }, (error) => {
-                console.log(error);
-                toast.error("Ошибка!");
-            })
     }
 
     addNewAction = () => {
