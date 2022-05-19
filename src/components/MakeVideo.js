@@ -1,6 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { React, Component } from 'react';
-import { Col, Form, FormGroup, Label, Button, Input } from "reactstrap";
+import { Col, Breadcrumb, BreadcrumbItem, Form, FormGroup, Label, Button, Input } from "reactstrap";
 import CustomNavbar from './Fragments/Navbar';
 import Select from 'react-select';
 import toast, { Toaster } from 'react-hot-toast';
@@ -113,29 +113,35 @@ export default class MakeVideo extends Component {
     render() {
         return (
             <div class="Container">
-                <header><CustomNavbar login={false} /></header>
+                <CustomNavbar login={false} />
                 <div style={{ marginTop: "100px" }}>
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="/menu">Меню</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Создать видео</li>
-                        </ol>
-                    </nav>
+                    <Breadcrumb listTag="div">
+                        <BreadcrumbItem
+                            href="/menu"
+                            tag="a">
+                            Меню
+                        </BreadcrumbItem>
+                        <BreadcrumbItem
+                            active
+                            tag="span">
+                            Создать видео
+                        </BreadcrumbItem>
+                    </Breadcrumb>
                 </div>
                 <div style={{ marginTop: "5%" }}>
                     <Form onSubmit={this.handleSubmit}>
                         <div>
-                            <FormGroup row>
-                                <Label sm={2}>Название видео:</Label>
-                                <Col sm={4} style={{ marginBottom: "3%" }} >
+                            <FormGroup>
+                                <Label>Название</Label>
+                                <Col sm={7}>
                                     <Input name="video_name" value={this.state.video_name} type="text" placeholder="Введите название" onChange={this.handleChangeVideo} required />
                                 </Col>
                             </FormGroup>
                             <Button style={{ marginBottom: "3%" }} onClick={this.addNewAction}>Добавить новое действие</Button>
                             {this.state.selectors.length === 0 ? <div></div> :
                                 this.state.selectors.map((obj, i) =>
-                                    <FormGroup row key={obj.id}>
-                                        <Label sm={2}>Команда {obj.id}:</Label>
+                                    <FormGroup key={obj.id}>
+                                        <Label>Команда {obj.id}:</Label>
                                         <Col sm={7}>
                                             <Select
                                                 options={this.state.options}
@@ -151,7 +157,7 @@ export default class MakeVideo extends Component {
                                     </FormGroup>
                                 )}
                             {this.state.selectors.length === 0 ? <div></div> :
-                                <Button type="submit">Создать</Button>}
+                                <Button type="submit" color="primary" style={{marginBottom: "60px"}}>Создать</Button>}
                         </div>
                     </Form>
                 </div >

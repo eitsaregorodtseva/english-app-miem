@@ -1,7 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { React, Component } from 'react';
-import { Spinner } from "reactstrap";
+import { Button, Spinner, Breadcrumb, BreadcrumbItem } from "reactstrap";
 import { Link } from 'react-router-dom';
 import CustomNavbar from './Fragments/Navbar';
 import Accordion from './Fragments/Accordion';
@@ -32,12 +32,18 @@ export default class Cabinet extends Component {
       <div class="Container">
         <header><CustomNavbar login={false}/></header>
         <div style={{ marginTop: "100px" }}>
-          <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-              <li class="breadcrumb-item"><a href="/menu">Меню</a></li>
-              <li class="breadcrumb-item active" aria-current="page">Уроки</li>
-            </ol>
-          </nav>
+          <Breadcrumb listTag="div">
+                        <BreadcrumbItem
+                            href="/menu"
+                            tag="a">
+                            Меню
+                        </BreadcrumbItem>
+                        <BreadcrumbItem
+                            active
+                            tag="span">
+                            Уроки
+                        </BreadcrumbItem>
+                    </Breadcrumb>
         </div>
         {this.state.blocks === null ?
           <div class="CenterContainer"><Spinner color="secondary" /></div> :
@@ -54,7 +60,7 @@ export default class Cabinet extends Component {
           </div>
         }
         {this.state.blocks === null ? <div></div> :
-          <div style={{ marginTop: "5%", marginLeft: "35%" }}>
+          <div style={{ marginTop: "5%"}}>
             <Link to={{
               pathname: "/new_block",
               state: {
@@ -65,9 +71,9 @@ export default class Cabinet extends Component {
               }
             }}
               style={{ textDecoration: 'none' }}>
-              <button style={{ padding: "2% 9% 2% 9%", backgroundColor: "#C4C4C4", color: "#000000", border: "none", borderRadius: "4px" }}>
+              <Button block>
                 Новый блок
-              </button>
+              </Button>
             </Link>
           </div>
         }

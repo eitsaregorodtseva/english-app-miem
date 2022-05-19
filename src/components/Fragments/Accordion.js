@@ -1,7 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import React, { useState } from 'react';
-import { FormGroup, Badge, Col, List, Label } from "reactstrap";
+import { Button, FormGroup, Badge, Col, List, Label } from "reactstrap";
 import { Link } from 'react-router-dom';
 import '../../style.css';
 
@@ -17,14 +17,14 @@ const Accordion = ({ header, content, blocks, lexemes, replicas, videos }) => {
     return (
         <div className="accordion-item">
             <h2 className="accordion-header">
-                <button class="accordion-button collapsed" type="button" onClick={() => setActive(!isActive)}>
+                <button class="accordion-button collapsed" onClick={() => setActive(!isActive)}>
                     Блок {header}
                 </button>
             </h2>
             {isActive && <div className="accordion-content">
                 {content.map((obj) => (
                     <div className="LessonDiv">
-                        <button disabled className="GreyBox">Урок {obj.id_les}: {obj.name_les}</button>
+                        <h5>Урок {obj.id_les}: {obj.name_les}</h5>
                         <div style={{ marginTop: "5%" }}>
                             <Link to={{
                                 pathname: "/editing", state: {
@@ -34,8 +34,9 @@ const Accordion = ({ header, content, blocks, lexemes, replicas, videos }) => {
                                     lexemes: lexemes,
                                     replicas: replicas,
                                     videos: videos
-                                }}}>
-                                <button type="button" className="EditLesson">Редактировать</button>
+                                }}}
+                                style={{ textDecoration: 'none' }}>
+                                <Button outline color="primary" block>Редактировать</Button>
                             </Link>
                         </div>
                         <div style={{ marginTop: "5%" }}>

@@ -1,7 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { React, Component } from 'react';
-import { Col, Button, Form, FormGroup, Input } from "reactstrap";
+import { Col, Breadcrumb, BreadcrumbItem, Button, Form, FormGroup, Input, Label } from "reactstrap";
 import toast, { Toaster } from 'react-hot-toast';
 import axios from 'axios';
 import CustomNavbar from './Fragments/Navbar';
@@ -419,37 +419,47 @@ export default class Editing extends Component {
             <Form className="Container" onSubmit={this.handleSubmit}>
                 <header><CustomNavbar login={false} /></header>
                 <div style={{ marginTop: "100px" }}>
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="/menu">Меню</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Редактирование</li>
-                        </ol>
-                    </nav>
+                    <Breadcrumb listTag="div">
+                        <BreadcrumbItem
+                            href="/menu"
+                            tag="a">
+                            Меню
+                        </BreadcrumbItem>
+                        <BreadcrumbItem
+                            active
+                            tag="span">
+                            Редактирование
+                        </BreadcrumbItem>
+                    </Breadcrumb>
                 </div>
                 <div style={{ marginTop: "5%" }}>
                     <div class="row">
-                        <FormGroup row>
-                            {/*<Label sm={3}>Выберите блок:</Label>*/}
-                            <Col sm={4}>
+                        <FormGroup>
+                            <Label>Выберите блок:</Label>
+                            <Col sm={12}>
                                 <Input type="select" value={this.state.id_lb ? this.state.id_lb : "0"} onChange={(e) => this.blockChange(e.target.value)}>
-                                    <option value={0} key={0}>Выберите блок</option>
+                                    <option value={0} key={0}>Номер блока</option>
                                     {this.state.blocks.map((obj, i) => (
                                         <option value={obj.id_lb} key={obj.id_lb}>{obj.id_lb}</option>
                                     ))}
                                 </Input></Col>
                         </FormGroup>
                     </div>
-                    <div row hidden={this.state.buttonsState}>
-                        <Button color={this.state.emptyLessonState === false ? "primary" : "secondary"} type="button" onClick={this.openEmptyLesson}>Новый урок</Button>
-                        <Button style={{marginLeft: "5%"}} color={this.state.selectState === false ? "primary" : "secondary"} type="button" onClick={this.openLessonSelect}>Выбрать урок</Button>
-                    </div>
+                    <div class="row" hidden={this.state.buttonsState}>
+                        <Col sm={6}>
+                        <Button block color={this.state.emptyLessonState === false ? "primary" : "secondary"} onClick={this.openEmptyLesson}>Новый урок</Button>
+                        </Col>
+                        <Col sm={6}>
+                        <Button block color={this.state.selectState === false ? "primary" : "secondary"} onClick={this.openLessonSelect}>Выбрать урок</Button>
+                        </Col>
+                        </div>
                     <div style={{ marginTop: "2%" }}>
                         <div class="row" row hidden={this.state.selectState}>
-                            <FormGroup row>
-                                {/*<Label sm={3}>Выберите номер урока:</Label>*/}
-                                <Col sm={4}>
+                            <FormGroup>
+                                <Label>Выберите номер урока:</Label>
+                                <Col sm={12}>
                                     <Input type="select" value={this.state.id_les ? this.state.id_les : "0"} onChange={(e) => this.lessonChange(e.target.value)}>
-                                        <option value={0} key={0}>Выберите урок</option>
+                                        <option value={0} key={0}>Номер урока</option>
                                         {this.state.lesson_info.map((obj, j) => (
                                             <option value={obj.id_les} key={obj.id_les}>{obj.id_les}</option>
                                         ))}
@@ -467,18 +477,19 @@ export default class Editing extends Component {
                             videos={this.state.videos}
                             name_les={this.state.name_les}
                             video={this.state.video}
+                            id_les={this.state.id_les}
                             parentCallback={this.handleCallback} />
                         {this.state.emptyLessonState === false ? <div></div> :
                             <div style={{ marginTop: "5%" }}>
-                                <button type="button" class="DeleteLesson" onClick={this.deleteLesson}>Удалить урок</button>
+                                <Button block color="danger" onClick={this.deleteLesson}>Удалить урок</Button>
                             </div>}
                         <div style={{ marginTop: "5%" }}>
-                            <button disabled class="GreyBox">Описание</button>
-                            <Input style={{ marginTop: "3%", width: "94%" }} type="textarea" name="description" rows="4" onChange={this.handleChange} required></Input>
+                            <h4>Описание</h4>
+                            <Input placeholder="Опишите внесенные изменения" style={{ marginTop: "3%", width: "96%" }} type="textarea" name="description" rows="4" onChange={this.handleChange} required></Input>
                         </div>
-                        <div style={{ marginTop: "5%", marginLeft: "37%" }}>
+                        <div style={{ marginTop: "5%" }}>
                             {/*<button type="button" class="Cancel" disabled>Отменить</button>*/}
-                            <button class="Save" type="submit">Сохранить</button>
+                            <Button outline block color="success" type="submit" style={{marginBottom: "10%"}}>Сохранить</Button>
                         </div>
                     </div>
                 }

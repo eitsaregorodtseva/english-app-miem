@@ -62,11 +62,12 @@ export default function Modal({ handleClose, show }) {
     return (
         <div className={showHideClassName}>
             <div className="modal-main">
-                <button type="button" onClick={handleClose}>
-                    Close
-                </button>
-                <Form>
-                    <Input type="file" name="mediafile" onChange={handleChange} ref={inputRef} required></Input>
+                <Button color="danger" style={{float: "right"}} onClick={handleClose}>
+                   Закрыть
+                </Button>
+                <Form style={{ marginTop: "50px"}}>
+                    <Input type="file" name="mediafile" onChange={handleChange} ref={inputRef} required
+                    style={{marginBottom: "10px"}}></Input>
                     <Select
                         options={options}
                         value={options.filter(med => med.value === type_med)}
@@ -76,7 +77,7 @@ export default function Modal({ handleClose, show }) {
                         placeholder="Выберите тип файла"
                         required>
                     </Select>
-                    <Button onClick={handleSubmitModal}>Загрузить</Button>
+                    <Button style={{ marginTop: "30px"}} onClick={handleSubmitModal}>Загрузить</Button>
                 </Form>
             </div>
             <Toaster position="bottom-right" />

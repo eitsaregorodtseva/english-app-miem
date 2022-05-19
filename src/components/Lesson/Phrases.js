@@ -263,15 +263,15 @@ export default class Phrases extends Component {
     render() {
         return (
             <div class="row" style={{ marginBottom: "3%" }}>
-                <div class="col-sm-3" style={{ marginTop: "1%", overflow: "auto", minHeight: "5px", height: "350px", width: "200px" }}>
+                <div class="col-sm-3" style={{ marginTop: "1%", overflow: "auto", minHeight: "5px", height: "4200px", width: "210px" }}>
                     <Col sm={12}>
-                        <Button style={{ width: "190px" }} onClick={() => this.addNewPhr()}>Добавить</Button>
+                        <Button style={{ width: "180px" }} onClick={() => this.addNewPhr()}>Добавить</Button>
                         {this.state.phr.map((obj, i) =>
-                            <Button style={{ width: "190px" }} key={obj.id_fr} color={this.state.current_phr.id_fr === i ? "primary" : "secondary"} onClick={() => this.showCurrentPhr(i)}>Фраза {i + 1}</Button>)}
+                            <Button style={{ width: "180px" }} key={obj.id_fr} color={this.state.current_phr.id_fr === i ? "primary" : "secondary"} onClick={() => this.showCurrentPhr(i)}>Фраза {i + 1}</Button>)}
                     </Col>
                 </div>
                 {this.state.phr.length === 0 || this.state.current_phr.id_fr === null ? <div></div> :
-                    <div class="col" style={{ marginTop: "1%", width: "100px", height: "350px" }}>
+                    <div class="col" style={{ marginTop: "1%", width: "100px", height: "420px" }}>
                         <Form>
                             <select class="form-select" style={{ marginBottom: "20px" }} value={this.state.current_phr.type_ex} onChange={this.getSelectedTypePhr}>
                                 <option value={0}>Выберите тип</option>
@@ -283,7 +283,7 @@ export default class Phrases extends Component {
                             {this.state.current_phr.type_ex === 0 ? <div></div> :
                                 this.state.current_phr.type_ex === 4 ?
                                     <div>
-                                        <div style={{ paddingLeft: "530px", paddingBottom: "10px" }}>
+                                        <div style={{ marginTop: "10px", marginBottom: "10px", paddingBottom: "10px" }}>
                                             <Button id="Popover10" type="button">Подсказка</Button>
                                             <UncontrolledPopover placement="right" target="Popover10" trigger="focus">
                                                 <PopoverBody>
@@ -314,7 +314,7 @@ export default class Phrases extends Component {
                                     </div> :
                                     this.state.current_phr.type_ex === 19 ?
                                         <div>
-                                            <div style={{ paddingLeft: "530px", paddingBottom: "10px" }}>
+                                            <div style={{ marginTop: "10px", marginBottom: "10px", paddingBottom: "10px" }}>
                                                 <Button id="Popover12" type="button">Подсказка</Button>
                                                 <UncontrolledPopover placement="right" target="Popover12" trigger="focus">
                                                     <PopoverBody>
@@ -342,8 +342,8 @@ export default class Phrases extends Component {
                                                 </Col>
                                             </div>
                                             <div class="row StructureFields" style={{ marginTop: "20px" }}>
-                                                <Label sm={3}>Слово для упражнения:</Label>
-                                                <Col sm={5}>
+                                                <Label sm={5}>Слово для упражнения:</Label>
+                                                <Col sm={6}>
                                                     <Select
                                                         options={numbers}
                                                         value={numbers.filter(this.filterOptions, this.state.id_miss)}
@@ -357,7 +357,7 @@ export default class Phrases extends Component {
                                         </div> :
                                         this.state.current_phr.type_ex === 20 ?
                                             <div>
-                                                <div style={{ paddingLeft: "530px", paddingBottom: "10px" }}>
+                                                <div style={{ marginTop: "10px", marginBottom: "10px", paddingBottom: "10px" }}>
                                                     <Button id="Popover13" type="button">Подсказка</Button>
                                                     <UncontrolledPopover placement="right" target="Popover13" trigger="focus">
                                                         <PopoverBody>
@@ -385,8 +385,8 @@ export default class Phrases extends Component {
                                                     </Col>
                                                 </div>
                                                 <div class="row StructureFields" style={{ marginTop: "20px" }}>
-                                                    <Label sm={3}>Пропущенные слова:</Label>
-                                                    <Col sm={5}>
+                                                    <Label sm={4}>Пропущенные слова:</Label>
+                                                    <Col sm={6}>
                                                         <Select
                                                             options={numbers}
                                                             isMulti

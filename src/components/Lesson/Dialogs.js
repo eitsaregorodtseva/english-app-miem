@@ -211,11 +211,11 @@ export default class Dialogs extends Component {
     render() {
         return (
             <div class="row" style={{ marginBottom: "3%" }}>
-                <div class="col-sm-3" style={{ marginTop: "1%", overflowY: "scroll", minHeight: "5px", height: "370px", width: "200px" }}>
+                <div class="col-sm-3" style={{ marginTop: "1%", overflow: "auto", minHeight: "5px", height: "370px", width: "210px" }}>
                     <Col sm={12}>
-                        <Button style={{ width: "190px" }} onClick={() => this.addNewDialog()}>Добавить</Button>
+                        <Button style={{ width: "180px" }} onClick={() => this.addNewDialog()}>Добавить</Button>
                         {this.state.dialog.map((obj, i) =>
-                            <Button style={{ width: "190px" }} key={obj.id_fr} color={this.state.current_dialog.id_fr === i ? "primary" : "secondary"} onClick={() => this.showCurrentDialog(i)}>Диалог {i + 1}</Button>)}
+                            <Button style={{ width: "180px" }} key={obj.id_fr} color={this.state.current_dialog.id_fr === i ? "primary" : "secondary"} onClick={() => this.showCurrentDialog(i)}>Диалог {i + 1}</Button>)}
                     </Col>
                 </div>
                 {this.state.dialog.length === 0 || this.state.current_dialog.id_fr === null ? <div></div> :
@@ -230,7 +230,7 @@ export default class Dialogs extends Component {
                             {this.state.current_dialog.type_ex === 0 ? <div></div> :
                                 this.state.current_dialog.type_ex === 21 ?
                                     <div>
-                                        <div style={{ paddingLeft: "530px", paddingBottom: "10px" }}>
+                                        <div style={{ marginTop: "10px", marginBottom: "10px", paddingBottom: "10px" }}>
                                             <Button id="Popover18" type="button">Подсказка</Button>
                                             <UncontrolledPopover placement="right" target="Popover18" trigger="focus">
                                                 <PopoverBody>
@@ -260,7 +260,7 @@ export default class Dialogs extends Component {
                                     </div> :
                                     this.state.current_dialog.type_ex === 22 ?
                                         <div>
-                                            <div style={{ paddingLeft: "530px", paddingBottom: "10px" }}>
+                                            <div style={{ marginTop: "10px", marginBottom: "10px", paddingBottom: "10px" }}>
                                                 <Button id="Popover19" type="button">Подсказка</Button>
                                                 <UncontrolledPopover placement="right" target="Popover19" trigger="focus">
                                                     <PopoverBody>
@@ -289,8 +289,8 @@ export default class Dialogs extends Component {
                                                 </Col>
                                             </div>
                                             <div className="row StructureFields" style={{ marginTop: "20px" }}>
-                                                <Label sm={3}>Пропущенные реплики:</Label>
-                                                <Col sm={9}>
+                                                <Label sm={5}>Пропущенные реплики:</Label>
+                                                <Col sm={7}>
                                                     <Select
                                                         options={numbers}
                                                         isMulti

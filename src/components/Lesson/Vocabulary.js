@@ -305,11 +305,11 @@ export default class Vocabulary extends Component {
     render() {
         return (
             <div className="row" style={{ marginBottom: "3%" }}>
-                <div className="col-sm-3" style={{ marginTop: "1%", overflowY: "scroll", minHeight: "5px", height: "450px", width: "200px" }}>
+                <div className="col-sm-3" style={{ marginTop: "1%", overflow: "auto", minHeight: "5px", height: "450px", width: "210px" }}>
                     <Col sm={12}>
-                        <Button style={{ width: "190px" }} onClick={this.addNewLex}>Добавить</Button>
+                        <Button style={{ width: "180px" }} onClick={this.addNewLex}>Добавить</Button>
                         {this.state.lex.map((obj, i) =>
-                            <Button style={{ width: "190px" }} key={obj.id_fr} color={this.state.current_lex.id_fr === i ? "primary" : "secondary"} onClick={() => this.showCurrentLex(i)}>Буквы-слова {i + 1}</Button>)}
+                            <Button style={{ width: "180px" }} key={obj.id_fr} color={this.state.current_lex.id_fr === i ? "primary" : "secondary"} onClick={() => this.showCurrentLex(i)}>Буквы-слова {i + 1}</Button>)}
                     </Col>
                 </div>
                 {this.state.lex.length === 0 || this.state.current_lex.id_fr === null ? <div></div> :
@@ -331,7 +331,7 @@ export default class Vocabulary extends Component {
                             {this.state.current_lex.type_ex === 0 ? <div></div> :
                                 this.state.current_lex.type_ex === 14 ?
                                     <div>
-                                        <div style={{ paddingLeft: "530px", paddingBottom: "10px" }}>
+                                        <div style={{ marginTop: "10px", marginBottom: "10px", paddingBottom: "10px" }}>
                                             <Button id="Popover2" type="button">Подсказка</Button>
                                             <UncontrolledPopover placement="right" target="Popover2" trigger="focus">
                                                 <PopoverBody row="true">
@@ -363,7 +363,7 @@ export default class Vocabulary extends Component {
                                     </div> :
                                     this.state.current_lex.type_ex === 3 ?
                                         <div>
-                                            <div style={{ paddingLeft: "530px", paddingBottom: "10px" }}>
+                                            <div style={{ marginTop: "10px", marginBottom: "10px", paddingBottom: "10px" }}>
                                                 <Button id="Popover2" type="button">Подсказка</Button>
                                                 <UncontrolledPopover placement="right" target="Popover2" trigger="focus">
                                                     <PopoverBody>
@@ -394,7 +394,7 @@ export default class Vocabulary extends Component {
                                         </div> :
                                         this.state.current_lex.type_ex === 2 ?
                                             <div>
-                                                <div style={{ paddingLeft: "530px", paddingBottom: "10px" }}>
+                                                <div style={{ marginTop: "10px", marginBottom: "10px", paddingBottom: "10px" }}>
                                                     <Button id="Popover3" type="button">Подсказка</Button>
                                                     <UncontrolledPopover placement="right" target="Popover3" trigger="focus">
                                                         <PopoverBody>
@@ -426,7 +426,7 @@ export default class Vocabulary extends Component {
                                             </div> :
                                             this.state.current_lex.type_ex === 1 ?
                                                 <div>
-                                                    <div style={{ paddingLeft: "530px", paddingBottom: "10px" }}>
+                                                    <div style={{ marginTop: "10px", marginBottom: "10px", paddingBottom: "10px" }}>
                                                         <Button id="Popover4" type="button">Подсказка</Button>
                                                         <UncontrolledPopover placement="right" target="Popover4" trigger="focus">
                                                             <PopoverBody>
@@ -457,7 +457,7 @@ export default class Vocabulary extends Component {
                                                 </div> :
                                                 this.state.current_lex.type_ex === 18 ?
                                                     <div>
-                                                        <div style={{ paddingLeft: "530px", paddingBottom: "10px" }}>
+                                                        <div style={{ marginTop: "10px", marginBottom: "10px", paddingBottom: "10px" }}>
                                                             <Button id="Popover5" type="button">Подсказка</Button>
                                                             <UncontrolledPopover placement="right" target="Popover5" trigger="focus">
                                                                 <PopoverBody>
@@ -488,7 +488,7 @@ export default class Vocabulary extends Component {
                                                     </div> :
                                                     this.state.current_lex.type_ex === 7 ?
                                                         <div>
-                                                            <div style={{ paddingLeft: "530px", paddingBottom: "10px" }}>
+                                                            <div style={{ marginTop: "10px", marginBottom: "10px", paddingBottom: "10px" }}>
                                                                 <Button id="Popover6" type="button">Подсказка</Button>
                                                                 <UncontrolledPopover placement="right" target="Popover6" trigger="focus">
                                                                     <PopoverBody>
@@ -520,7 +520,7 @@ export default class Vocabulary extends Component {
                                                         </div> :
                                                         this.state.current_lex.type_ex === 5 ?
                                                             <div>
-                                                                <div style={{ paddingLeft: "530px", paddingBottom: "10px" }}>
+                                                                <div style={{ marginTop: "10px", marginBottom: "10px", paddingBottom: "10px" }}>
                                                                     <Button id="Popover7" type="button">Подсказка</Button>
                                                                     <UncontrolledPopover placement="right" target="Popover7" trigger="focus">
                                                                         <PopoverBody>
@@ -580,7 +580,7 @@ export default class Vocabulary extends Component {
                                                             </div> :
                                                             this.state.current_lex.type_ex === 15 ?
                                                                 <div>
-                                                                    <div style={{ paddingLeft: "530px", paddingBottom: "10px" }}>
+                                                                    <div style={{ marginTop: "10px", marginBottom: "10px", paddingBottom: "10px" }}>
                                                                         <Button id="Popover8" type="button">Подсказка</Button>
                                                                         <UncontrolledPopover placement="right" target="Popover8" trigger="focus">
                                                                             <PopoverBody>
@@ -641,7 +641,7 @@ export default class Vocabulary extends Component {
                                                                 </div> :
                                                                 this.state.current_lex.type_ex === 6 ?
                                                                     <div>
-                                                                        <div style={{ paddingLeft: "530px", paddingBottom: "10px" }}>
+                                                                        <div style={{ marginTop: "10px", marginBottom: "10px", paddingBottom: "10px" }}>
                                                                             <Button id="Popover9" type="button">Подсказка</Button>
                                                                             <UncontrolledPopover placement="right" target="Popover9" trigger="focus">
                                                                                 <PopoverBody>

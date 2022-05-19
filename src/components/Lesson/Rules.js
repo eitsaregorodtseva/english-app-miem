@@ -264,11 +264,11 @@ export default class Rules extends Component {
     render() {
         return (
             <div class="row" style={{ marginBottom: "3%" }}>
-                <div class="col-sm-3" style={{ marginTop: "1%", overflowY: "scroll", minHeight: "5px", height: "530px", width: "200px" }}>
+                <div class="col-sm-3" style={{ marginTop: "1%", overflow: "auto", minHeight: "5px", height: "530px", width: "210px" }}>
                     <Col sm={12}>
-                        <Button style={{ width: "190px" }} onClick={() => this.addNewRule()}>Добавить</Button>
+                        <Button style={{ width: "180px" }} onClick={() => this.addNewRule()}>Добавить</Button>
                         {this.state.rule.map((obj, i) =>
-                            <Button style={{ width: "190px" }} key={obj.id_fr} color={this.state.current_rule.id_fr === i ? "primary" : "secondary"} onClick={() => this.showCurrentRule(i)}>Правило {i + 1}</Button>)}
+                            <Button style={{ width: "180px" }} key={obj.id_fr} color={this.state.current_rule.id_fr === i ? "primary" : "secondary"} onClick={() => this.showCurrentRule(i)}>Правило {i + 1}</Button>)}
                     </Col>
                 </div>
                 {this.state.rule.length === 0 || this.state.current_rule.id_fr === null ? <div></div> :
@@ -283,7 +283,7 @@ export default class Rules extends Component {
                             {this.state.current_rule.type_ex === 0 ? <div></div> :
                                 this.state.current_rule.type_ex === 23 ?
                                     <div>
-                                        <div style={{ paddingLeft: "530px", paddingBottom: "10px" }}>
+                                        <div style={{ marginTop: "10px", marginBottom: "10px", paddingBottom: "10px" }}>
                                             <Button id="Popover14" type="button">Подсказка</Button>
                                             <UncontrolledPopover placement="right" target="Popover14" trigger="focus">
                                                 <PopoverBody>
@@ -307,7 +307,7 @@ export default class Rules extends Component {
                                         </div>
                                         <div className="row StructureFields" style={{ marginTop: "20px", marginBottom: "20px" }}>
                                             <Label sm={3}>Сторона экрана:</Label>
-                                            <Col sm={5}>
+                                            <Col sm={7}>
                                                 <select className="form-select" name="side" value={this.state.side} onChange={this.getSelectedSide}>
                                                     <option value="">Выберите сторону экрана</option>
                                                     <option value="право">право</option>
@@ -330,7 +330,7 @@ export default class Rules extends Component {
                                     </div> :
                                     this.state.current_rule.type_ex === 17 ?
                                         <div>
-                                            <div style={{ paddingLeft: "530px", paddingBottom: "10px" }}>
+                                            <div style={{ marginTop: "10px", marginBottom: "10px", paddingBottom: "10px" }}>
                                                 <Button id="Popover16" type="button">Подсказка</Button>
                                                 <UncontrolledPopover placement="right" target="Popover16" trigger="focus">
                                                     <PopoverBody>
@@ -386,7 +386,7 @@ export default class Rules extends Component {
                                         </div> :
                                         <div></div>}
                         </Form>
-                        <Button onClick={this.showModal}>Добавить файлы</Button>
+                        <Button onClick={this.showModal} style={{marginTop: "10px"}}>Добавить файлы</Button>
                         <Modal show={this.state.show} handleClose={this.hideModal}></Modal>
                     </div>}
             </div>)

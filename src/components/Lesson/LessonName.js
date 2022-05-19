@@ -17,9 +17,11 @@ export default function LessonName(props) {
     return (
         <div style={{ marginTop: "5%", marginBottom: "5%" }}>
             <div className="row">
-                <Label sm={2}>Название урока:</Label>
-                <Col sm={4}>
-                    <Input type="text" name="name_les" value={name_les} onChange={(e) => setName(e.target.value)} required></Input>
+                <Label sm={3}>Введите название:</Label>
+                <Col sm={5}>
+                    <Input type="text" name="name_les" value={name_les} 
+                    placeholder="Название урока"
+                    onChange={(e) => setName(e.target.value)} required></Input>
                 </Col>
             </div>
         </div>)

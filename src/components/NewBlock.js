@@ -1,6 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { React, Component } from 'react';
-import { Col, Form, FormGroup, Input, Label } from "reactstrap";
+import { Col, Button, Breadcrumb, BreadcrumbItem, Form, FormGroup, Input, Label } from "reactstrap";
 import { Link } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
 import axios from 'axios';
@@ -270,21 +270,28 @@ export default class NewBlock extends Component {
             <Form className="Container" onSubmit={this.handleSubmit}>
                 <header><CustomNavbar login={false} /></header>
                 <div style={{ marginTop: "100px" }}>
-                    <nav aria-label="breadcrumb">
-                        <ol className="breadcrumb">
-                            <li className="breadcrumb-item"><a href="/menu">Меню</a></li>
-                            <li className="breadcrumb-item">
-                                <Link to={{
+                    <Breadcrumb listTag="div">
+                        <BreadcrumbItem
+                            href="/menu"
+                            tag="a">
+                            Меню
+                        </BreadcrumbItem>
+                        <BreadcrumbItem>
+                        <Link to={{
                                     pathname: "/cabinet", state: {
                                         blocks: this.state.blocks,
                                         lexemes: this.state.lexemes,
                                         replicas: this.state.replicas,
                                         videos: this.state.videos
                                     }
-                                }}>Уроки</Link></li>
-                            <li className="breadcrumb-item active" aria-current="page">Новый блок</li>
-                        </ol>
-                    </nav>
+                                }}>Уроки</Link>
+                        </BreadcrumbItem>
+                        <BreadcrumbItem
+                            active
+                            tag="span">
+                            Новый блок
+                        </BreadcrumbItem>
+                    </Breadcrumb>
                 </div>
                 <div style={{ marginTop: "5%" }}>
                     <Form row="true">
@@ -296,12 +303,11 @@ export default class NewBlock extends Component {
                         </FormGroup>
                     </Form>
                 </div>
-                {this.state.add_button_hidden === true ? <div></div> : <div style={{ marginTop: "5%", marginLeft: "35%" }}>
-                    <button type="button" className="GreyButton" onClick={this.addNewLesson}>Добавить урок</button>
+                {this.state.add_button_hidden === true ? <div></div> : <div style={{ marginTop: "5%"}}>
+                    <Button outline block onClick={this.addNewLesson}>Добавить урок</Button>
                 </div>}
                 {this.state.add_button_hidden === false ? <div></div>
                     : <div>
-                        {/*<LessonName name_les={this.state.name_les}/>*/}
                         <Lesson lesson={this.state.lesson}
                             statuses={this.state.statuses}
                             lexemes={this.state.lexemes}
@@ -309,17 +315,23 @@ export default class NewBlock extends Component {
                             videos={this.state.videos}
                             video={this.state.video}
                             name_les={this.state.name_les}
+                            id_les={1}
                             parentCallback={this.handleCallback} />
                     </div>
                 }
                 <div style={{ marginTop: "5%" }}>
-                    <button disabled className="GreyBox">Описание</button>
-                    <Input style={{ marginTop: "3%", width: "94%" }} type="textarea" rows="4" name="description"
-                        value={this.state.description} onChange={this.handleChange} required></Input>
+                    <h5>Описание</h5>
+                    <Input style={{ marginTop: "3%", width: "96%" }} type="textarea" rows="4" name="description"
+                        value={this.state.description} onChange={this.handleChange} required
+                        placeholder="Опишите внесенные изменения"></Input>
                 </div>
-                <div style={{ marginTop: "5%" }}>
-                    <button className="Cancel" onClick={this.cancellingAllChanges}>Отменить</button>
-                    <button className="Save" type="submit">Сохранить</button>
+                <div class="row" style={{ marginTop: "5%", marginBottom: "10%" }}>
+                    <Col sm={6}>
+                    <Button color="warning" outline block onClick={this.cancellingAllChanges}>Отменить</Button>
+                    </Col>
+                    <Col sm={6}>
+                    <Button color="success" outline block type="submit">Сохранить</Button>
+                    </Col>
                 </div>
                 <Toaster position="bottom-right" />
             </Form>

@@ -457,17 +457,15 @@ export default class Menu extends Component {
             <div>
                 <header><CustomNavbar login={false} /></header>
                 <div style={MenuContainer}>
-                    <ListGroup style={{
-                        border: "1px solid rgba(217, 244, 234, 0.4)",
+                    <ListGroup class="primary" style={{
                         borderRadius: "40px",
-                        backgroundColor: "rgba(217, 244, 234, 1)",
-                        fontSize: "20px"
+                        fontSize: "20px",
+                        boxShadow: "0 2px 4px 0 rgba(0,0,0,.2)"
                     }}>
-                        <ListGroupItem
+                        <ListGroupItem 
                             style={{
                                 lineHeight: "45px",
-                                backgroundColor: "rgba(217, 244, 234, 0.4)",
-                                border: "1px solid rgba(217, 244, 234, 0.4)",
+                                border: "1px solid rgba(0,0,0,.2)",
                                 textAlign: "center"
                             }}>
                             Меню

@@ -1,6 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Component, useEffect, useState } from "react";
-import { Col, Input, Label } from "reactstrap";
+import { Component } from "react";
+import { Button } from "reactstrap";
 import Videos from './Videos';
 import Vocabulary from './Vocabulary';
 import Phrases from './Phrases';
@@ -24,6 +24,7 @@ export default class Lesson extends Component {
                 rules: []
             },
             video: { id_video: null },
+            id_les: 0,
             name_les: { les: "" },
             statuses: {},
             options: [],
@@ -66,7 +67,6 @@ export default class Lesson extends Component {
         for (var i = 0; i < this.props.replicas.length; i++) {
             options_replicas.push({ value: this.props.replicas[i].id_rep, label: this.props.replicas[i].lexeme.mean_lex + this.props.replicas[i].symbol })
         }
-        console.log("mount")
         this.setState({
             lesson: this.props.lesson,
             statuses: this.props.statuses,
@@ -75,6 +75,7 @@ export default class Lesson extends Component {
             videos: this.props.videos,
             video: this.props.video,
             name_les: this.props.name_les,
+            id_les: this.props.id_les,
             options: options,
             options_phrases: options_phrases,
             options_letters: options_letters,
@@ -88,7 +89,6 @@ export default class Lesson extends Component {
     componentDidUpdate(prevProps, prevState) {
         console.log(this.props);
         if (this.props.lesson !== this.state.lesson) {
-            console.log("update")
             this.setState({
                 lesson: this.props.lesson,
                 statuses: this.props.statuses,
@@ -96,7 +96,8 @@ export default class Lesson extends Component {
                 replicas: this.props.replicas,
                 videos: this.props.videos,
                 video: this.props.video,
-                name_les: this.props.name_les
+                name_les: this.props.name_les,
+                id_les: this.props.id_les
             })
         }
     }
@@ -130,7 +131,6 @@ export default class Lesson extends Component {
     }
 
     passPropsToParent() {
-        console.log("update!!!");
         let state = {
             lesson: this.state.lesson,
             statuses: this.state.statuses,
@@ -144,9 +144,9 @@ export default class Lesson extends Component {
         return (
             <div>
                 <div style={{ marginTop: "3%" }}>
-                    <button disabled className="GreyBox">Урок 1</button>
+                    <Button outline disabled block size="lg">Урок {this.state.id_les}</Button>
                     <LessonName name_les={this.state.name_les} />
-                    <div style={{ marginTop: "5%", marginLeft: "3%", overflow: "auto", width: "90%", minWidth: "600px" }} >
+                    <div style={{ marginTop: "5%", width: "90%" }} >
                         <nav>
                             <div className="nav nav-pills" id="myTab" role="tablist">
                                 <button className="nav-link active" id="video-tab" data-bs-toggle="tab" data-bs-target="#video" type="button" role="tab" aria-controls="video" aria-selected="true">Видео</button>
@@ -196,8 +196,8 @@ export default class Lesson extends Component {
                     </div>
                 </div>
                 <div style={{ marginTop: "5%" }}>
-                    <button disabled className="GreyBox">Статусы</button>
-                    <div style={{ marginTop: "5%", marginLeft: "25%" }}>
+                    <h5>Статусы</h5>
+                    <div style={{ marginTop: "5%" }}>
                         <Statuses statuses={this.state.statuses} />
                     </div>
                 </div>

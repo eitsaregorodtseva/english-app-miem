@@ -4,12 +4,14 @@ import { Navbar, Nav, NavItem, Button } from "reactstrap";
 import exit from '../../static/icons/logout.svg';
 
 const NavbarStyle = {
-    backgroundColor: '#84C7AE',
-    height: "54px"
+    height: "41px",
+    backgroundColor: "#ffffff",
+    boxShadow: "0 2px 4px 0 rgba(0,0,0,.2)"
 }
 
 const NavbarStyleExit = {
-    backgroundColor: '#84C7AE'
+    backgroundColor: "#ffffff",
+    boxShadow: "0 2px 4px 0 rgba(0,0,0,.2)"
 }
 
 const ButtonStyle = {
@@ -36,10 +38,7 @@ export default function CustomNavbar(props) {
                     <Nav className="ms-auto"
                         navbar style={{ marginRight: "-3%" }}>
                         <NavItem>
-                            <Button style={ButtonStyle} onClick={logout} href="/">
-                                <img src={exit} alt="" style={{ height: "24px", paddingRight: "10px", paddingLeft: "5px" }} />
-                                <span style={{ paddingRight: "10px" }}>Выйти</span>
-                            </Button>
+                            <img src={exit} alt="" onClick={logout} style={{ height: "24px", paddingRight: "10px", paddingLeft: "5px", cursor: "pointer" }} />
                         </NavItem>
                     </Nav>
                 </Navbar> : 

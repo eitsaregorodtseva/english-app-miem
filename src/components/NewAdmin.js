@@ -1,6 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { React, useState, useEffect } from 'react';
-import { Col, Form, FormGroup, Input } from "reactstrap";
+import { Button, Col, Breadcrumb, BreadcrumbItem, Form, FormGroup, Input, Badge } from "reactstrap";
 import toast, { Toaster } from 'react-hot-toast';
 import CustomNavbar from './Fragments/Navbar';
 import axios from 'axios';
@@ -32,7 +32,7 @@ export default function NewAdmin() {
                 email: email,
                 password: password
             }
-            console.log(JSON.stringify( user ));
+            console.log(JSON.stringify(user));
             axios.post(newAdminUrl, JSON.stringify({ user }), {
                 headers: {
                     Authorization: `Token ${localStorage.token}`,
@@ -65,20 +65,26 @@ export default function NewAdmin() {
         <div class="Container">
             <header><CustomNavbar login={false} /></header>
             <div style={{ marginTop: "100px" }}>
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="/menu">Меню</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Новый администратор</li>
-                    </ol>
-                </nav>
+                <Breadcrumb listTag="div">
+                    <BreadcrumbItem
+                        href="/menu"
+                        tag="a">
+                        Меню
+                    </BreadcrumbItem>
+                    <BreadcrumbItem
+                        active
+                        tag="span">
+                        Новый администратор
+                    </BreadcrumbItem>
+                </Breadcrumb>
             </div>
             <div class="FormContainer">
                 <Form onSubmit={handleSubmit} style={{ border: "1px solid black", borderRadius: "30px", padding: '4% 5% 4% 5%' }}>
-                    <h4>Регистрация нового</h4>
-                    <h4>администратора в системе</h4>
+                    <h4>Регистрация</h4>
+                    <h4>нового администратора</h4>
                     <FormGroup row style={{ marginTop: "50px" }}>
                         <Col sm={14}>
-                            <Input style={{ borderRadius: "10px" }}
+                            <Input
                                 id="username"
                                 name="username"
                                 type="text"
@@ -90,7 +96,7 @@ export default function NewAdmin() {
                     </FormGroup>
                     <FormGroup row style={{ marginTop: "30px" }}>
                         <Col sm={14}>
-                            <Input style={{ borderRadius: "10px" }}
+                            <Input
                                 id="email"
                                 name="email"
                                 type="email"
@@ -102,7 +108,7 @@ export default function NewAdmin() {
                     </FormGroup>
                     <FormGroup row style={{ marginTop: "30px" }}>
                         <Col sm={14}>
-                            <Input style={{ borderRadius: "10px" }}
+                            <Input
                                 id="password"
                                 name="password"
                                 type="password"
@@ -112,10 +118,12 @@ export default function NewAdmin() {
                                 required />
                         </Col>
                     </FormGroup>
-                    <p style={{color: "red"}}>{match}</p>
+                    {match !== "" ?
+                        <p style={{ backgroundColor: "#f7b3b3", marginTop: "30px", padding: "10px 0px 10px 0px" }}>{match}</p> :
+                        <div></div>}
                     <FormGroup row style={{ marginTop: "30px" }}>
                         <Col sm={14}>
-                            <Input style={{ borderRadius: "10px" }}
+                            <Input
                                 id="verify_password"
                                 name="verify_password"
                                 type="password"
@@ -125,7 +133,7 @@ export default function NewAdmin() {
                                 required />
                         </Col>
                     </FormGroup>
-                    <button type="submit" class="AdminButtonStyle">Зарегистрировать</button>
+                    <Button type="submit" block color='primary' style={{ marginTop: "10%" }}>Зарегистрировать</Button>
                 </Form>
             </div>
             <Toaster position="bottom-right" />
